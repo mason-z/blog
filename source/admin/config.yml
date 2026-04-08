@@ -20,6 +20,19 @@ slug:
   sanitize_replacement: "-"
 
 collections:
+  - name: site_name_cfg
+    label: 站点名称
+    files:
+      - label: 网站显示名称
+        name: site_name_file
+        file: source/_data/site_name.yml
+        format: yaml
+        fields:
+          - label: 网站名称
+            name: name
+            widget: string
+            hint: "显示在顶栏左上角，以及各页浏览器标签中的「页面 | 网站名」。修改后请重新生成站点（hexo generate 或托管平台自动构建）。"
+
   - name: site_theme
     label: 网站外观
     files:
@@ -28,7 +41,11 @@ collections:
         file: themes/tony-blog/_config.yml
         format: yaml
         fields:
-          - { label: 顶栏品牌名, name: brand, widget: string }
+          - label: 顶栏品牌名（备用）
+            name: brand
+            widget: string
+            required: false
+            hint: "若已在「站点名称」中填写，顶栏优先显示站点名称；此处为未设置时的后备"
           - { label: 首页主标题, name: landing_title, widget: string }
           - { label: 首页引言, name: landing_lead, widget: text }
           - label: 导航菜单
@@ -53,7 +70,11 @@ collections:
             widget: object
             collapsed: false
             fields:
-              - { label: 网站标题, name: site_title, widget: string }
+              - label: 网站标题（备用）
+                name: site_title
+                widget: string
+                required: false
+                hint: "若已在「站点名称」中填写，一般以站点名称为准；此处可作为未设置站点名称时的后备"
               - { label: 站点描述, name: site_description, widget: text }
           - label: 首页列表区
             name: home

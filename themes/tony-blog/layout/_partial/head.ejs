@@ -1,6 +1,7 @@
 <% var _uim = (site.data.site_ui && site.data.site_ui.meta) || {}; %>
 <% var _uil = (site.data.site_ui && site.data.site_ui.labels) || {}; %>
-<% var _siteTitle = _uim.site_title || config.title %>
+<% var _sn = (site.data.site_name && site.data.site_name.name && String(site.data.site_name.name).trim()) || ''; %>
+<% var _siteTitle = _sn || _uim.site_title || config.title %>
 <% var _siteDesc = _uim.site_description || config.description %>
 <% var _gbHead = (page.layout === 'guestbook' && site.data.guestbook && site.data.guestbook.page) ? site.data.guestbook.page : null; %>
 <% var _gbHeadTitle = (_gbHead && _gbHead.title && String(_gbHead.title).trim()) || ''; %>

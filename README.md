@@ -68,8 +68,10 @@ npm.cmd run server
 ## 配置
 
 - 站点：根目录 `_config.yml`  
+- **网站名称（顶栏 + 浏览器标题后缀）**：`source/_data/site_name.yml`，或在 **`/admin` →「站点名称」** 中编辑  
 - 本地预览覆盖：`_config.local.yml`（与主配置合并，覆盖 `url` 为本地地址）  
 - 主题文案与导航：`themes/tony-blog/_config.yml`（`landing_title` / `landing_lead` / `menu`）  
+- 全站界面文案：`source/_data/site_ui.yml`（与「站点名称」重叠项以站点名称为准）  
 - 文章封面：在 Markdown front-matter 中加 `cover: https://...`  
 
 ## 部署（静态托管）
