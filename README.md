@@ -63,7 +63,7 @@ npm.cmd run server
 - `npm run build:prod`：仅用 `_config.yml` 生成，与 Netlify 线上构建一致  
 - `npm run dev:admin`：本地后台（Decap 代理 + Hexo **4001**，打开 `/admin`）；也可双击 **`start-admin-local.bat`**  
 - `npx hexo new "文章标题"`：新建文章  
-- `node scripts/gen-demo-posts.cjs`：生成 30 篇演示文章（`demo-01.md` … `demo-30.md`，可删后自用）
+- `node scripts/gen-demo-posts.cjs`：按需生成演示文章（`demo-01.md` … `demo-30.md`）。**若 `_posts` 里已有任意非 `demo-NN.md` 的正文，脚本会直接跳过**；默认只补全缺失的 demo，不覆盖已有文件；**全部覆盖**时用 `node scripts/gen-demo-posts.cjs --force`
 
 ## 配置
 

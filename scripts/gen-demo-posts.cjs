@@ -1,11 +1,19 @@
 /**
- * 一次性生成演示文章：node scripts/gen-demo-posts.cjs
- * 生成 source/_posts/demo-01.md … demo-30.md（若已存在则覆盖）
+ * 生成演示文章：node scripts/gen-demo-posts.cjs [--force]
+ *
+ * 规则：
+ * - 若 source/_posts/ 下已有任意「非 demo-NN.md」的文章 → 不生成（避免干扰真实博文）
+ * - 默认：只创建尚不存在的 demo-01 … demo-30（已存在则跳过）
+ * - --force：无视已存在文件，全部覆盖重写 30 篇
  */
 const fs = require("fs");
 const path = require("path");
 
 const outDir = path.join(__dirname, "..", "source", "_posts");
+const DEMO_RE = /^demo-\d{2}\.md$/;
+const args = process.argv.slice(2);
+const force = args.includes("--force");
+
 const cats = ["随笔", "技术", "生活", "读书", "想法"];
 const prefixes = ["笔记", "随想", "记录", "备忘", "片段"];
 
@@ -16,9 +24,8 @@ const bodies = [
   "写博客的习惯是把思绪收紧再松开；演示数据没有含义，只看版式即可。"
 ];
 
-for (let i = 1; i <= 30; i++) {
+function buildMarkdown(i) {
   const n = String(i).padStart(2, "0");
-  const slug = `demo-${n}`;
   const day = 1 + ((i * 3) % 27);
   const month = 1 + ((i * 2) % 12);
   const year = i <= 18 ? 2026 : 2025;
@@ -27,7 +34,7 @@ for (let i = 1; i <= 30; i++) {
   const title = `${prefixes[(i - 1) % prefixes.length]} ${i}：演示标题占位`;
   const titleYaml = JSON.stringify(title);
 
-  const md =
+  return (
     "---\n" +
     `title: ${titleYaml}\n` +
     `date: ${dateStr}\n` +
@@ -39,10 +46,51 @@ for (let i = 1; i <= 30; i++) {
     "---\n\n" +
     `## 第 ${i} 篇演示\n\n` +
     bodies.join("\n\n") +
-    "\n";
-
-  fs.writeFileSync(path.join(outDir, `${slug}.md`), md, "utf8");
-  console.log("written", slug + ".md");
+    "\n"
+  );
 }
 
-console.log("done: 30 files in source/_posts/");
+fs.mkdirSync(outDir, { recursive: true });
+
+const allFiles = fs.readdirSync(outDir);
+const mdFiles = allFiles.filter((f) => f.endsWith(".md"));
+const nonDemo = mdFiles.filter((f) => !DEMO_RE.test(f));
+
+if (nonDemo.length > 0) {
+  console.log(
+    "已检测到非演示文章（非 demo-NN.md），跳过生成，避免与真实博文混用："
+  );
+  nonDemo.forEach((f) => console.log("  -", f));
+  console.log(
+    "\n若仅需演示数据，请先移走或删除上述文件后再运行本脚本。"
+  );
+  process.exit(0);
+}
+
+let written = 0;
+let skipped = 0;
+
+for (let i = 1; i <= 30; i++) {
+  const n = String(i).padStart(2, "0");
+  const filename = `demo-${n}.md`;
+  const fp = path.join(outDir, filename);
+
+  if (fs.existsSync(fp) && !force) {
+    skipped++;
+    continue;
+  }
+
+  fs.writeFileSync(fp, buildMarkdown(i), "utf8");
+  console.log("written", filename);
+  written++;
+}
+
+if (written === 0 && skipped === 30 && !force) {
+  console.log(
+    "30 篇演示均已存在，未写入。若要全部覆盖请使用：node scripts/gen-demo-posts.cjs --force"
+  );
+} else {
+  console.log(
+    `done: 新建/覆盖 ${written} 个文件，跳过 ${skipped} 个已存在（source/_posts/）`
+  );
+}
