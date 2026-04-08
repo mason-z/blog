@@ -1,8 +1,6 @@
-brand: I'm Tony
-landing_title: I'm Tony
-landing_lead: 欢迎来访。这里是随笔与记录，由 Hexo 静态生成，可部署到任意静态托管。
-
-# 主导航（可在本地 /admin →「网站外观」中编辑）
+brand: I'm Mason
+landing_title: 你好/Hello/Hola/Bonjour/こんにちは/안녕하세요/Hallo/Здравствуйте
+landing_lead: 欢迎来访。这里的内容是我的随笔与记录。
 menu:
   - label: 你谁
     path: /about/
@@ -16,5 +14,4 @@ menu:
     path: /travel/
   - label: 留言
     path: /guestbook/
-
 footer: © 本地博客 · Hexo
