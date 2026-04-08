@@ -2,11 +2,19 @@ brand: I'm Tony
 landing_title: I'm Tony
 landing_lead: 欢迎来访。这里是随笔与记录，由 Hexo 静态生成，可部署到任意静态托管。
 
-# 主导航：名称: 路径（相对 root）
+# 主导航（可在本地 /admin →「网站外观」中编辑）
 menu:
-  你谁: /about/
-  博客: /archives/
-  分类: /categories/
-  近况: /news/
+  - label: 你谁
+    path: /about/
+  - label: 博客
+    path: /archives/
+  - label: 分类
+    path: /categories/
+  - label: 近况
+    path: /news/
+  - label: 旅行
+    path: /travel/
+  - label: 留言
+    path: /guestbook/
 
 footer: © 本地博客 · Hexo

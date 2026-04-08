@@ -8,12 +8,17 @@
     "clean": "hexo clean",
     "server": "hexo server --config _config.yml,_config.local.yml",
     "server:4001": "hexo server -p 4001 --config _config.yml,_config.local.yml",
-    "serve:public": "http-server public -p 4002 -c-1"
+    "serve:public": "http-server public -p 4002 -c-1",
+    "cms:proxy": "cross-env MODE=git decap-server",
+    "dev:admin": "concurrently -k -n proxy,hexo -c cyan,magenta \"npm run cms:proxy\" \"npm run server:4001\""
   },
   "hexo": {
     "version": "7.3.0"
   },
   "devDependencies": {
+    "concurrently": "^9.2.1",
+    "cross-env": "^10.1.0",
+    "decap-server": "^3.6.0",
     "http-server": "^14.1.1"
   },
   "dependencies": {

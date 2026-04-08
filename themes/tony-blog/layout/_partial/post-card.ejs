@@ -11,7 +11,8 @@ function tagToneClass(str) {
   for (var i = 0; i < s.length; i++) h = (h + s.charCodeAt(i) * (i + 1)) % 997;
   return 'tag-tone-' + (h % 3);
 }
-var catName = '未分类';
+var _uilc = (site.data.site_ui && site.data.site_ui.labels) || {};
+var catName = _uilc.uncategorized || '未分类';
 var catPath = '';
 var catFirst = true;
 post.categories.each(function (c) {
@@ -37,7 +38,7 @@ var upd = post.updated || post.date;
     <p class="post-meta">
       <%= date(post.date, 'YYYY-MM-DD HH:mm') %>
       <span class="dot">·</span>
-      <%= date(upd, 'YYYY-MM-DD HH:mm') %> 更新
+      <%= date(upd, 'YYYY-MM-DD HH:mm') %> <%= _uilc.updated || '更新' %>
       <span class="cat <%= tagToneClass(catName) %>"><% if (catPath) { %><a href="<%= catPath %>"><%= catName %></a><% } else { %><%= catName %><% } %></span>
     </p>
     <p class="post-excerpt"><%= excerpt %></p>

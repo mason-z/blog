@@ -1,5 +1,6 @@
 <section class="archive-shell home-shell">
-  <h1 class="page-title">分类：<%= page.category %></h1>
+  <% var _uilx = (site.data.site_ui && site.data.site_ui.labels) || {}; %>
+  <h1 class="page-title"><%= _uilx.category_page_title_prefix || '分类：' %><%= page.category %></h1>
   <div class="home-grid">
     <div class="home-main">
       <div class="post-list post-list--home">

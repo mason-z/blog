@@ -1,5 +1,6 @@
 <section class="archive-shell home-shell">
-  <h1 class="page-title">标签：<%= page.tag %></h1>
+  <% var _uily = (site.data.site_ui && site.data.site_ui.labels) || {}; %>
+  <h1 class="page-title"><%= _uily.tag_page_title_prefix || '标签：' %><%= page.tag %></h1>
   <div class="home-grid">
     <div class="home-main">
       <div class="post-list post-list--home">

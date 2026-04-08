@@ -7,7 +7,7 @@ language: zh-CN
 timezone: Asia/Shanghai
 
 # 线上站点地址（Netlify / 自定义域名等），无末尾斜杠；与 root 一起影响资源与链接路径
-url: https://your-site-name.netlify.app
+url: https://masonblog.netlify.app
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -20,6 +20,7 @@ category_dir: categories
 code_dir: downloads/code
 i18n_dir: :lang
 skip_render:
+  - admin/**
 
 new_post_name: :title.md
 default_layout: post

@@ -1,0 +1,247 @@
+# Decap CMS（原 Netlify CMS）
+# · 本地：先运行 npm run cms:proxy（或 npm run dev:admin），再打开 http://localhost:4001/admin
+# · 线上 Netlify：将 repo 改成你的仓库，并在 GitHub + Netlify 配置 OAuth（见 README）
+# local_backend 仅在 localhost 生效，部署后仍走 GitHub 登录，不会访问 127.0.0.1
+
+backend:
+  name: github
+  repo: mason-z/blog
+  branch: main
+
+# 为 true 时，仅在浏览器访问 localhost / 127.0.0.1 时走本机 decap-server（默认端口 8081），线上仍用 GitHub
+local_backend: true
+
+media_folder: source/images/uploads
+public_folder: /images/uploads
+
+slug:
+  encoding: ascii
+  clean_accents: true
+  sanitize_replacement: "-"
+
+collections:
+  - name: site_theme
+    label: 网站外观
+    files:
+      - label: 首页、导航与页脚
+        name: theme_tony
+        file: themes/tony-blog/_config.yml
+        format: yaml
+        fields:
+          - { label: 顶栏品牌名, name: brand, widget: string }
+          - { label: 首页主标题, name: landing_title, widget: string }
+          - { label: 首页引言, name: landing_lead, widget: text }
+          - label: 导航菜单
+            name: menu
+            widget: list
+            summary: "{{fields.label}} → {{fields.path}}"
+            fields:
+              - { label: 显示文字, name: label, widget: string }
+              - { label: 链接路径, name: path, widget: string, hint: "相对站点根，如 /about/、/archives/" }
+          - { label: 页脚版权, name: footer, widget: string }
+
+  - name: site_ui
+    label: 全站界面文案
+    files:
+      - label: 首页统计、侧栏、分类页、归档与按钮文案
+        name: site_ui_data
+        file: source/_data/site_ui.yml
+        format: yaml
+        fields:
+          - label: 站点信息（浏览器标题、SEO）
+            name: meta
+            widget: object
+            collapsed: false
+            fields:
+              - { label: 网站标题, name: site_title, widget: string }
+              - { label: 站点描述, name: site_description, widget: text }
+          - label: 首页列表区
+            name: home
+            widget: object
+            collapsed: true
+            fields:
+              - { label: 无障碍标题（首页「博客」）, name: sr_only_title, widget: string }
+              - { label: 「文库共 N 篇」前缀, name: stat_total_prefix, widget: string }
+              - { label: 篇数字单位, name: stat_unit, widget: string }
+              - { label: 统计中间点, name: stat_dot, widget: string }
+              - { label: 「本页 N 篇」前缀, name: stat_page_prefix, widget: string }
+              - { label: 侧栏「分类」标题, name: aside_categories_title, widget: string }
+              - { label: 侧栏「最新」标题, name: aside_latest_title, widget: string }
+              - { label: 侧栏 aria 说明, name: aside_aria_label, widget: string }
+          - label: 分类汇总页 /categories/
+            name: categories_page
+            widget: object
+            collapsed: true
+            fields:
+              - { label: 页面大标题, name: page_title, widget: string }
+              - { label: 副标题说明, name: page_desc, widget: string }
+              - { label: 无分类时提示（支持 HTML）, name: empty_hint, widget: text }
+              - { label: 「N 篇」后面后缀, name: articles_count_suffix, widget: string }
+          - label: 通用标签（分页、未分类、更新 等）
+            name: labels
+            widget: object
+            collapsed: true
+            fields:
+              - { label: 未分类占位, name: uncategorized, widget: string }
+              - { label: 「更新」二字, name: updated, widget: string }
+              - { label: 浏览器标签里「博客」备用, name: head_fallback_blog, widget: string }
+              - { label: 标签页标题前缀, name: head_tag_prefix, widget: string }
+              - { label: 标签列表页标题前缀, name: tag_page_title_prefix, widget: string }
+              - { label: 分类列表页标题前缀, name: category_page_title_prefix, widget: string }
+              - { label: 上一页, name: pagination_prev, widget: string }
+              - { label: 下一页, name: pagination_next, widget: string }
+              - { label: 分页区域 aria, name: pagination_aria, widget: string }
+          - label: 归档页
+            name: archive
+            widget: object
+            collapsed: true
+            fields:
+              - { label: 全站归档无障碍标题, name: sr_only_all, widget: string }
+              - { label: 无文章提示, name: empty_posts, widget: string }
+              - { label: 左侧目录标题, name: toc_title, widget: string }
+          - label: 顶栏无障碍
+            name: header
+            widget: object
+            collapsed: true
+            fields:
+              - { label: 首页链接, name: aria_home, widget: string }
+              - { label: 主导航区域, name: aria_nav, widget: string }
+              - { label: 移动端菜单按钮, name: nav_toggle_label, widget: string }
+
+  - name: travel_map
+    label: 旅行地图
+    description: 管理地图上的城市标点及与博文的关联；保存后需重新执行 hexo generate（本地预览可 hexo server --watch）
+    files:
+      - label: 城市与博文
+        name: travel_data
+        file: source/_data/travel.yml
+        format: yaml
+        fields:
+          - label: 城市列表
+            name: cities
+            widget: list
+            summary: "{{fields.name}} → {{fields.url}}"
+            fields:
+              - { label: 城市名, name: name, widget: string }
+              - { label: 纬度, name: lat, widget: number, value_type: float, step: 0.0001, hint: "北纬为正，如 39.90" }
+              - { label: 经度, name: lng, widget: number, value_type: float, step: 0.0001, hint: "东经为正，如 116.40" }
+              - { label: 旅行时间（展示用）, name: date, widget: string, required: false, hint: "如 2024-01，可空" }
+              - { label: 备注, name: note, widget: string, required: false }
+              - label: 关联博文路径
+                name: url
+                widget: string
+                required: false
+                hint: "与站点内文章地址一致，无域名。发布文章后从浏览器复制路径段，如 2026/04/01/hello-hexo/；不填则仅标点、不跳转博文"
+
+  - name: static_pages
+    label: 独立页面
+    files:
+      - label: 关于（/about/）
+        name: page_about
+        file: source/about/index.md
+        format: frontmatter
+        fields:
+          - { label: 页面标题, name: title, widget: string }
+          - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
+          - { label: layout, name: layout, widget: hidden, default: page }
+          - { label: 正文, name: body, widget: markdown }
+      - label: 近况（/news/）
+        name: page_news
+        file: source/news/index.md
+        format: frontmatter
+        fields:
+          - { label: 页面标题, name: title, widget: string }
+          - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
+          - { label: layout, name: layout, widget: hidden, default: page }
+          - { label: 正文, name: body, widget: markdown }
+      - label: 分类页头（/categories/）
+        name: page_categories
+        file: source/categories/index.md
+        format: frontmatter
+        fields:
+          - { label: 页面标题, name: title, widget: string }
+          - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
+          - { label: layout, name: layout, widget: hidden, default: categories-index }
+          - { label: 预留正文（可选）, name: body, widget: markdown, required: false }
+      - label: 留言墙补充正文（/guestbook/，可选）
+        name: page_guestbook
+        file: source/guestbook/index.md
+        format: frontmatter
+        fields:
+          - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
+          - { label: layout, name: layout, widget: hidden, default: guestbook }
+          - label: 补充正文（Markdown，显示在「留言墙配置」里标题与说明的下方）
+            name: body
+            widget: markdown
+            required: false
+            hint: "大标题与说明请在「留言墙配置」中编辑"
+
+  - name: guestbook_cfg
+    label: 留言墙配置
+    description: 编辑留言墙标题、说明与 Waline serverURL；保存后需重新 hexo generate
+    files:
+      - label: 留言墙（标题、说明与评论）
+        name: guestbook_data
+        file: source/_data/guestbook.yml
+        format: yaml
+        fields:
+          - label: 页面文案
+            name: page
+            widget: object
+            collapsed: false
+            fields:
+              - { label: 页面大标题, name: title, widget: string, default: "留言墙" }
+              - label: 说明段落（可多行）
+                name: intro
+                widget: text
+                required: false
+                hint: "显示在标题下方、评论区上方"
+          - label: Waline
+            name: waline
+            widget: object
+            collapsed: false
+            fields:
+              - label: serverURL（后端地址，无末尾斜杠）
+                name: serverURL
+                widget: string
+                required: false
+                hint: "可填他人提供的 Waline 服务地址；自建见 https://waline.js.org/guide/get-started.html"
+
+  - name: posts
+    label: 博客文章
+    label_singular: 文章
+    folder: source/_posts
+    create: true
+    slug: "{{year}}-{{month}}-{{day}}-{{slug}}"
+    extension: md
+    format: frontmatter
+    fields:
+      - { label: 标题, name: title, widget: string }
+      - label: 发布日期
+        name: date
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: HH:mm:ss
+      - label: 更新日期
+        name: updated
+        widget: datetime
+        date_format: YYYY-MM-DD
+        time_format: HH:mm:ss
+        required: false
+      - label: 分类
+        name: categories
+        widget: list
+        default: ["随笔"]
+        field: { label: 项, name: category, widget: string }
+      - label: 标签
+        name: tags
+        widget: list
+        field: { label: 项, name: tag, widget: string }
+      - label: 封面图 URL
+        name: cover
+        widget: string
+        required: false
+        hint: "可选；与主题 post-card 封面一致"
+      - label: 正文（摘要可用 <!-- more --> 分隔）
+        name: body
+        widget: markdown

@@ -1,0 +1,64 @@
+<%
+var gb = site.data.guestbook || {};
+var gbp = gb.page || {};
+var wcfg = gb.waline || {};
+var serverURL = (wcfg.serverURL && String(wcfg.serverURL).trim()) || '';
+var gbTitle = (gbp.title && String(gbp.title).trim()) || page.title || "留言墙";
+var gbIntroRaw = gbp.intro !== undefined && gbp.intro !== null ? String(gbp.intro).trim() : "";
+var gbIntro = gbIntroRaw || (page.description && String(page.description).trim()) || "";
+%>
+<article class="page-doc inner-wrap guestbook-page">
+  <h1 class="page-title"><%= gbTitle %></h1>
+  <% if (gbIntro) { %>
+  <p class="page-desc page-desc--preline"><%= gbIntro %></p>
+  <% } %>
+  <% if (page.content && String(page.content).trim()) { %>
+  <div class="article-body guestbook-intro">
+    <%- page.content %>
+  </div>
+  <% } %>
+
+  <% if (serverURL) { %>
+  <section class="guestbook-compose guestbook-waline-wrap" aria-label="评论">
+    <div id="waline" class="guestbook-waline"></div>
+    <script src="https://cdn.jsdelivr.net/npm/@waline/client@3.4.3/dist/waline.umd.js" crossorigin=""></script>
+    <script>
+      (function () {
+        var el = document.getElementById("waline");
+        if (!el) return;
+        if (typeof Waline === "undefined") {
+          el.innerHTML =
+            '<p class="guestbook-fallback">留言组件加载失败，请检查网络或稍后重试。</p>';
+          return;
+        }
+        Waline.init({
+          el: el,
+          serverURL: <%- JSON.stringify(serverURL) %>,
+          path: window.location.pathname,
+          lang: "zh-CN",
+          meta: ["link"],
+          requiredMeta: ["link"],
+          login: "disable",
+          placeholder: "写留言内容",
+          locale: {
+            link: "友链",
+          },
+          pageview: false,
+          dark: "html[data-theme=\"dark\"]",
+          emoji: false,
+          search: false,
+          imageUploader: false,
+        });
+      })();
+    </script>
+  </section>
+  <% } else { %>
+  <div class="guestbook-placeholder article-body">
+    <p><strong>尚未配置 Waline 服务端地址。</strong></p>
+    <p>
+      请在后台「留言墙配置」或 <code>source/_data/guestbook.yml</code> 中填写 <code>waline.serverURL</code>（他人提供的后端地址，无末尾斜杠）。说明见
+      <a href="https://waline.js.org/guide/get-started.html" target="_blank" rel="noopener noreferrer">Waline 文档</a>。
+    </p>
+  </div>
+  <% } %>
+</article>

@@ -1,4 +1,32 @@
 (function () {
+  var THEME_KEY = "tony-theme";
+  var root = document.documentElement;
+  var themeBtn = document.getElementById("theme-toggle");
+
+  function isDark() {
+    return root.getAttribute("data-theme") === "dark";
+  }
+
+  function setTheme(dark) {
+    if (dark) root.setAttribute("data-theme", "dark");
+    else root.removeAttribute("data-theme");
+    try {
+      localStorage.setItem(THEME_KEY, dark ? "dark" : "light");
+    } catch (e) {}
+    if (themeBtn) {
+      themeBtn.setAttribute("aria-pressed", dark ? "true" : "false");
+      themeBtn.setAttribute("aria-label", dark ? "切换为日间模式" : "切换为夜间模式");
+      themeBtn.setAttribute("title", dark ? "当前：夜间 · 点击切换日间" : "当前：日间 · 点击切换夜间");
+    }
+  }
+
+  if (themeBtn) {
+    setTheme(isDark());
+    themeBtn.addEventListener("click", function () {
+      setTheme(!isDark());
+    });
+  }
+
   var toggle = document.getElementById("nav-toggle");
   var menus = document.getElementById("site-header-menus");
   var header = document.getElementById("site-header");

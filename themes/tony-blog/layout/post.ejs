@@ -1,12 +1,13 @@
 <article class="post-single inner-wrap">
-  <% var catName = '未分类'; var catPath = ''; var _cf = true; %>
+  <% var _uilb = (site.data.site_ui && site.data.site_ui.labels) || {}; %>
+  <% var catName = _uilb.uncategorized || '未分类'; var catPath = ''; var _cf = true; %>
   <% page.categories.each(function (c) { if (_cf) { catName = c.name; catPath = url_for(c.path); _cf = false; } }); %>
   <% function tagToneClass(str) { var h = 0; var s = String(str || ''); for (var i = 0; i < s.length; i++) h = (h + s.charCodeAt(i) * (i + 1)) % 997; return 'tag-tone-' + (h % 3); } %>
   <h1 class="page-title"><%= page.title %></h1>
   <p class="post-meta post-meta--single">
     <%= date(page.date, 'YYYY-MM-DD HH:mm') %>
     <span class="dot">·</span>
-    <%= date(page.updated || page.date, 'YYYY-MM-DD HH:mm') %> 更新
+    <%= date(page.updated || page.date, 'YYYY-MM-DD HH:mm') %> <%= _uilb.updated || '更新' %>
     <span class="cat <%= tagToneClass(catName) %>"><% if (catPath) { %><a href="<%= catPath %>"><%= catName %></a><% } else { %><%= catName %><% } %></span>
   </p>
   <div class="article-body">

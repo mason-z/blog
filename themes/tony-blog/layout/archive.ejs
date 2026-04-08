@@ -29,15 +29,15 @@
   <% } else if (isYearly) { %>
   <h1 class="sr-only">归档：<%= page.year %> 年</h1>
   <% } else { %>
-  <h1 class="sr-only">博客归档</h1>
+  <h1 class="sr-only"><%= ((site.data.site_ui && site.data.site_ui.archive) || {}).sr_only_all || '博客归档' %></h1>
   <% } %>
 
   <% if (list.length === 0) { %>
-  <p class="page-desc">暂无文章。</p>
+  <p class="page-desc"><%= ((site.data.site_ui && site.data.site_ui.archive) || {}).empty_posts || '暂无文章。' %></p>
   <% } else { %>
   <div class="archive-with-toc">
     <aside class="archive-toc" aria-label="按年标题导航">
-      <h2 class="archive-toc__title">目录</h2>
+      <h2 class="archive-toc__title"><%= ((site.data.site_ui && site.data.site_ui.archive) || {}).toc_title || '目录' %></h2>
       <% tocYears.forEach(function (y) { %>
       <div class="archive-toc__block">
         <h3 class="archive-toc__year"><%= y %></h3>
@@ -55,7 +55,8 @@
     <div class="archive-full-list">
       <% tocYears.forEach(function (y) { %>
       <% byYear[y].forEach(function (post) { %>
-      <% var catName = '未分类'; var cf = true; post.categories.each(function (c) { if (cf) { catName = c.name; cf = false; } }); %>
+      <% var _uia = (site.data.site_ui && site.data.site_ui.labels) || {}; %>
+      <% var catName = _uia.uncategorized || '未分类'; var cf = true; post.categories.each(function (c) { if (cf) { catName = c.name; cf = false; } }); %>
       <article class="archive-full-item" id="<%= archiveItemId(post) %>">
         <header class="archive-full-header">
           <h2 class="archive-full-title"><a href="<%- url_for(post.path) %>"><%= post.title %></a></h2>

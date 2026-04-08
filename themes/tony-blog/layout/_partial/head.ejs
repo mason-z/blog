@@ -1,22 +1,49 @@
+<% var _uim = (site.data.site_ui && site.data.site_ui.meta) || {}; %>
+<% var _uil = (site.data.site_ui && site.data.site_ui.labels) || {}; %>
+<% var _siteTitle = _uim.site_title || config.title %>
+<% var _siteDesc = _uim.site_description || config.description %>
+<% var _gbHead = (page.layout === 'guestbook' && site.data.guestbook && site.data.guestbook.page) ? site.data.guestbook.page : null; %>
+<% var _gbHeadTitle = (_gbHead && _gbHead.title && String(_gbHead.title).trim()) || ''; %>
+<% var _gbHeadIntro = (_gbHead && _gbHead.intro !== undefined && _gbHead.intro !== null) ? String(_gbHead.intro).replace(/\s+/g, ' ').trim() : ''; %>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<script>
+(function () {
+  try {
+    if (localStorage.getItem("tony-theme") === "dark") document.documentElement.setAttribute("data-theme", "dark");
+  } catch (e) {}
+})();
+</script>
 <title>
 <% if (page.layout === 'post') { %>
-<%- page.title %> | <%- config.title %>
+<%- page.title %> | <%- _siteTitle %>
 <% } else if (page.layout === 'page') { %>
-<%- page.title %> | <%- config.title %>
+<%- page.title %> | <%- _siteTitle %>
+<% } else if (page.layout === 'travel') { %>
+<%- page.title %> | <%- _siteTitle %>
+<% } else if (page.layout === 'guestbook') { %>
+<%- _gbHeadTitle || page.title || '留言墙' %> | <%- _siteTitle %>
 <% } else if (page.path === 'index.html' || page.path === '') { %>
-<%- config.title %>
+<%- _siteTitle %>
 <% } else if (page.category) { %>
-<%= page.category %> | <%- config.title %>
+<%= page.category %> | <%- _siteTitle %>
 <% } else if (page.tag) { %>
-标签：<%= page.tag %> | <%- config.title %>
+<%= (_uil.head_tag_prefix || '标签：') %><%= page.tag %> | <%- _siteTitle %>
 <% } else { %>
-博客 | <%- config.title %>
+<%= (_uil.head_fallback_blog || '博客') %> | <%- _siteTitle %>
 <% } %>
 </title>
-<meta name="description" content="<%= page.description || config.description %>" />
+<meta name="description" content="<%= page.layout === 'guestbook' ? (_gbHeadIntro || page.description || _siteDesc) : (page.description || _siteDesc) %>" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="<%- url_for('/css/style.css') %>" />
+<% if (page.layout === 'travel') { %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+<% } %>
+<% if (page.layout === 'guestbook') { %>
+<% var _gbWaline = (site.data.guestbook && site.data.guestbook.waline && site.data.guestbook.waline.serverURL && String(site.data.guestbook.waline.serverURL).trim()); %>
+<% if (_gbWaline) { %>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@3.4.3/dist/waline.css" crossorigin="" />
+<% } %>
+<% } %>

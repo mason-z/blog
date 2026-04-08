@@ -1,6 +1,7 @@
 <header class="site-header" id="site-header">
   <div class="site-header__menus" id="site-header-menus">
-    <a href="<%- url_for('/') %>" class="site-brand" aria-label="首页">
+    <% var _uihd = (site.data.site_ui && site.data.site_ui.header) || {}; %>
+    <a href="<%- url_for('/') %>" class="site-brand" aria-label="<%= _uihd.aria_home || '首页' %>">
       <span class="site-brand__icon" aria-hidden="true">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
           <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
@@ -10,12 +11,20 @@
       </span>
       <span class="site-brand__name"><%= theme.brand || config.title %></span>
     </a>
-    <nav class="main-nav" id="main-nav" aria-label="主导航">
-      <% for (var label in theme.menu) { %>
-        <% var path = theme.menu[label]; %>
-        <a href="<%- url_for(path) %>" class="<%- is_current(path, {strict: false}) ? 'active' : '' %>"><%= label %></a>
-      <% } %>
+    <nav class="main-nav" id="main-nav" aria-label="<%= _uihd.aria_nav || '主导航' %>">
+      <% (theme.menu || []).forEach(function (item) { %>
+        <% var path = item.path; %>
+        <a href="<%- url_for(path) %>" class="<%- is_current(path, {strict: false}) ? 'active' : '' %>"><%= item.label %></a>
+      <% }); %>
     </nav>
   </div>
-  <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-header-menus">菜单</button>
+  <div class="site-header__end">
+    <button type="button" class="theme-toggle" id="theme-toggle" aria-label="切换夜间模式" aria-pressed="false" title="日间 / 夜间">
+      <svg class="theme-toggle__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <circle cx="12" cy="12" r="4" stroke="currentColor" stroke-width="1.75" />
+        <path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+      </svg>
+    </button>
+    <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-header-menus"><%= _uihd.nav_toggle_label || '菜单' %></button>
+  </div>
 </header>

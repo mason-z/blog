@@ -23,6 +23,108 @@
   --home-max: 960px;
 }
 
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --bg-deep: #0c0c10;
+  --bg-mid: #12121a;
+  --bg: #12121a;
+  --bg-soft: #16161f;
+  --surface: #1a1a24;
+  --border: rgba(255, 255, 255, 0.1);
+  --text: #f4f4f5;
+  --text-soft: #d4d4d8;
+  --text-muted: #a1a1aa;
+  --neon-cyan: #60a5fa;
+  --neon-purple: #a78bfa;
+  --accent-cyan: #60a5fa;
+  --accent-purple: #a78bfa;
+  --glow-card: 0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] body {
+  background: var(--bg);
+}
+
+html[data-theme="dark"] a:hover {
+  color: #93c5fd;
+  text-decoration-color: rgba(147, 197, 253, 0.55);
+}
+
+html[data-theme="dark"] .site-brand:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="dark"] .main-nav a:hover,
+html[data-theme="dark"] .main-nav a.active {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="dark"] .post-list--home .post-card--media {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .aside-block {
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .aside-cat-pill {
+  border-color: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="dark"] .aside-cat-pill:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: var(--surface);
+}
+
+html[data-theme="dark"] .aside-latest-item {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="dark"] .btn-ghost {
+  border-color: rgba(255, 255, 255, 0.15);
+}
+
+html[data-theme="dark"] .btn-ghost:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+html[data-theme="dark"] .site-footer {
+  border-top-color: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .article-body code {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="dark"] .article-body pre {
+  background: rgba(0, 0, 0, 0.35);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+html[data-theme="dark"] .travel-header--float,
+html[data-theme="dark"] .travel-map-ui .travel-sidebar {
+  background: rgba(22, 22, 30, 0.92);
+  border-color: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.45);
+}
+
+html[data-theme="dark"] .travel-city-list__item {
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+}
+
+html[data-theme="dark"] a.cat-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .archive-toc__list {
+  border-left-color: rgba(255, 255, 255, 0.12);
+}
+
+html[data-theme="dark"] .archive-full-item {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
 *,
 *::before,
 *::after {
@@ -32,7 +134,7 @@
 html {
   font-size: 17px;
   scroll-behavior: smooth;
-  background: #fff;
+  background: var(--bg-deep);
 }
 
 body {
@@ -40,7 +142,7 @@ body {
   min-height: 100vh;
   font-family: var(--font);
   color: var(--text);
-  background: #fff;
+  background: var(--bg);
   line-height: 1.75;
 }
 
@@ -103,6 +205,17 @@ a:hover {
 .site-header.site-header--scrolled {
   background: linear-gradient(180deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.14) 100%);
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.18) inset, 0 10px 40px rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="dark"] .site-header {
+  background: linear-gradient(180deg, rgba(30, 30, 38, 0.92) 0%, rgba(22, 22, 30, 0.88) 100%);
+  border-bottom-color: rgba(255, 255, 255, 0.08);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 8px 32px rgba(0, 0, 0, 0.35);
+}
+
+html[data-theme="dark"] .site-header.site-header--scrolled {
+  background: linear-gradient(180deg, rgba(36, 36, 46, 0.96) 0%, rgba(26, 26, 34, 0.94) 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 10px 40px rgba(0, 0, 0, 0.45);
 }
 
 .site-header__menus {
@@ -170,6 +283,42 @@ a:hover {
   font-weight: 600;
 }
 
+.site-header__end {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  padding: 0;
+  color: var(--text-muted);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.theme-toggle:hover {
+  color: var(--text);
+  background: rgba(0, 0, 0, 0.04);
+}
+
+html[data-theme="dark"] .theme-toggle:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.theme-toggle__icon {
+  display: block;
+}
+
 .nav-toggle {
   display: none;
   padding: 0.45rem 0.75rem;
@@ -180,7 +329,6 @@ a:hover {
   border: 1px solid var(--border);
   border-radius: var(--radius-sm);
   cursor: pointer;
-  margin-left: auto;
 }
 
 @media (max-width: 900px) {
@@ -204,6 +352,11 @@ a:hover {
   }
   .site-header__menus.is-open {
     display: flex;
+  }
+
+  html[data-theme="dark"] .site-header__menus {
+    background: linear-gradient(180deg, rgba(28, 28, 36, 0.98) 0%, rgba(20, 20, 28, 0.96) 100%);
+    border-bottom-color: rgba(255, 255, 255, 0.08);
   }
 }
 
@@ -263,6 +416,120 @@ a:hover {
   margin: 0 0 1.75rem;
   font-size: 0.92rem;
   color: var(--text-muted);
+}
+
+.page-desc--preline {
+  white-space: pre-line;
+}
+
+.guestbook-page .guestbook-intro {
+  margin-bottom: 1.25rem;
+}
+
+.guestbook-section-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.05rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.guestbook-section-hint {
+  margin: 0 0 1rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.guestbook-compose {
+  margin-top: 0.25rem;
+}
+
+.guestbook-waline-wrap .guestbook-waline {
+  margin-top: 0.5rem;
+}
+
+.guestbook-waline [data-waline] .wl-panel {
+  display: flex;
+  flex-direction: column;
+}
+
+/* 先填友链网址，再写评论 */
+.guestbook-waline [data-waline] .wl-header {
+  order: 1;
+}
+
+.guestbook-waline [data-waline] .wl-editor {
+  order: 2;
+}
+
+.guestbook-waline [data-waline] .wl-preview {
+  order: 3;
+}
+
+.guestbook-waline [data-waline] .wl-footer {
+  order: 4;
+}
+
+.guestbook-waline [data-waline] {
+  --waline-theme-color: var(--accent-cyan);
+  --waline-active-color: #1e40af;
+  --waline-color: var(--text-soft);
+  --waline-bg-color: var(--surface);
+  --waline-bg-color-light: rgba(0, 0, 0, 0.04);
+  --waline-border-color: var(--border);
+}
+
+html[data-theme="dark"] .guestbook-waline [data-waline] {
+  --waline-bg-color-light: rgba(255, 255, 255, 0.06);
+  --waline-active-color: #93c5fd;
+}
+
+/* 评论列表里：将填写的网址展示为友链（可点击） */
+.guestbook-waline [data-waline] .wl-card .wl-user-meta a[href^="http"],
+.guestbook-waline [data-waline] .wl-card .wl-user-meta a[href^="//"] {
+  display: inline-flex;
+  align-items: center;
+  max-width: 100%;
+  padding: 0.12rem 0.5rem;
+  margin-left: 0.25rem;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--accent-cyan) !important;
+  text-decoration: none !important;
+  word-break: break-all;
+  background: rgba(6, 182, 212, 0.12);
+  border: 1px solid rgba(6, 182, 212, 0.35);
+  border-radius: 999px;
+}
+
+.guestbook-waline [data-waline] .wl-card .wl-user-meta a[href^="http"]:hover,
+.guestbook-waline [data-waline] .wl-card .wl-user-meta a[href^="//"]:hover {
+  background: rgba(6, 182, 212, 0.2);
+}
+
+html[data-theme="dark"] .guestbook-waline [data-waline] .wl-card .wl-user-meta a[href^="http"],
+html[data-theme="dark"] .guestbook-waline [data-waline] .wl-card .wl-user-meta a[href^="//"] {
+  background: rgba(34, 211, 238, 0.12);
+  border-color: rgba(34, 211, 238, 0.35);
+  color: #67e8f9 !important;
+}
+
+.guestbook-fallback {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.guestbook-placeholder {
+  margin-top: 1rem;
+  padding: 1rem 1.15rem;
+  background: rgba(0, 0, 0, 0.03);
+  border-radius: var(--radius);
+  border: 1px dashed var(--border);
+}
+
+html[data-theme="dark"] .guestbook-placeholder {
+  background: rgba(255, 255, 255, 0.04);
 }
 
 .inner-wrap {
@@ -577,8 +844,232 @@ a:hover {
 
 /* ========== 正文 ========== */
 .post-single .page-title,
-.page-doc .page-title {
+.page-doc .page-title,
+.travel-page .page-title {
   font-family: var(--font-display);
+}
+
+/* ========== 旅行地图页（全屏视口 + 浮层 UI） ========== */
+.app-main:has(.travel-page--fullscreen) {
+  padding-bottom: 0;
+  max-width: none;
+}
+
+.travel-page--fullscreen {
+  margin: 0;
+  padding: 0;
+  max-width: none;
+}
+
+.travel-map-stage {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  height: calc(100svh - var(--header-h));
+  min-height: 320px;
+  background: #0c1220;
+}
+
+.travel-map-wrap {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: none;
+  border-radius: 0;
+}
+
+.travel-map {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 100%;
+  z-index: 0;
+}
+
+/* 浮层：不拦截拖拽，子元素可点（标题居中顶栏，列表右上，避让缩放控件与版权条） */
+.travel-map-ui {
+  position: absolute;
+  inset: 0;
+  z-index: 450;
+  pointer-events: none;
+}
+
+.travel-map-ui > * {
+  pointer-events: auto;
+}
+
+.travel-header--float {
+  position: absolute;
+  top: clamp(3.35rem, 8vmin, 4.25rem);
+  left: clamp(0.65rem, 2vw, 1rem);
+  transform: none;
+  max-width: min(20rem, calc(100vw - 1.5rem));
+  margin: 0;
+  padding: 0.75rem 1rem;
+  text-align: left;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+}
+
+.travel-header--float .page-title {
+  margin: 0 0 0.25rem;
+  font-size: clamp(1.15rem, 2.8vw, 1.45rem);
+}
+
+.travel-header--float .page-desc {
+  margin: 0;
+  font-size: 0.82rem;
+  line-height: 1.45;
+}
+
+.travel-map-ui .travel-sidebar {
+  position: absolute;
+  top: clamp(0.65rem, 2vw, 1rem);
+  right: clamp(0.65rem, 2vw, 1rem);
+  bottom: max(2.6rem, env(safe-area-inset-bottom, 0px));
+  left: auto;
+  width: min(280px, calc(100vw - 1.5rem));
+  max-height: none;
+  margin: 0;
+  padding: 0.85rem 1rem;
+  background: rgba(255, 255, 255, 0.94);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: var(--radius);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.12);
+  overflow-y: auto;
+}
+
+.travel-map__err {
+  margin: 0;
+  padding: 1rem 1.1rem;
+  font-size: 0.9rem;
+  line-height: 1.5;
+  color: var(--text-muted);
+}
+
+.travel-sidebar__title {
+  margin: 0 0 0.75rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--text);
+}
+
+.travel-city-list {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.travel-city-list__item {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.travel-city-list__item:last-child {
+  border-bottom: none;
+  padding-bottom: 0;
+}
+
+.travel-city-list__btn {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.35rem;
+  width: 100%;
+  padding: 0.35rem 0;
+  margin: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font: inherit;
+  text-align: left;
+  color: var(--accent-cyan);
+  border-radius: var(--radius-sm);
+  transition: background 0.15s;
+}
+
+.travel-city-list__btn:hover {
+  background: rgba(0, 0, 0, 0.04);
+}
+
+a.travel-city-list__btn--link {
+  text-decoration: none;
+  color: inherit;
+}
+
+a.travel-city-list__btn--link:hover {
+  color: inherit;
+}
+
+.travel-city-list__name {
+  font-weight: 600;
+  color: var(--text);
+}
+
+.travel-city-list__date {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+}
+
+.travel-city-list__note {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  padding-left: 0;
+}
+
+.travel-city-list__empty {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+
+.travel-page--fullscreen .travel-notes {
+  margin-top: 0;
+  padding-top: 2rem;
+  padding-bottom: 3rem;
+}
+
+.leaflet-popup-content .travel-popup__date {
+  font-size: 0.85em;
+  color: var(--text-muted, #666);
+}
+
+@media (max-width: 768px) {
+  .travel-map-stage {
+    height: calc(100dvh - var(--header-h));
+    min-height: 280px;
+  }
+
+  .travel-header--float {
+    top: clamp(3.1rem, 12vmin, 4rem);
+    max-width: none;
+    right: clamp(0.65rem, 2vw, 1rem);
+    width: auto;
+  }
+
+  .travel-map-ui .travel-sidebar {
+    top: auto;
+    left: clamp(0.65rem, 2vw, 1rem);
+    right: clamp(0.65rem, 2vw, 1rem);
+    bottom: max(2.4rem, env(safe-area-inset-bottom, 0px));
+    width: auto;
+    max-height: min(42vh, 320px);
+  }
 }
 
 .article-body {
