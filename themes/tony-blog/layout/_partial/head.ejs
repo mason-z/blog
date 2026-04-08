@@ -1,0 +1,22 @@
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>
+<% if (page.layout === 'post') { %>
+<%- page.title %> | <%- config.title %>
+<% } else if (page.layout === 'page') { %>
+<%- page.title %> | <%- config.title %>
+<% } else if (page.path === 'index.html' || page.path === '') { %>
+<%- config.title %>
+<% } else if (page.category) { %>
+<%= page.category %> | <%- config.title %>
+<% } else if (page.tag) { %>
+标签：<%= page.tag %> | <%- config.title %>
+<% } else { %>
+博客 | <%- config.title %>
+<% } %>
+</title>
+<meta name="description" content="<%= page.description || config.description %>" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="<%- url_for('/css/style.css') %>" />

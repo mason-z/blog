@@ -1,0 +1,13 @@
+<section class="archive-shell home-shell">
+  <h1 class="page-title">标签：<%= page.tag %></h1>
+  <div class="home-grid">
+    <div class="home-main">
+      <div class="post-list post-list--home">
+        <% page.posts.each(function(post){ %>
+          <%- partial('_partial/post-card', { post: post }) %>
+        <% }); %>
+      </div>
+      <%- partial('_partial/pagination', { page: page }) %>
+    </div>
+  </div>
+</section>

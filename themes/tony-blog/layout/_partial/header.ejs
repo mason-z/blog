@@ -1,0 +1,21 @@
+<header class="site-header" id="site-header">
+  <div class="site-header__menus" id="site-header-menus">
+    <a href="<%- url_for('/') %>" class="site-brand" aria-label="首页">
+      <span class="site-brand__icon" aria-hidden="true">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+          <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+          <path d="M8 7h8M8 11h6" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" />
+        </svg>
+      </span>
+      <span class="site-brand__name"><%= theme.brand || config.title %></span>
+    </a>
+    <nav class="main-nav" id="main-nav" aria-label="主导航">
+      <% for (var label in theme.menu) { %>
+        <% var path = theme.menu[label]; %>
+        <a href="<%- url_for(path) %>" class="<%- is_current(path, {strict: false}) ? 'active' : '' %>"><%= label %></a>
+      <% } %>
+    </nav>
+  </div>
+  <button type="button" class="nav-toggle" id="nav-toggle" aria-expanded="false" aria-controls="site-header-menus">菜单</button>
+</header>

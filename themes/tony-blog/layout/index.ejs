@@ -1,0 +1,43 @@
+<section class="landing-page">
+  <div class="landing-inner">
+    <h1 id="landing-title" class="landing-title"><%= theme.landing_title || config.title %></h1>
+    <p id="landing-lead" class="landing-lead"><%= theme.landing_lead || config.description %></p>
+  </div>
+</section>
+
+<section class="home-shell">
+  <h1 class="page-title sr-only">博客</h1>
+  <div class="home-grid">
+    <div class="home-main">
+      <p class="home-stats">
+        文库共 <strong><%= site.posts.length %></strong> 篇
+        <span class="dot">·</span>
+        本页 <strong><%= page.posts.length %></strong> 篇
+      </p>
+      <div class="post-list post-list--home">
+        <% page.posts.each(function(post){ %>
+          <%- partial('_partial/post-card', { post: post }) %>
+        <% }); %>
+      </div>
+      <%- partial('_partial/pagination', { page: page }) %>
+    </div>
+    <aside class="home-aside" aria-label="站点侧栏">
+      <div class="aside-block">
+        <h3>分类</h3>
+        <div class="aside-cat-pills">
+          <% site.categories.each(function(cat){ %>
+            <a class="aside-cat-pill" href="<%= url_for(cat.path) %>"><%= cat.name %> <span class="num"><%= cat.length %></span></a>
+          <% }); %>
+        </div>
+      </div>
+      <div class="aside-block">
+        <h3>最新</h3>
+        <div class="aside-latest">
+          <% site.posts.sort('date', -1).limit(5).each(function(p){ %>
+            <a class="aside-latest-item" href="<%- url_for(p.path) %>"><%= p.title %></a>
+          <% }); %>
+        </div>
+      </div>
+    </aside>
+  </div>
+</section>

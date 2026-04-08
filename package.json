@@ -1,0 +1,26 @@
+{
+  "name": "tony-hexo-blog",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "build": "hexo generate",
+    "clean": "hexo clean",
+    "server": "hexo server --config _config.yml,_config.local.yml",
+    "server:4001": "hexo server -p 4001 --config _config.yml,_config.local.yml",
+    "deploy": "hexo clean && hexo generate && hexo deploy"
+  },
+  "hexo": {
+    "version": "7.3.0"
+  },
+  "dependencies": {
+    "hexo": "^7.3.0",
+    "hexo-generator-archive": "^2.0.0",
+    "hexo-generator-category": "^2.0.0",
+    "hexo-generator-index": "^3.0.0",
+    "hexo-generator-tag": "^2.0.0",
+    "hexo-renderer-ejs": "^2.0.0",
+    "hexo-renderer-marked": "^6.3.0",
+    "hexo-server": "^3.0.0",
+    "hexo-deployer-git": "^4.0.0"
+  }
+}

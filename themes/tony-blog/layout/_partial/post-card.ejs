@@ -1,0 +1,45 @@
+<%
+function thumbHueAngle(id) {
+  var h = 0;
+  var s = String(id || '');
+  for (var i = 0; i < s.length; i++) h = (h + s.charCodeAt(i) * (i + 3)) % 360;
+  return 118 + (h % 64);
+}
+function tagToneClass(str) {
+  var h = 0;
+  var s = String(str || '');
+  for (var i = 0; i < s.length; i++) h = (h + s.charCodeAt(i) * (i + 1)) % 997;
+  return 'tag-tone-' + (h % 3);
+}
+var catName = '未分类';
+var catPath = '';
+var catFirst = true;
+post.categories.each(function (c) {
+  if (catFirst) {
+    catName = c.name;
+    catPath = url_for(c.path);
+    catFirst = false;
+  }
+});
+var ang = thumbHueAngle(post.path);
+var excerpt = strip_html(post.excerpt || post.content || '').replace(/\s+/g, ' ').trim();
+if (excerpt.length > 220) excerpt = excerpt.slice(0, 220) + '…';
+var cover = post.cover;
+var upd = post.updated || post.date;
+%>
+<article class="post-card post-card--media">
+  <div
+    class="post-card__thumb<%= cover ? ' has-cover' : '' %>"
+    style="--thumb-angle: <%= ang %>deg<% if (cover) { %>;background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, transparent 55%), url(<%= JSON.stringify(cover) %>); background-size: cover, cover; background-position: center, center; background-repeat: no-repeat, no-repeat<% } %>"
+  ></div>
+  <div class="post-card__body">
+    <h2><a href="<%- url_for(post.path) %>"><%= post.title %></a></h2>
+    <p class="post-meta">
+      <%= date(post.date, 'YYYY-MM-DD HH:mm') %>
+      <span class="dot">·</span>
+      <%= date(upd, 'YYYY-MM-DD HH:mm') %> 更新
+      <span class="cat <%= tagToneClass(catName) %>"><% if (catPath) { %><a href="<%= catPath %>"><%= catName %></a><% } else { %><%= catName %><% } %></span>
+    </p>
+    <p class="post-excerpt"><%= excerpt %></p>
+  </div>
+</article>

@@ -1,0 +1,4 @@
+# 本地预览用（与 _config.yml 合并）。部署时不要加 --config 合并本文件。
+url: http://localhost:4000
+root: /
+

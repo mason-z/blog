@@ -1,0 +1,77 @@
+<%
+  function tagToneClass(str) {
+    var h = 0;
+    var s = String(str || '');
+    for (var i = 0; i < s.length; i++) h = (h + s.charCodeAt(i) * (i + 1)) % 997;
+    return 'tag-tone-' + (h % 3);
+  }
+  function archiveItemId(post) {
+    return 'full-' + String(post.path).replace(/\//g, '-').replace(/^-|-$/g, '');
+  }
+  var archRoot = url_for((config.archive_dir || 'archives').replace(/\/?$/, '/'));
+  var isMonthly = page.month != null && page.month !== '';
+  var isYearly = page.year != null && page.year !== '' && !isMonthly;
+  var isFiltered = isYearly || isMonthly;
+  var list = isFiltered ? page.posts : site.posts;
+  var byYear = {};
+  list.sort('date', -1).each(function (post) {
+    var y = date(post.date, 'YYYY');
+    if (!byYear[y]) byYear[y] = [];
+    byYear[y].push(post);
+  });
+  var tocYears = Object.keys(byYear).sort(function (a, b) {
+    return parseInt(b, 10) - parseInt(a, 10);
+  });
+%>
+<section class="archive-shell archive-shell--full">
+  <% if (isMonthly) { %>
+  <h1 class="sr-only">归档：<%= page.year %> 年 <%= page.month %> 月</h1>
+  <% } else if (isYearly) { %>
+  <h1 class="sr-only">归档：<%= page.year %> 年</h1>
+  <% } else { %>
+  <h1 class="sr-only">博客归档</h1>
+  <% } %>
+
+  <% if (list.length === 0) { %>
+  <p class="page-desc">暂无文章。</p>
+  <% } else { %>
+  <div class="archive-with-toc">
+    <aside class="archive-toc" aria-label="按年标题导航">
+      <h2 class="archive-toc__title">目录</h2>
+      <% tocYears.forEach(function (y) { %>
+      <div class="archive-toc__block">
+        <h3 class="archive-toc__year"><%= y %></h3>
+        <ul class="archive-toc__list">
+          <% byYear[y].forEach(function (post) { %>
+          <li class="archive-toc__item">
+            <a class="archive-toc__link" href="#<%= archiveItemId(post) %>"><%= post.title %></a>
+          </li>
+          <% }); %>
+        </ul>
+      </div>
+      <% }); %>
+    </aside>
+
+    <div class="archive-full-list">
+      <% tocYears.forEach(function (y) { %>
+      <% byYear[y].forEach(function (post) { %>
+      <% var catName = '未分类'; var cf = true; post.categories.each(function (c) { if (cf) { catName = c.name; cf = false; } }); %>
+      <article class="archive-full-item" id="<%= archiveItemId(post) %>">
+        <header class="archive-full-header">
+          <h2 class="archive-full-title"><a href="<%- url_for(post.path) %>"><%= post.title %></a></h2>
+          <p class="archive-full-meta">
+            <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD HH:mm') %></time>
+            <span class="dot">·</span>
+            <span class="cat <%= tagToneClass(catName) %>"><%= catName %></span>
+          </p>
+        </header>
+        <div class="article-body archive-full-body">
+          <%- post.content %>
+        </div>
+      </article>
+      <% }); %>
+      <% }); %>
+    </div>
+  </div>
+  <% } %>
+</section>

@@ -1,0 +1,11 @@
+<% if (typeof page.total === 'number' && page.total > 1) { %>
+<nav class="pagination" aria-label="分页">
+  <% if (page.prev_link) { %>
+  <a class="btn btn-ghost" href="<%- url_for(page.prev_link) %>">上一页</a>
+  <% } %>
+  <span class="pagination-meta"><%= page.current %> / <%= page.total %></span>
+  <% if (page.next_link) { %>
+  <a class="btn btn-ghost" href="<%- url_for(page.next_link) %>">下一页</a>
+  <% } %>
+</nav>
+<% } %>
