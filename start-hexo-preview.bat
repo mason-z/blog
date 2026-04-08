@@ -19,6 +19,16 @@ echo 启动 Hexo 预览  http://localhost:%PORT%/
 echo 关闭本窗口即停止服务。
 echo.
 
+echo [同步] 正在生成 public（与预览相同配置，见 package.json 中 npm run build）...
+call npm.cmd run build
+if errorlevel 1 (
+  echo.
+  echo 生成失败，请查看上方报错。
+  pause
+  exit /b 1
+)
+echo.
+
 rem 稍后再打开浏览器，减少「页面打不开」；若仍空白请刷新一次
 start "" cmd /c "timeout /t 2 /nobreak >nul & start http://localhost:%PORT%/"
 

@@ -59,38 +59,23 @@ npm.cmd run server
 （均在**仓库根目录**执行）
 
 - `npm run server`：本地预览（推荐）  
-- `npm run build`：生成 `public/` 静态文件  
+- `npm run build`：生成 `public/`，配置与本地预览相同（合并 `_config.local.yml`）  
+- `npm run build:prod`：仅用 `_config.yml` 生成，与 Netlify 线上构建一致  
 - `npx hexo new "文章标题"`：新建文章  
 - `node scripts/gen-demo-posts.cjs`：生成 30 篇演示文章（`demo-01.md` … `demo-30.md`，可删后自用）
 
 ## 配置
 
 - 站点：根目录 `_config.yml`  
-- 本地预览覆盖：`_config.local.yml`（与主配置合并，已设 `root: /`，避免与线上子路径冲突）  
+- 本地预览覆盖：`_config.local.yml`（与主配置合并，覆盖 `url` 为本地地址）  
 - 主题文案与导航：`themes/tony-blog/_config.yml`（`landing_title` / `landing_lead` / `menu`）  
 - 文章封面：在 Markdown front-matter 中加 `cover: https://...`  
 
-## Netlify
+## Netlify（GitHub 联通）
 
-仓库根目录已含 **`netlify.toml`**：构建命令 `npm run build`，发布目录 **`public/`**。在 Netlify 导入本仓库时 **Base directory 留空** 即可。
+仓库根目录已含 **`netlify.toml`**：构建命令 **`npm run build:prod`**，发布目录 **`public/`**。在 Netlify 关联本 GitHub 仓库时 **Base directory 留空** 即可。
 
-部署前请在 `_config.yml` 中将 **`url`**、**`root`** 改为你的 Netlify 域名（一般为 `https://<站点名>.netlify.app` 且 `root: /`）。
-
-## 部署到 Gitee Pages（仓库：zhangmingcong/mc）
-
-线上地址已配置为：**https://zhangmingcong.gitee.io/mc/**（`url` + `root: /mc/`）。
-
-1. 将**本仓库**推送到 **`master`**（或你的主开发分支），与 Hexo 源码一起保存。  
-2. 本地安装依赖后执行：
-   ```bat
-   npm.cmd install
-   npm.cmd run deploy
-   ```
-   会把 `public/` 推到远程分支 **`gitee-pages`**（首次需在 Gitee 用**私人令牌**或 SSH，按提示输入账号密码）。  
-3. 打开 Gitee 仓库 → **服务 → Gitee Pages**，发布分支选 **`gitee-pages`**，目录 **`/`**，保存。  
-4. 若样式路径不对，检查 `_config.yml` 里 `url`、`root` 是否与 Gitee 给你的地址一致（项目页一般为 `/仓库名/`）。
-
-**说明：** `npm run deploy` 只使用 `_config.yml` 生成，不会合并 `_config.local.yml`，保证线上资源路径正确。
+部署前在 **`_config.yml`** 里把 **`url`** 改成你的站点地址（例如 `https://<站点名>.netlify.app`，或已绑定的自定义域名），并保持 **`root: /`**（与 Netlify 在域名根目录发布一致）。
 
 ## 说明
 

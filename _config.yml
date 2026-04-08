@@ -6,9 +6,9 @@ author: Tony
 language: zh-CN
 timezone: Asia/Shanghai
 
-# 线上（Gitee Pages 项目站）：https://用户名.gitee.io/仓库名/
-url: https://zhangmingcong.gitee.io/mc
-root: /mc/
+# 线上站点地址（Netlify / 自定义域名等），无末尾斜杠；与 root 一起影响资源与链接路径
+url: https://your-site-name.netlify.app
+root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
 
@@ -67,10 +67,3 @@ tag_generator:
   per_page: 10
 
 theme: tony-blog
-
-# 静态文件推送到分支 gitee-pages，在仓库「服务 → Gitee Pages」中选该分支、目录 /
-deploy:
-  type: git
-  repo: https://gitee.com/zhangmingcong/mc.git
-  branch: gitee-pages
-  message: "update site"
