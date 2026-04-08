@@ -1,8 +1,8 @@
-# 留言墙：标题与说明在后台「留言墙配置」中编辑
 page:
-  title: "留言墙"
-  intro: "请填写友链网址与留言内容；列表中会把你填的网址显示为可点击的友链（具体以 Waline 后端规则为准）。"
-
-# Waline：serverURL 无末尾斜杠；可改为自建后端 https://waline.js.org/guide/get-started.html
+  title: 留言墙
+  intro: |-
+    留言墙也是友链墙~
+    请填写友链网址和留言内容与我交流；
+    个人邮箱990832426@qq.com
 waline:
-  serverURL: "https://waline.wuyuan.dev"
+  serverURL: https://waline.wuyuan.dev
