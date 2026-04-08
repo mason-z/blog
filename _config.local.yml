@@ -1,4 +1,4 @@
-# 本地预览用（与 _config.yml 合并）。线上构建（如 Netlify）只用 _config.yml，不合并本文件。
+# 本地预览用（与 _config.yml 合并）。线上 CI 若执行 npm run build:prod，则只使用 _config.yml，不合并本文件。
 url: http://localhost:4001
 root: /
 

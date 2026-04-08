@@ -13,13 +13,10 @@ if not exist "node_modules\hexo\" (
   )
 )
 
-set "PORT=4001"
 echo.
-echo 启动 Hexo 预览  http://localhost:%PORT%/
-echo 关闭本窗口即停止服务。
+echo 正在生成 public/（与本地预览相同配置：npm run build）...
 echo.
 
-echo [同步] 正在生成 public（与预览相同配置，见 package.json 中 npm run build）...
 call npm.cmd run build
 if errorlevel 1 (
   echo.
@@ -27,10 +24,9 @@ if errorlevel 1 (
   pause
   exit /b 1
 )
+
 echo.
-
-rem 稍后再打开浏览器，减少「页面打不开」；若仍空白请刷新一次
-start "" cmd /c "timeout /t 2 /nobreak >nul & start http://localhost:%PORT%/"
-
-call npm.cmd run server:4001
+echo 已完成：输出目录为 public\
+echo 需要本地预览请另开终端执行：npm run server  或  npm run server:4001
+echo.
 pause

@@ -1,6 +1,6 @@
-# Decap CMS（原 Netlify CMS）
+# Decap CMS
 # · 本地：先运行 npm run cms:proxy（或 npm run dev:admin），再打开 http://localhost:4001/admin
-# · 线上 Netlify：将 repo 改成你的仓库，并在 GitHub + Netlify 配置 OAuth（见 README）
+# · 线上：将 repo/branch 改成你的仓库；GitHub OAuth 回调按托管平台与 Decap 文档配置（见 README）
 # local_backend 仅在 localhost 生效，部署后仍走 GitHub 登录，不会访问 127.0.0.1
 
 backend:

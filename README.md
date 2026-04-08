@@ -1,12 +1,12 @@
 # Hexo 站点（tony-blog 主题）
 
-本仓库**根目录即为 Hexo 项目**（`package.json`、`_config.yml`、`source/`、`themes/` 等均在根目录），便于推送到 GitHub/GitLab 后在 **Netlify** 等平台一键构建。
+本仓库**根目录即为 Hexo 项目**（`package.json`、`_config.yml`、`source/`、`themes/` 等均在根目录），便于推送到 GitHub/GitLab 后在 **任意静态托管**（Cloudflare Pages、Vercel、GitHub Pages、自有服务器等）上构建发布。
 
 与 `src/index.html` 本地博客视觉对齐：浅色顶栏、居中欢迎区、博客卡片列表与侧栏。
 
-## 一键预览（Windows）
+## 一键生成 public（Windows）
 
-双击 **`start-hexo-preview.bat`**：会自动 `npm install`（仅首次）、在 **4001** 端口启动并打开浏览器。关掉黑色窗口即停止服务。
+双击 **`build-public.bat`**：会自动 `npm install`（仅首次），再执行 **`npm run build`** 生成 **`public/`**，**不启动**本地预览服务。需要本地预览请在终端执行 `npm run server` 或 `npm run server:4001`。
 
 ## 使用
 
@@ -60,7 +60,7 @@ npm.cmd run server
 
 - `npm run server`：本地预览（推荐）  
 - `npm run build`：生成 `public/`，配置与本地预览相同（合并 `_config.local.yml`）  
-- `npm run build:prod`：仅用 `_config.yml` 生成，与 Netlify 线上构建一致  
+- `npm run build:prod`：仅用 `_config.yml` 生成，适合作为多数线上 CI 的构建命令（不合并 `_config.local.yml`）  
 - `npm run dev:admin`：本地后台（Decap 代理 + Hexo **4001**，打开 `/admin`）；也可双击 **`start-admin-local.bat`**  
 - `npx hexo new "文章标题"`：新建文章  
 - `node scripts/gen-demo-posts.cjs`：按需生成演示文章（`demo-01.md` … `demo-30.md`）。**若 `_posts` 里已有任意非 `demo-NN.md` 的正文，脚本会直接跳过**；默认只补全缺失的 demo，不覆盖已有文件；**全部覆盖**时用 `node scripts/gen-demo-posts.cjs --force`
@@ -72,11 +72,30 @@ npm.cmd run server
 - 主题文案与导航：`themes/tony-blog/_config.yml`（`landing_title` / `landing_lead` / `menu`）  
 - 文章封面：在 Markdown front-matter 中加 `cover: https://...`  
 
-## Netlify（GitHub 联通）
+## 部署（静态托管）
 
-仓库根目录已含 **`netlify.toml`**：构建命令 **`npm run build:prod`**，发布目录 **`public/`**。在 Netlify 关联本 GitHub 仓库时 **Base directory 留空** 即可。
+构建产物为 **`public/`**，构建命令一般为：
 
-部署前在 **`_config.yml`** 里把 **`url`** 改成你的站点地址（例如 `https://<站点名>.netlify.app`，或已绑定的自定义域名），并保持 **`root: /`**（与 Netlify 在域名根目录发布一致）。
+```bash
+npm install
+npm run build:prod
+```
+
+在托管平台中把 **发布目录** 设为 **`public`**。仓库根目录含 **`.nvmrc`**（Node **20**），便于 CI 与本地一致。部署前请在 **`_config.yml`** 里把 **`url`** 改成你的**真实站点地址**（含 `https://`，无末尾斜杠），并保持 **`root: /`**。
+
+### Cloudflare Pages
+
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/) → **Workers 与 Pages** → **Pages** → **创建应用程序** → 连接 **GitHub/GitLab** 并选中本仓库。  
+2. **构建设置**（Build settings）：  
+   - **框架预设**：无（None）  
+   - **构建命令**：`npm run build:prod`  
+   - **构建输出目录**：`public`  
+   - **根目录**（项目路径）：留空或 `/`  
+3. **环境变量**（可选）：若构建报 Node 版本问题，在项目的 **设置 → 环境变量** 中添加 **`NODE_VERSION`** = `20`（与 `.nvmrc` 一致）。  
+4. 保存后等待首次构建；站点地址形如 **`https://<项目名>.pages.dev`**，也可在 **自定义域** 里绑定自己的域名。  
+5. 将 **`_config.yml`** 中的 **`url`** 改为上述 **https** 地址（自定义域则填你的域名）。
+
+构建日志可在该 Pages 项目的 **部署** 标签页查看；推送新 commit 会触发重新构建。
 
 ## Decap CMS 后台（网页编辑文章）
 
@@ -85,12 +104,8 @@ npm.cmd run server
 后台里可编辑内容（保存后刷新本地预览即可）：**「网站外观」**（首页大标题/引言、顶栏品牌、导航、页脚）、**「全站界面文案」**（首页「文库共/本页」、侧栏标题、分类页与归档页用语、分页「上/下一页」、顶栏无障碍文案等，对应 `source/_data/site_ui.yml`）、**「独立页面」**（关于、近况、分类页 front-matter 与正文），以及 **「博客文章」**。站点技术项（如 `url`、`root`）仍在根目录 `_config.yml` 手动改，避免误操作。
 
 1. 编辑 **`source/admin/config.yml`**：将 **`repo`** 改成你的 GitHub 仓库（格式 `用户名/仓库名`），**`branch`** 与默认分支一致（一般为 `main`）。  
-2. 在 **GitHub** → Settings → Developer settings → OAuth Apps → 新建：  
-   - **Homepage URL**：你的 Netlify 站点，如 `https://xxx.netlify.app`  
-   - **Authorization callback URL**：固定填 **`https://api.netlify.com/auth/dispatch`**  
-   记下 **Client ID**，并生成 **Client secrets**。  
-3. 在 **Netlify** 站点 → **Site configuration** → **Access & security** → **OAuth**（或旧版 **Site settings → Access control → OAuth**）→ 启用 **GitHub**，填入上面的 ID 与 Secret。  
-4. 保存后打开 **`https://你的域名/admin`**，用 GitHub 登录即可编辑 **`source/_posts`** 下的文章；保存会提交到仓库并触发 Netlify 重新构建。
+2. **线上**使用 Decap 的 **GitHub 后端**时，需在 GitHub 创建 **OAuth App**，**Authorization callback URL** 须与你的托管方式、域名一致（不同平台与 Decap 版本要求不同，**不再**固定为 Netlify 的地址）。请按 [Decap：GitHub 后端](https://decapcms.org/docs/github-backend/) 当前文档配置 **Client ID / Secret**，并在托管侧完成与 GitHub 的对接（若曾只用 Netlify OAuth，换平台后必须改用新回调地址）。  
+3. 保存后打开 **`https://你的域名/admin`**，用 GitHub 登录即可编辑仓库内文章；保存会提交到 Git 远程，是否自动再构建取决于你在托管平台的 CI 设置。
 
 图片上传目录为 **`source/images/uploads`**，构建后访问路径为 **`/images/uploads/...`**。
 
@@ -108,7 +123,7 @@ npm.cmd run server
 
 若 8081 被占用，可在项目根目录建 **`.env`**，写入 `PORT=8083`（或其它端口），并参阅 [Decap 本地仓库文档](https://decapcms.org/docs/working-with-a-local-git-repository/) 在 `config.yml` 里为 `local_backend` 配置对应 `url`。
 
-**线上 Netlify** 仍使用 **GitHub + OAuth**（见上一节）；`local_backend` 仅在访问 **localhost / 127.0.0.1** 时生效。
+**线上** `/admin` 使用 **GitHub + OAuth**（见上一节）；`local_backend` 仅在访问 **localhost / 127.0.0.1** 时走本机 `decap-server`，不经过线上 OAuth。
 
 ## 说明
 
