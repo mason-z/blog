@@ -1,5 +1,6 @@
 /**
- * 生成演示文章：node scripts/gen-demo-posts.cjs [--force]
+ * 生成演示文章：node tools/gen-demo-posts.cjs [--force]
+ * （勿放在 Hexo 的 scripts/ 目录：该目录下文件会被 hexo generate 自动加载，且本脚本含 process.exit，会中断构建。）
  *
  * 规则：
  * - 若 source/_posts/ 下已有任意「非 demo-NN.md」的文章 → 不生成（避免干扰真实博文）
@@ -11,8 +12,6 @@ const path = require("path");
 
 const outDir = path.join(__dirname, "..", "source", "_posts");
 const DEMO_RE = /^demo-\d{2}\.md$/;
-const args = process.argv.slice(2);
-const force = args.includes("--force");
 
 const cats = ["随笔", "技术", "生活", "读书", "想法"];
 const prefixes = ["笔记", "随想", "记录", "备忘", "片段"];
@@ -50,47 +49,56 @@ function buildMarkdown(i) {
   );
 }
 
-fs.mkdirSync(outDir, { recursive: true });
+function main() {
+  const args = process.argv.slice(2);
+  const force = args.includes("--force");
 
-const allFiles = fs.readdirSync(outDir);
-const mdFiles = allFiles.filter((f) => f.endsWith(".md"));
-const nonDemo = mdFiles.filter((f) => !DEMO_RE.test(f));
+  fs.mkdirSync(outDir, { recursive: true });
 
-if (nonDemo.length > 0) {
-  console.log(
-    "已检测到非演示文章（非 demo-NN.md），跳过生成，避免与真实博文混用："
-  );
-  nonDemo.forEach((f) => console.log("  -", f));
-  console.log(
-    "\n若仅需演示数据，请先移走或删除上述文件后再运行本脚本。"
-  );
-  process.exit(0);
-}
+  const allFiles = fs.readdirSync(outDir);
+  const mdFiles = allFiles.filter((f) => f.endsWith(".md"));
+  const nonDemo = mdFiles.filter((f) => !DEMO_RE.test(f));
 
-let written = 0;
-let skipped = 0;
-
-for (let i = 1; i <= 30; i++) {
-  const n = String(i).padStart(2, "0");
-  const filename = `demo-${n}.md`;
-  const fp = path.join(outDir, filename);
-
-  if (fs.existsSync(fp) && !force) {
-    skipped++;
-    continue;
+  if (nonDemo.length > 0) {
+    console.log(
+      "已检测到非演示文章（非 demo-NN.md），跳过生成，避免与真实博文混用："
+    );
+    nonDemo.forEach((f) => console.log("  -", f));
+    console.log(
+      "\n若仅需演示数据，请先移走或删除上述文件后再运行本脚本。"
+    );
+    process.exit(0);
   }
 
-  fs.writeFileSync(fp, buildMarkdown(i), "utf8");
-  console.log("written", filename);
-  written++;
+  let written = 0;
+  let skipped = 0;
+
+  for (let i = 1; i <= 30; i++) {
+    const n = String(i).padStart(2, "0");
+    const filename = `demo-${n}.md`;
+    const fp = path.join(outDir, filename);
+
+    if (fs.existsSync(fp) && !force) {
+      skipped++;
+      continue;
+    }
+
+    fs.writeFileSync(fp, buildMarkdown(i), "utf8");
+    console.log("written", filename);
+    written++;
+  }
+
+  if (written === 0 && skipped === 30 && !force) {
+    console.log(
+      "30 篇演示均已存在，未写入。若要全部覆盖请使用：npm run gen:demo -- --force"
+    );
+  } else {
+    console.log(
+      `done: 新建/覆盖 ${written} 个文件，跳过 ${skipped} 个已存在（source/_posts/）`
+    );
+  }
 }
 
-if (written === 0 && skipped === 30 && !force) {
-  console.log(
-    "30 篇演示均已存在，未写入。若要全部覆盖请使用：node scripts/gen-demo-posts.cjs --force"
-  );
-} else {
-  console.log(
-    `done: 新建/覆盖 ${written} 个文件，跳过 ${skipped} 个已存在（source/_posts/）`
-  );
+if (require.main === module) {
+  main();
 }

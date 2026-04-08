@@ -63,7 +63,7 @@ npm.cmd run server
 - `npm run build:prod`：仅用 `_config.yml` 生成，适合作为多数线上 CI 的构建命令（不合并 `_config.local.yml`）  
 - `npm run dev:admin`：本地后台（Decap 代理 + Hexo **4001**，打开 `/admin`）；也可双击 **`start-admin-local.bat`**  
 - `npx hexo new "文章标题"`：新建文章  
-- `node scripts/gen-demo-posts.cjs`：按需生成演示文章（`demo-01.md` … `demo-30.md`）。**若 `_posts` 里已有任意非 `demo-NN.md` 的正文，脚本会直接跳过**；默认只补全缺失的 demo，不覆盖已有文件；**全部覆盖**时用 `node scripts/gen-demo-posts.cjs --force`
+- `npm run gen:demo`（或 `node tools/gen-demo-posts.cjs`）：按需生成演示文章（`demo-01.md` … `demo-30.md`）。**若 `_posts` 里已有任意非 `demo-NN.md` 的正文，脚本会直接跳过**；默认只补全缺失的 demo；**全部覆盖**时用 `npm run gen:demo -- --force`。**勿**把本脚本放回 Hexo 的 `scripts/` 目录，否则会随 `hexo generate` 被加载并可能中断构建。
 
 ## 配置
 
