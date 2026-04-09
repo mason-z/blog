@@ -16,19 +16,18 @@ var _markers = _rawCities.map(function (c) {
 });
 %>
 <article class="travel-page travel-page--fullscreen">
+  <h1 class="sr-only"><%= page.title %></h1>
   <div class="travel-map-stage">
     <div class="travel-map-wrap">
       <div id="travel-map" class="travel-map" role="application" aria-label="中国及旅行城市地图"></div>
     </div>
     <div class="travel-map-ui" aria-hidden="false">
+      <% if (page.description) { %>
       <header class="travel-header travel-header--float">
-        <h1 class="page-title"><%= page.title %></h1>
-        <% if (page.description) { %>
         <div class="page-desc md-block"><%- render_md(page.description) %></div>
-        <% } %>
       </header>
+      <% } %>
       <aside class="travel-sidebar" aria-label="城市列表">
-        <h2 class="travel-sidebar__title">城市足迹</h2>
         <ol class="travel-city-list">
           <% _markers.forEach(function (c, i) { %>
           <li class="travel-city-list__item">
