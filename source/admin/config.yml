@@ -117,7 +117,7 @@ collections:
                 required: false
                 hint: "若已在上一节填写站点名称，顶栏优先显示站点名称；此处为未设置时的后备"
               - { label: 首页主标题, name: landing_title, widget: string }
-              - { label: 首页引言, name: landing_lead, widget: text }
+              - { label: 首页引言, name: landing_lead, widget: markdown, hint: "支持 Markdown；换行会按段落显示。" }
               - label: 导航菜单
                 name: menu
                 widget: list
@@ -141,7 +141,7 @@ collections:
                     widget: string
                     required: false
                     hint: "若已设置站点名称，一般以站点名称为准；此处可作为未设置站点名称时的后备"
-                  - { label: 站点描述, name: site_description, widget: text }
+                  - { label: 站点描述, name: site_description, widget: markdown, hint: "支持 Markdown；用于页头 meta 时会自动转为纯文本摘要。" }
               - label: 首页列表区
                 name: home
                 widget: object
@@ -161,8 +161,8 @@ collections:
                 collapsed: true
                 fields:
                   - { label: 页面大标题, name: page_title, widget: string }
-                  - { label: 副标题说明, name: page_desc, widget: string }
-                  - { label: 无分类时提示（支持 HTML）, name: empty_hint, widget: text }
+                  - { label: 副标题说明, name: page_desc, widget: markdown, hint: "支持 Markdown。" }
+                  - { label: 无分类时提示, name: empty_hint, widget: markdown, hint: "支持 Markdown；可写 `code` 或 **加粗**。" }
                   - { label: 「N 篇」后面后缀, name: articles_count_suffix, widget: string }
               - label: 通用标签（分页、未分类、更新 等）
                 name: labels
@@ -184,7 +184,7 @@ collections:
                 collapsed: true
                 fields:
                   - { label: 全站归档无障碍标题, name: sr_only_all, widget: string }
-                  - { label: 无文章提示, name: empty_posts, widget: string }
+                  - { label: 无文章提示, name: empty_posts, widget: markdown, hint: "支持 Markdown。" }
                   - { label: 左侧目录标题, name: toc_title, widget: string }
               - label: 顶栏无障碍
                 name: header
@@ -205,11 +205,11 @@ collections:
                 collapsed: false
                 fields:
                   - { label: 页面大标题, name: title, widget: string, default: "留言墙" }
-                  - label: 说明段落（可多行）
+                  - label: 说明段落
                     name: intro
-                    widget: text
+                    widget: markdown
                     required: false
-                    hint: "显示在标题下方、评论区上方"
+                    hint: "显示在标题下方、评论区上方；支持 Markdown 与换行。"
               - label: Waline
                 name: waline
                 widget: object

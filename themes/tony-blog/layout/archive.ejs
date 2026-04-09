@@ -33,7 +33,7 @@
   <% } %>
 
   <% if (list.length === 0) { %>
-  <p class="page-desc"><%= ((site.data.site_ui && site.data.site_ui.archive) || {}).empty_posts || '暂无文章。' %></p>
+  <div class="page-desc md-block"><%- render_md(((site.data.site_ui && site.data.site_ui.archive) || {}).empty_posts || '暂无文章。') %></div>
   <% } else { %>
   <div class="archive-with-toc">
     <aside class="archive-toc" aria-label="按年标题导航">

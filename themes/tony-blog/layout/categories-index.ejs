@@ -1,10 +1,10 @@
 <% var _uic = (site.data.site_ui && site.data.site_ui.categories_page) || {}; %>
 <section class="categories-page inner-wrap">
   <h1 class="page-title"><%= _uic.page_title || '分类' %></h1>
-  <p class="page-desc"><%= _uic.page_desc || '按栏目浏览文章' %></p>
+  <div class="page-desc md-block"><%- render_md(_uic.page_desc || '按栏目浏览文章') %></div>
   <% var _n = 0; site.categories.each(function () { _n++; }); %>
   <% if (_n === 0) { %>
-  <p class="page-desc"><%- _uic.empty_hint || '暂无分类，请在文章 front-matter 中设置 <code>categories:</code>。' %></p>
+  <div class="page-desc md-block"><%- render_md(_uic.empty_hint || '暂无分类，请在文章 front-matter 中设置 `categories:`。') %></div>
   <% } else { %>
   <div class="cat-grid cat-grid--all">
     <% site.categories.each(function (cat) { %>

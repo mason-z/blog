@@ -397,6 +397,43 @@ html[data-theme="dark"] .theme-toggle:hover {
   color: var(--text-soft);
 }
 
+/* 站点配置中的 Markdown 多行文案（首页引言、分类说明、留言墙介绍等） */
+.md-block {
+  font-size: inherit;
+  line-height: inherit;
+  color: inherit;
+}
+.md-block > *:first-child {
+  margin-top: 0;
+}
+.md-block > *:last-child {
+  margin-bottom: 0;
+}
+.md-block p {
+  margin: 0 0 0.75em;
+}
+.md-block ul,
+.md-block ol {
+  margin: 0.4em 0 0.75em;
+  padding-left: 1.35em;
+  text-align: left;
+}
+.md-block li {
+  margin: 0.2em 0;
+}
+.md-block strong {
+  font-weight: 600;
+}
+.landing-inner .md-block {
+  text-align: left;
+  max-width: 40rem;
+  margin-left: auto;
+  margin-right: auto;
+}
+.landing-inner .md-block p {
+  text-align: left;
+}
+
 /* ========== 博客区 ========== */
 .home-shell,
 .archive-shell {

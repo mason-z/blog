@@ -10,7 +10,7 @@ var gbIntro = gbIntroRaw || (page.description && String(page.description).trim()
 <article class="page-doc inner-wrap guestbook-page">
   <h1 class="page-title"><%= gbTitle %></h1>
   <% if (gbIntro) { %>
-  <p class="page-desc page-desc--preline"><%= gbIntro %></p>
+  <div class="page-desc guestbook-intro-md md-block"><%- render_md(gbIntro) %></div>
   <% } %>
   <% if (page.content && String(page.content).trim()) { %>
   <div class="article-body guestbook-intro">

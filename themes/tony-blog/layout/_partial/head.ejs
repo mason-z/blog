@@ -2,10 +2,10 @@
 <% var _uil = (site.data.site_ui && site.data.site_ui.labels) || {}; %>
 <% var _sn = (site.data.site_name && site.data.site_name.name && String(site.data.site_name.name).trim()) || ''; %>
 <% var _siteTitle = _sn || _uim.site_title || config.title %>
-<% var _siteDesc = _uim.site_description || config.description %>
+<% var _siteDesc = plain_from_md(_uim.site_description || config.description) %>
 <% var _gbHead = (page.layout === 'guestbook' && site.data.guestbook && site.data.guestbook.page) ? site.data.guestbook.page : null; %>
 <% var _gbHeadTitle = (_gbHead && _gbHead.title && String(_gbHead.title).trim()) || ''; %>
-<% var _gbHeadIntro = (_gbHead && _gbHead.intro !== undefined && _gbHead.intro !== null) ? String(_gbHead.intro).replace(/\s+/g, ' ').trim() : ''; %>
+<% var _gbHeadIntro = (_gbHead && _gbHead.intro !== undefined && _gbHead.intro !== null) ? plain_from_md(_gbHead.intro) : ''; %>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <script>
