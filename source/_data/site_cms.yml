@@ -3,14 +3,17 @@ site_name:
 theme:
   brand: I'm Mason
   landing_title: 你好/Hello/Hola/Bonjour/こんにちは/안녕하세요/Hallo/Здравствуйте
-  landing_lead: |-
-    欢迎来访。这里的内容是「Mason」的随笔与记录。
+  landing_lead: >-
+    🎉欢迎来访。这里的内容是 [**Mason** ](https://masonblog.pages.dev/about/)的随笔与记录。
 
-    目前在「Shenzhen-China」从事「FPGA工程师」，平时喜欢「户外徒步，阅读，弹唱，跑步，散步，写思考日记，晒太阳」。
 
-    开这个博客主要是为了**记录生活/分享思考/也许还有整理技术的嫌疑**，我还是希望我有一个较快的更新频率。
+    目前在 **Shenzhen-China** 从事 **FPGA工程师** ，平时喜欢「户外徒步，阅读，弹唱，跑步，散步，写思考日记，晒太阳」。
 
-    如果你也喜欢同类内容，欢迎常来坐坐。
+
+    开这个博客主要是为了**[记录生活/分享思考/也许还有整理技术的嫌疑](https://masonblog.pages.dev/archives/)**，我希望我有一个较快的更新频率。
+
+
+    如果你也喜欢同类内容，欢迎常来坐坐。🤞
   menu:
     - label: 你谁
       path: /about/
@@ -73,7 +76,7 @@ guestbook:
     title: 留言墙
     intro: |-
       留言墙也是友链墙~
-      请填写友链网址和留言内容与我交流；
-      个人邮箱990832426@qq.com
+      填写友链网址🔗和留言内容与我交流；
+      个人邮箱📭  990832426@qq.com
   waline:
     serverURL: https://waline.wuyuan.dev
