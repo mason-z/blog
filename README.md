@@ -82,6 +82,8 @@ npm install
 npm run build:prod
 ```
 
+`build` / `build:prod` 会先执行 **`npm run validate`**（扫描 YAML/Markdown 等是否含未解决的 Git 合并标记，并检查 `source/_data/site_cms.yml` 是否存在）。也可单独运行 **`npm run validate`**。
+
 在托管平台中把 **发布目录** 设为 **`public`**。仓库根目录含 **`.nvmrc`**（Node **20**），便于 CI 与本地一致。部署前请在 **`_config.yml`** 里把 **`url`** 改成你的**真实站点地址**（含 `https://`，无末尾斜杠），并保持 **`root: /`**。
 
 ### Cloudflare Pages

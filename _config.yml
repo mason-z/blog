@@ -1,13 +1,14 @@
-title: I'm Tony
+# 站点标题/描述：与 source/_data/site_cms.yml 保持语义一致（RSS、部分兜底用）；全站展示以后台「站点配置」为准
+title: I'm Mason
 subtitle: ''
-description: 个人随笔与记录
+description: Mason 的个人博客
 keywords: blog
-author: Tony
+author: Mason
 language: zh-CN
 timezone: Asia/Shanghai
 
-# 线上站点地址（https://，无末尾斜杠）；与 root 一起影响资源与链接路径；换部署平台时请改为实际域名
-url: https://masonblog.netlify.app
+# 线上站点地址（https://，无末尾斜杠）；与 root 一起影响资源与链接路径；换域名时请与 Decap base_url、OAuth 回调一致
+url: https://masonblog.pages.dev
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
