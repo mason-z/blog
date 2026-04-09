@@ -1,3 +1,4 @@
 <footer class="site-footer">
-  <p class="site-footer__inner"><%= theme.footer || config.title %></p>
+  <% var _tcm = site.data.theme_cms || {}; %>
+  <p class="site-footer__inner"><%= _tcm.footer || theme.footer || config.title %></p>
 </footer>

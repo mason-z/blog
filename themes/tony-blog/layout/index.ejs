@@ -1,8 +1,9 @@
 <% var _uih = (site.data.site_ui && site.data.site_ui.home) || {}; %>
+<% var _tcm = site.data.theme_cms || {}; %>
 <section class="landing-page">
   <div class="landing-inner">
-    <h1 id="landing-title" class="landing-title"><%= theme.landing_title || config.title %></h1>
-    <p id="landing-lead" class="landing-lead"><%= theme.landing_lead || config.description %></p>
+    <h1 id="landing-title" class="landing-title"><%= _tcm.landing_title || theme.landing_title || config.title %></h1>
+    <p id="landing-lead" class="landing-lead"><%= _tcm.landing_lead || theme.landing_lead || config.description %></p>
   </div>
 </section>
 

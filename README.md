@@ -68,10 +68,9 @@ npm.cmd run server
 ## 配置
 
 - 站点：根目录 `_config.yml`  
-- **网站名称（顶栏 + 浏览器标题后缀）**：`source/_data/site_name.yml`，或在 **`/admin` →「站点名称」** 中编辑  
+- **全站名称、外观、界面文案与留言墙（合并为一份）**：`source/_data/site_cms.yml`，或在 **`/admin` →「全站与独立页面」→「站点配置」** 中编辑（一次保存可一并更新）  
 - 本地预览覆盖：`_config.local.yml`（与主配置合并，覆盖 `url` 为本地地址）  
-- 主题文案与导航：`themes/tony-blog/_config.yml`（`landing_title` / `landing_lead` / `menu`）  
-- 全站界面文案：`source/_data/site_ui.yml`（与「站点名称」重叠项以站点名称为准）  
+- 主题默认与后备：`themes/tony-blog/_config.yml`（线上/后台修改外观时写入 `site_cms.yml`，构建时优先于此处）  
 - 文章封面：在 Markdown front-matter 中加 `cover: https://...`  
 
 ## 部署（静态托管）
@@ -103,7 +102,7 @@ npm run build:prod
 
 博客主题**导航里不显示**后台入口；管理地址为：**`https://你的域名/admin`**（部署后与本地 `public/admin` 一致）。
 
-后台里可编辑内容（保存后刷新本地预览即可）：**「网站外观」**（首页大标题/引言、顶栏品牌、导航、页脚）、**「全站界面文案」**（首页「文库共/本页」、侧栏标题、分类页与归档页用语、分页「上/下一页」、顶栏无障碍文案等，对应 `source/_data/site_ui.yml`）、**「独立页面」**（关于、近况、分类页 front-matter 与正文），以及 **「博客文章」**。站点技术项（如 `url`、`root`）仍在根目录 `_config.yml` 手动改，避免误操作。
+后台里可编辑内容（保存后刷新本地预览即可）：**「全站与独立页面」**（**站点配置** 合并名称/外观/全站文案/留言墙，对应 `source/_data/site_cms.yml`；以及关于、近况、分类页、留言墙补充正文等独立页面）、**「旅行地图」**、**「博客文章」**。站点技术项（如 `url`、`root`）仍在根目录 `_config.yml` 手动改，避免误操作。
 
 1. 编辑 **`source/admin/config.yml`**：将 **`repo`** 改成你的 GitHub 仓库（格式 `用户名/仓库名`），**`branch`** 与默认分支一致（一般为 `main`）。  
 2. **线上**使用 Decap 的 **GitHub 后端**时，需在 GitHub 创建 **OAuth App**，**Authorization callback URL** 须与你的托管方式、域名一致（不同平台与 Decap 版本要求不同，**不再**固定为 Netlify 的地址）。请按 [Decap：GitHub 后端](https://decapcms.org/docs/github-backend/) 当前文档配置 **Client ID / Secret**，并在托管侧完成与 GitHub 的对接（若曾只用 Netlify OAuth，换平台后必须改用新回调地址）。  

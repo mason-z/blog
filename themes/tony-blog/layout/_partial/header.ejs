@@ -1,6 +1,7 @@
 <header class="site-header" id="site-header">
   <div class="site-header__menus" id="site-header-menus">
     <% var _uihd = (site.data.site_ui && site.data.site_ui.header) || {}; %>
+    <% var _tcm = site.data.theme_cms || {}; %>
     <% var _sn = (site.data.site_name && site.data.site_name.name && String(site.data.site_name.name).trim()) || ''; %>
     <a href="<%- url_for('/') %>" class="site-brand" aria-label="<%= _uihd.aria_home || '首页' %>">
       <span class="site-brand__icon" aria-hidden="true">
@@ -10,10 +11,11 @@
           <path d="M8 7h8M8 11h6" stroke="currentColor" stroke-width="1.25" stroke-linecap="round" />
         </svg>
       </span>
-      <span class="site-brand__name"><%= _sn || theme.brand || config.title %></span>
+      <span class="site-brand__name"><%= _sn || _tcm.brand || theme.brand || config.title %></span>
     </a>
     <nav class="main-nav" id="main-nav" aria-label="<%= _uihd.aria_nav || '主导航' %>">
-      <% (theme.menu || []).forEach(function (item) { %>
+      <% var _navMenu = (_tcm.menu && _tcm.menu.length) ? _tcm.menu : (theme.menu || []); %>
+      <% _navMenu.forEach(function (item) { %>
         <% var path = item.path; %>
         <a href="<%- url_for(path) %>" class="<%- is_current(path, {strict: false}) ? 'active' : '' %>"><%= item.label %></a>
       <% }); %>

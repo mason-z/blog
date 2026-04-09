@@ -1,0 +1,72 @@
+site_name:
+  name: I'm Mason
+theme:
+  brand: I'm Mason
+  landing_title: 你好/Hello/Hola/Bonjour/こんにちは/안녕하세요/Hallo/Здравствуйте
+  landing_lead: |-
+    欢迎来访。这里的内容是「Mason」的随笔与记录。
+
+    目前在「Shenzhen-China」从事「FPGA工程师」，平时喜欢「户外徒步，阅读，弹唱，跑步，散步，写思考日记，晒太阳」。
+
+    开这个博客主要是为了**记录生活/分享思考/也许还有整理技术的嫌疑**，我还是希望我有一个较快的更新频率。
+
+    如果你也喜欢同类内容，欢迎常来坐坐。
+  menu:
+    - label: 你谁
+      path: /about/
+    - label: 博客
+      path: /archives/
+    - label: 分类
+      path: /categories/
+    - label: 近况
+      path: /news/
+    - label: 旅行
+      path: /travel/
+    - label: 留言
+      path: /guestbook/
+  footer: © 本地博客 · Hexo
+site_ui:
+  meta:
+    site_title: I'm Tony
+    site_description: 个人随笔与记录
+  home:
+    sr_only_title: 博客
+    stat_total_prefix: 文库共
+    stat_unit: 篇
+    stat_dot: ·
+    stat_page_prefix: 本页
+    aside_categories_title: 分类
+    aside_latest_title: 最新
+    aside_aria_label: 站点侧栏
+  categories_page:
+    page_title: 分类
+    page_desc: 按栏目浏览文章
+    empty_hint: "暂无分类，请在文章 front-matter 中设置 categories:"
+    articles_count_suffix: 篇文章
+  labels:
+    head_fallback_blog: 博客
+    tag_page_title_prefix: 标签：
+    category_page_title_prefix: 分类：
+    pagination_aria: 分页
+    uncategorized: 未分类
+    head_tag_prefix: 标签：
+    pagination_next: 下一页
+    pagination_prev: 上一页
+    updated: 更新
+  archive:
+    toc_title: 目录
+    empty_posts: 暂无文章。
+    sr_only_all: 博客归档
+  header:
+    aria_home: 首页
+    aria_nav: 主导航
+    nav_toggle_label: 菜单
+guestbook:
+  page:
+    title: 留言墙
+    intro: |-
+      留言墙也是友链墙~
+      请填写友链网址和留言内容与我交流；
+      个人邮箱990832426@qq.com
+  waline:
+    serverURL: https://waline.wuyuan.dev

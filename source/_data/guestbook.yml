@@ -1,8 +1,0 @@
-page:
-  title: 留言墙
-  intro: |-
-    留言墙也是友链墙~
-    请填写友链网址和留言内容与我交流；
-    个人邮箱990832426@qq.com
-waline:
-  serverURL: https://waline.wuyuan.dev
