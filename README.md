@@ -104,9 +104,13 @@ npm run build:prod
 
 后台里可编辑内容（保存后刷新本地预览即可）：**「全站与独立页面」**（**站点配置** 合并名称/外观/全站文案/留言墙，对应 `source/_data/site_cms.yml`；以及关于、近况、分类页、留言墙补充正文等独立页面）、**「旅行地图」**、**「博客文章」**。站点技术项（如 `url`、`root`）仍在根目录 `_config.yml` 手动改，避免误操作。
 
-1. 编辑 **`source/admin/config.yml`**：将 **`repo`** 改成你的 GitHub 仓库（格式 `用户名/仓库名`），**`branch`** 与默认分支一致（一般为 `main`）。  
-2. **线上**使用 Decap 的 **GitHub 后端**时，需在 GitHub 创建 **OAuth App**，**Authorization callback URL** 须与你的托管方式、域名一致（不同平台与 Decap 版本要求不同，**不再**固定为 Netlify 的地址）。请按 [Decap：GitHub 后端](https://decapcms.org/docs/github-backend/) 当前文档配置 **Client ID / Secret**，并在托管侧完成与 GitHub 的对接（若曾只用 Netlify OAuth，换平台后必须改用新回调地址）。  
-3. 保存后打开 **`https://你的域名/admin`**，用 GitHub 登录即可编辑仓库内文章；保存会提交到 Git 远程，是否自动再构建取决于你在托管平台的 CI 设置。
+1. 编辑 **`source/admin/config.yml`**：将 **`repo`** 改成你的 GitHub 仓库（格式 `用户名/仓库名`），**`branch`** 与默认分支一致（一般为 `main`）。**`base_url`** 须与你在浏览器里打开后台的站点 **完全一致**（例如 `https://masonblog.pages.dev`，若只用自定义域则改成 `https://你的域名`，不要混用）。  
+2. **Cloudflare Pages（本仓库方式）**：默认的 `https://api.netlify.com/auth` 在 CF 上会 **404**，因此仓库根目录已提供 **`functions/auth.ts`** 与 **`functions/callback.ts`** 作为 GitHub OAuth 代理（与 [decap-proxy](https://github.com/sterlingwes/decap-proxy) 同类逻辑）。部署后请在 **Cloudflare Pages → 你的项目 → 设置 → 环境变量** 中添加（**加密**推荐）：  
+   - **`GITHUB_OAUTH_ID`**：GitHub OAuth App 的 Client ID  
+   - **`GITHUB_OAUTH_SECRET`**：Client Secret  
+   若仓库为 **私有**，再增加 **`GITHUB_REPO_PRIVATE`** = `1`（与 Functions 内 scope 一致）。  
+3. 在 **GitHub → Settings → Developer settings → OAuth Apps** 中编辑（或新建）应用：**Homepage URL** 填你的站点根地址；**Authorization callback URL** 填 **`https://<与 base_url 相同的域名>/callback`**（示例：`https://masonblog.pages.dev/callback`）。若同时使用 `*.pages.dev` 与自定义域访问后台，可在 GitHub 里 **添加多条** callback。  
+4. 推送代码让 Pages 重新部署后，打开 **`https://你的域名/admin/`**，再点 **Log in with GitHub**。保存会提交到 Git 远程，是否触发构建取决于 CF Pages 与分支设置。
 
 图片上传目录为 **`source/images/uploads`**，构建后访问路径为 **`/images/uploads/...`**。
 

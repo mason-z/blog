@@ -1,6 +1,6 @@
 # Decap CMS
 # · 本地：先运行 npm run cms:proxy（或 npm run dev:admin），再打开 http://localhost:4001/admin
-# · 线上：将 repo/branch 改成你的仓库；GitHub OAuth 回调按托管平台与 Decap 文档配置（见 README）
+# · 线上：GitHub 登录需本仓库 functions/auth + callback（Cloudflare Pages）及环境变量，见 README「Decap 线上登录」
 # local_backend 仅在 localhost 生效，部署后仍走 GitHub 登录，不会访问 127.0.0.1
 # · 全站 YAML（名称/外观/界面文案/留言墙）合并为一份 site_cms.yml，一次保存即可一并提交
 
@@ -8,6 +8,9 @@ backend:
   name: github
   repo: mason-z/blog
   branch: main
+  # 勿用默认 api.netlify.com（Cloudflare 上会 404）。须与浏览器打开后台的域名一致（含自定义域）
+  base_url: https://masonblog.pages.dev
+  auth_endpoint: auth
 
 # 为 true 时，仅在浏览器访问 localhost / 127.0.0.1 时走本机 decap-server（默认端口 8081），线上仍用 GitHub
 local_backend: true

@@ -1,5 +1,9 @@
+<<<<<<< HEAD
 # 首页标题、导航、页脚等可在后台「全站与独立页面 → 站点配置」编辑（写入 source/_data/site_cms.yml，构建时优先于此处）
 brand: I'm Maso
+=======
+brand: I'm Mason
+>>>>>>> 05ae297a9c56df4fb25a6fe7e9f94675bf998b92
 landing_title: 你好/Hello/Hola/Bonjour/こんにちは/안녕하세요/Hallo/Здравствуйте
 landing_lead: 欢迎来访。这里的内容是我的随笔与记录。
 menu:
