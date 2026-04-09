@@ -24,11 +24,18 @@ theme:
       path: /travel/
     - label: 留言
       path: /guestbook/
-  footer: © 本地博客 · Hexo
+  footer: © Mason's Blog
 site_ui:
   meta:
-    site_title: I'm Tony
-    site_description: 个人随笔与记录
+    site_title: I'm Mason
+    site_description: |-
+      这里是「Mason」的个人博客。
+
+      目前在「Shenzhen-China」从事「FPGA工程师」，平时喜欢「户外徒步，阅读，弹唱，跑步，写思考日记，晒太阳」。
+
+      开这个博客主要是为了**记录生活/分享思考/也许还有整理技术的嫌疑**，我还是希望我有一个较快的更新频率。
+
+      如果你也喜欢同类内容，欢迎常来坐坐。
   home:
     sr_only_title: 博客
     stat_total_prefix: 文库共
