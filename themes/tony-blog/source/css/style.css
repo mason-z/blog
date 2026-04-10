@@ -1673,6 +1673,83 @@ html[data-theme="dark"] .music-player__play:hover {
   font-size: 0.92rem;
 }
 
+.music-share-live {
+  margin: 1rem 0 1.25rem;
+  padding: 0.85rem 1rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.03);
+  font-size: 0.88rem;
+}
+
+html[data-theme="dark"] .music-share-live {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.music-share-live__title {
+  font-weight: 600;
+  margin: 0 0 0.35rem;
+  font-size: 0.9rem;
+}
+
+.music-share-live__explain {
+  margin: 0 0 0.6rem;
+  color: var(--text-muted);
+  line-height: 1.45;
+  font-size: 0.82rem;
+}
+
+.music-share-live__out {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem 0.75rem;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  line-height: 1.4;
+}
+
+.music-share-live__loc {
+  font-weight: 500;
+}
+
+.music-share-live__wx {
+  color: var(--text-muted);
+}
+
+.music-share-live__temp {
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+}
+
+.music-share-live__err {
+  margin: 0 0 0.5rem;
+  color: #b45309;
+  font-size: 0.82rem;
+}
+
+html[data-theme="dark"] .music-share-live__err {
+  color: #fbbf24;
+}
+
+.music-share-live__copy {
+  font-size: 0.82rem;
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg);
+  cursor: pointer;
+  font-family: inherit;
+  color: var(--text);
+}
+
+.music-share-live__copy:hover {
+  background: rgba(0, 0, 0, 0.05);
+}
+
+html[data-theme="dark"] .music-share-live__copy:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
 .music-timeline-empty {
   margin-top: 1rem;
   padding: 1rem 1.1rem;
@@ -1775,12 +1852,18 @@ html[data-theme="dark"] .music-timeline__card {
 
 .music-timeline__pill {
   display: inline-block;
-  font-size: 0.75rem;
+  font-size: 0.8rem;
   padding: 0.2rem 0.45rem;
   border-radius: 999px;
   border: 1px solid var(--border);
   background: rgba(0, 0, 0, 0.03);
   color: var(--text-muted);
+}
+
+/* 天气 / 心情栏专为 emoji+短词；正文不强调表情 */
+.music-timeline__pill--weather,
+.music-timeline__pill--mood {
+  font-family: system-ui, "Segoe UI Emoji", "Segoe UI Symbol", "Apple Color Emoji", "Noto Color Emoji", sans-serif;
 }
 
 html[data-theme="dark"] .music-timeline__pill {

@@ -101,7 +101,7 @@ collections:
           - label: 条目（页面按日期从新到旧排序）
             name: entries
             widget: list
-            summary: "{{fields.date}} · {{fields.song_title}}"
+            summary: "{{fields.date}} · {{fields.song_title}}{{fields.file}}"
             fields:
               - label: 分享时间
                 name: date
@@ -109,10 +109,11 @@ collections:
                 date_format: YYYY-MM-DD
                 time_format: HH:mm
                 hint: "想记录的那一天与时间"
-              - label: 歌曲名
+              - label: 歌曲名（可选）
                 name: song_title
                 widget: string
-                hint: "展示用标题"
+                required: false
+                hint: "可不填：留空时与顶栏一致，自动用上传文件名（去扩展名）或外链路径末段；仅在与文件名不同的展示名时填写。"
               - label: 音频外链（HTTPS 直链）
                 name: url
                 widget: string
@@ -123,24 +124,68 @@ collections:
                 widget: file
                 required: false
                 hint: "mp3/m4a 等，与全站媒体同一 uploads 目录。"
-              - label: 天气
+              - label: 天气（可选）
                 name: weather
-                widget: string
+                widget: select
                 required: false
-              - label: 心情
+                default: ""
+                hint: "下拉选择；不选则时间轴不显示天气。选项已带 emoji。若旧数据是手写的，保存时请改选一项或选「不选」。"
+                options:
+                  - { label: "— 不选 —", value: "" }
+                  - { label: "☀️ 晴", value: "☀️ 晴" }
+                  - { label: "⛅ 多云", value: "⛅ 多云" }
+                  - { label: "☁️ 阴", value: "☁️ 阴" }
+                  - { label: "🌫️ 雾 / 霾", value: "🌫️ 雾" }
+                  - { label: "🌦️ 阵雨", value: "🌦️ 阵雨" }
+                  - { label: "🌧️ 雨", value: "🌧️ 雨" }
+                  - { label: "⛈️ 雷雨", value: "⛈️ 雷雨" }
+                  - { label: "❄️ 雪", value: "❄️ 雪" }
+                  - { label: "🌬️ 大风", value: "🌬️ 大风" }
+                  - { label: "🌙 晴夜", value: "🌙 晴夜" }
+              - label: 心情（可选）
                 name: mood
-                widget: string
+                widget: select
                 required: false
-              - label: 地点
+                default: ""
+                hint: "下拉选择；不选则不显示心情。"
+                options:
+                  - { label: "— 不选 —", value: "" }
+                  - { label: "😊 开心", value: "😊 开心" }
+                  - { label: "😌 平静", value: "😌 平静" }
+                  - { label: "🥰 温柔 / 喜欢", value: "🥰 温柔" }
+                  - { label: "🤩 兴奋", value: "🤩 兴奋" }
+                  - { label: "☕ 慵懒", value: "☕ 慵懒" }
+                  - { label: "🌿 轻松", value: "🌿 轻松" }
+                  - { label: "💭 放空", value: "💭 放空" }
+                  - { label: "🎵 随音乐晃", value: "🎵 随音乐" }
+                  - { label: "😢 低落", value: "😢 低落" }
+                  - { label: "😤 烦躁", value: "😤 烦躁" }
+                  - { label: "🥱 疲惫", value: "🥱 疲惫" }
+                  - { label: "💼 充实", value: "💼 充实" }
+                  - { label: "🤔 纠结", value: "🤔 纠结" }
+              - label: 地点（可选）
                 name: location
-                widget: string
+                widget: select
                 required: false
-                hint: "如城市、店名、路上——会像标签一样显示在时间轴卡片上。"
+                default: ""
+                hint: "下拉选择；不选则不显示地点。网页后台不能动态增选项——若要加「广州」「店名」等，请在仓库里编辑 source/admin/config.yml，在本字段的 options 下增加一行：- { label: 显示名, value: 保存到页面的文字 }，保存后重新构建站点。"
+                options:
+                  - { label: "— 不选 —", value: "" }
+                  - { label: "深圳", value: "深圳" }
+                  - { label: "河南", value: "河南" }
+                  - { label: "北京", value: "北京" }
+                  - { label: "上海", value: "上海" }
+                  - { label: "广州", value: "广州" }
+                  - { label: "杭州", value: "杭州" }
+                  - { label: "成都", value: "成都" }
+                  - { label: "香港", value: "香港" }
+                  - { label: "澳门", value: "澳门" }
+                  - { label: "台北", value: "台北" }
               - label: 动态正文（Markdown）
                 name: note
                 widget: markdown
                 required: false
-                hint: "像朋友圈一样写一段话：当下感受、故事片段等；支持 Markdown。"
+                hint: "像朋友圈一样写一段话；支持 Markdown。天气与心情请用上方的下拉框选择。"
 
   - name: site_and_pages
     label: 全站与独立页面
