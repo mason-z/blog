@@ -91,7 +91,7 @@ collections:
 
   - name: music_share_timeline
     label: 音乐分享时间轴
-    description: 时间轴页面展示条目（歌曲、天气、心情、记事）；与顶栏全局音乐独立，可同一音频文件。保存后需重新构建站点。
+    description: 唯一音乐数据源：/music-share/ 时间轴展示心情与文字；顶栏音符播放器自动播放**按时间最新一条、且已填写音频**的分享。保存后需重新构建站点。
     files:
       - label: 分享条目
         name: music_share_data
@@ -131,11 +131,16 @@ collections:
                 name: mood
                 widget: string
                 required: false
-              - label: 记事（Markdown）
+              - label: 地点
+                name: location
+                widget: string
+                required: false
+                hint: "如城市、店名、路上——会像标签一样显示在时间轴卡片上。"
+              - label: 动态正文（Markdown）
                 name: note
                 widget: markdown
                 required: false
-                hint: "那天发生的事、随笔等"
+                hint: "像朋友圈一样写一段话：当下感受、故事片段等；支持 Markdown。"
 
   - name: site_and_pages
     label: 全站与独立页面
@@ -284,40 +289,16 @@ collections:
                     widget: string
                     required: false
                     hint: "可填他人提供的 Waline 服务地址；自建见 https://waline.js.org/guide/get-started.html"
-          - label: 五、全局音乐（顶栏「小太阳」左侧）
+          - label: 五、顶栏音乐按钮（与「音乐分享时间轴」联动）
             name: music_player
             widget: object
             collapsed: true
             fields:
-              - label: 开启播放器
+              - label: 开启顶栏音符播放器
                 name: enable
                 widget: boolean
                 default: false
-                hint: "开启后顶栏显示音符按钮；至少配置一首有效音源。"
-              - label: 播放列表更新时间（展开音乐面板内展示）
-                name: updated_at
-                widget: datetime
-                required: false
-                date_format: YYYY-MM-DD
-                time_format: HH:mm
-                hint: "修改播放列表后更新此项；读者点击顶栏音符展开面板后可见「更新 …」时间。"
-              - label: 播放列表
-                name: tracks
-                widget: list
-                summary: "{{fields.title}}"
-                required: false
-                fields:
-                  - { label: 标题, name: title, widget: string, default: "音轨" }
-                  - label: 外链（HTTPS 音频直链）
-                    name: url
-                    widget: string
-                    required: false
-                    hint: "与上传二选一；若同时填写，优先使用下方上传文件。"
-                  - label: 上传音频
-                    name: file
-                    widget: file
-                    required: false
-                    hint: "上传 mp3/m4a 等，保存在网站 uploads；大文件建议用外链以减小仓库体积。"
+                hint: "开启后顶栏显示音符；播放内容与曲目名取自 **音乐分享时间轴** 里「日期最新」且已上传/填写音频的那一条，无需在此重复配置。"
 
       - label: 音乐分享页（/music-share/）
         name: page_music_share

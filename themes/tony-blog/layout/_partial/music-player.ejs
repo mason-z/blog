@@ -1,22 +1,59 @@
-<% var mp = site.data.music_player || theme.music_player || {}; %>
-<% var rows = mp.tracks || []; %>
-<% var resolved = []; %>
-<% rows.forEach(function (t) { %>
-<%   var title = (t.title && String(t.title).trim()) || '音轨'; %>
-<%   var f = t.file && String(t.file).trim(); %>
-<%   var u = t.url && String(t.url).trim(); %>
-<%   var src = ''; %>
-<%   if (f) { %>
-<%     if (/^https?:\/\//i.test(f)) { src = f; } else { %>
-<%       var p = f.replace(/^source\//, ''); %>
-<%       if (!p.startsWith('/')) p = '/' + p.replace(/^\/+/, ''); %>
-<%       src = p; %>
-<%     } %>
-<%   } else if (u) { src = u; } %>
-<%   if (src) resolved.push({ title: title, url: src }); %>
-<% }); %>
 <%
-  var _updRaw = mp.updated_at;
+  function trackDisplayTitle(t) {
+    var explicit = t.title && String(t.title).trim();
+    if (explicit) return explicit;
+    var f = t.file && String(t.file).trim();
+    var u = t.url && String(t.url).trim();
+    var raw = (f || u || '').trim();
+    if (!raw) return '音乐';
+    var clean = raw.replace(/\\/g, '/').split('?')[0].split('#')[0];
+    var segs = clean.split('/').filter(function (s) { return s.length > 0; });
+    var last = segs.length ? segs[segs.length - 1] : '';
+    if (!last) return '音乐';
+    var base = last.replace(/\.[^/.]+$/, '');
+    if (base) return base;
+    if (last && last[0] !== '.') return last;
+    return '音乐';
+  }
+  function resolveTimelineAudio(row) {
+    if (!row) return '';
+    var f = row.file && String(row.file).trim();
+    var u = row.url && String(row.url).trim();
+    if (f) {
+      if (/^https?:\/\//i.test(f)) return f;
+      var p = f.replace(/^source\//, '');
+      if (!p.startsWith('/')) p = '/' + p.replace(/^\/+/, '');
+      return p;
+    }
+    if (u) return u;
+    return '';
+  }
+  function timelineSongTitle(row) {
+    if (!row) return '音乐';
+    var st = row.song_title && String(row.song_title).trim();
+    if (st) return st;
+    return trackDisplayTitle({ file: row.file, url: row.url });
+  }
+%>
+<% var mp = site.data.music_player || theme.music_player || {}; %>
+<% var tl = (site.data.music_share_timeline && site.data.music_share_timeline.entries) ? site.data.music_share_timeline.entries : []; %>
+<% var _sorted = tl.slice().sort(function (a, b) {
+  var da = new Date(a.date != null ? a.date : 0).getTime();
+  var db = new Date(b.date != null ? b.date : 0).getTime();
+  return db - da;
+}); %>
+<% var headerEntry = null; %>
+<% for (var hi = 0; hi < _sorted.length; hi++) {
+  var rs = resolveTimelineAudio(_sorted[hi]);
+  if (rs) { headerEntry = _sorted[hi]; break; }
+} %>
+<% var resolved = []; %>
+<% if (headerEntry) {
+  var playSrc = resolveTimelineAudio(headerEntry);
+  resolved.push({ title: timelineSongTitle(headerEntry), url: playSrc });
+} %>
+<%
+  var _updRaw = headerEntry ? headerEntry.date : null;
   var _updStr = '';
   if (_updRaw != null && String(_updRaw).trim() !== '') {
     _updStr = String(_updRaw).trim().replace('T', ' ').replace(/\.\d{3}Z?$/, '').replace(/Z$/, '');
@@ -42,16 +79,17 @@
   <div class="music-player__panel" id="music-player-panel" hidden role="region" aria-label="音乐播放器">
     <div class="music-player__track" id="music-player-trackname">—</div>
     <% if (_updStr) { %>
-    <time class="music-player__updated"<% if (_updIso) { %> datetime="<%= _updIso %>"<% } %> title="播放列表更新时间">更新 <%= _updStr %></time>
+    <time class="music-player__updated"<% if (_updIso) { %> datetime="<%= _updIso %>"<% } %> title="与音乐分享时间轴中最新一条一致">更新 <%= _updStr %></time>
     <% } %>
     <div class="music-player__controls">
-      <button type="button" class="music-player__icon-btn" id="music-player-prev" aria-label="上一首">‹</button>
       <button type="button" class="music-player__play" id="music-player-play" aria-label="播放">▶</button>
-      <button type="button" class="music-player__icon-btn" id="music-player-next" aria-label="下一首">›</button>
     </div>
     <div class="music-player__seek-row">
       <span class="music-player__time" id="music-player-cur">0:00</span>
-      <input type="range" class="music-player__seek" id="music-player-seek" min="0" max="1000" value="0" aria-label="进度" />
+      <div class="music-player__seek music-player__seek--bar music-player__seek--readonly" id="music-player-seek" role="progressbar" aria-label="播放进度（仅显示）" aria-valuemin="0" aria-valuemax="1000" aria-valuenow="0" aria-live="polite">
+        <div class="music-player__seek-track" aria-hidden="true"></div>
+        <div class="music-player__seek-fill" id="music-player-seek-fill"></div>
+      </div>
       <span class="music-player__time" id="music-player-dur">0:00</span>
     </div>
     <div class="music-player__vol-row">

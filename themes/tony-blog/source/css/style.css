@@ -1602,12 +1602,48 @@ html[data-theme="dark"] .music-player__play:hover {
   color: var(--text-muted);
 }
 
+/* 播放进度：仅展示，不可点击拖动 */
 .music-player__seek {
   flex: 1 1 auto;
   min-width: 0;
+}
+
+.music-player__seek--readonly {
+  cursor: default;
+  pointer-events: none;
+  user-select: none;
+}
+
+.music-player__seek--bar {
+  position: relative;
+  height: 1.1rem;
+  display: flex;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.music-player__seek-track {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
   height: 0.35rem;
-  accent-color: var(--text-muted);
-  cursor: pointer;
+  border-radius: 3px;
+  background: rgba(128, 128, 128, 0.35);
+}
+
+.music-player__seek-fill {
+  position: absolute;
+  left: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  height: 0.35rem;
+  border-radius: 3px;
+  width: 0%;
+  max-width: 100%;
+  background: var(--text-muted);
+  pointer-events: none;
 }
 
 .music-player__vol-row {
@@ -1767,6 +1803,15 @@ html[data-theme="dark"] .music-timeline__pill--weather {
 
 html[data-theme="dark"] .music-timeline__pill--mood {
   color: #d8b4fe;
+}
+
+.music-timeline__pill--location {
+  border-color: rgba(34, 197, 94, 0.35);
+  color: #15803d;
+}
+
+html[data-theme="dark"] .music-timeline__pill--location {
+  color: #86efac;
 }
 
 .music-timeline__audio {

@@ -7,20 +7,6 @@ var _entries = _raw.slice().sort(function (a, b) {
   return db - da;
 });
 
-function resolveShareAudio(t) {
-  if (!t) return '';
-  var f = t.file && String(t.file).trim();
-  var u = t.url && String(t.url).trim();
-  if (f) {
-    if (/^https?:\/\//i.test(f)) return f;
-    var p = f.replace(/^source\//, '');
-    if (!p.startsWith('/')) p = '/' + p.replace(/^\/+/, '');
-    return p;
-  }
-  if (u) return u;
-  return '';
-}
-
 function fmtShareDate(d) {
   if (d == null || d === '') return '—';
   var dt = new Date(d);
@@ -45,12 +31,11 @@ function fmtShareDate(d) {
 
   <% if (_entries.length === 0) { %>
   <div class="music-timeline-empty md-block">
-    <%- render_md(_msui.empty_hint || '暂无分享记录。可在后台 **音乐分享时间轴** 中添加条目（歌曲、天气、心情与记事）。') %>
+    <%- render_md(_msui.empty_hint || '暂无分享记录。可在后台 **音乐分享时间轴** 中添加条目（时间、歌曲名、音频、天气、心情、地点与一段文字）。顶栏播放器会播放**时间轴里最新一条**已上传音频。') %>
   </div>
   <% } else { %>
   <ol class="music-timeline" aria-label="音乐分享时间轴">
     <% _entries.forEach(function (row) { %>
-    <%   var src = resolveShareAudio(row); %>
     <%   var title = (row.song_title && String(row.song_title).trim()) || '未命名'; %>
     <%   var _iso = ''; if (row.date != null && row.date !== '') { var _dt = new Date(row.date); if (!isNaN(_dt.getTime())) _iso = _dt.toISOString(); } %>
     <li class="music-timeline__item">
@@ -67,12 +52,10 @@ function fmtShareDate(d) {
           <% if (row.mood && String(row.mood).trim()) { %>
           <span class="music-timeline__pill music-timeline__pill--mood">心情 <%= String(row.mood).trim() %></span>
           <% } %>
+          <% if (row.location && String(row.location).trim()) { %>
+          <span class="music-timeline__pill music-timeline__pill--location"><%= String(row.location).trim() %></span>
+          <% } %>
         </div>
-        <% if (src) { %>
-        <div class="music-timeline__audio">
-          <audio class="music-timeline__player" controls preload="metadata" playsinline src="<%- src %>"></audio>
-        </div>
-        <% } %>
         <% if (row.note && String(row.note).trim()) { %>
         <div class="music-timeline__note md-block"><%- render_md(row.note) %></div>
         <% } %>
