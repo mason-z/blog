@@ -86,16 +86,9 @@ guestbook:
   waline:
     serverURL: https://waline.wuyuan.dev
 music_player:
-<<<<<<< HEAD
   enable: true
   updated_at: 2026-04-10T17:57
   tracks:
     - title: 音轨
       url: ""
-=======
-  updated_at: 2026-04-10T17:54
-  enable: true
-  tracks:
-    - title: 音轨
->>>>>>> e80152acaae249f052cb8bb0761b2b803f9022fe
       file: /images/uploads/.mp3

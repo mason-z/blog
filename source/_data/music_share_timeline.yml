@@ -1,16 +1,14 @@
+# 音乐分享时间轴（后台「音乐分享时间轴」编辑）；条目按日期从新到旧展示
 entries:
-<<<<<<< HEAD
   - date: 2026-04-10T18:09
     song_title: 天下第一等
     file: /images/uploads/.mp3
     weather: 多云
     mood: 不错
     note: "1"
-=======
   - date: 2026-04-10T18:07
+    song_title: 世界第一等
     file: /images/uploads/.mp3
     weather: 晴天
     mood: 不错
     note: "111"
-    song_title: 世界第一等
->>>>>>> e80152acaae249f052cb8bb0761b2b803f9022fe
