@@ -25,8 +25,10 @@ theme:
       path: /news/
     - label: 旅行
       path: /travel/
-    - label: 音乐分享
+    - label: 音乐
       path: /music-share/
+    - label: 宠物
+      path: /pets/
     - label: 留言
       path: /guestbook/
   footer: © Mason's Blog
@@ -71,11 +73,20 @@ site_ui:
     sr_only_all: 博客归档
   music_share_page:
     empty_hint: |
-      暂无分享记录。请在后台 **音乐分享时间轴** 中添加条目。天气、心情为可选，可在对应栏用 emoji；歌曲名可不填。顶栏播放器会播放时间轴里**最新一条**已填写音频的分享。
+      暂无分享记录。请在后台 **音乐时间轴** 中添加条目。天气、心情为可选，可在对应栏用 emoji；歌曲名可不填。顶栏播放器会播放时间轴里**最新一条**已填写音频的分享。
+  pets_page:
+    empty_hint: |
+      还没有宠物记录。请在后台 **宠物时间轴** 里添加照片与配文；单张 JPG 建议 **≤100KB**，上传后若仍偏大可在仓库根目录执行 `npm run compress:pet-images`。
   header:
     aria_home: 首页
     aria_nav: 主导航
     nav_toggle_label: 菜单
+  weather_chip:
+    enable: true
+    city_label: 深圳
+    latitude: "22.5431"
+    longitude: "114.0579"
+    show_on_guestbook: true
 guestbook:
   page:
     title: 留言墙

@@ -13,7 +13,8 @@
     "serve:public": "http-server public -p 4002 -c-1",
     "cms:proxy": "cross-env MODE=git decap-server",
     "dev:admin": "concurrently -k -n proxy,hexo -c cyan,magenta \"npm run cms:proxy\" \"npm run server:4001\"",
-    "gen:demo": "node tools/gen-demo-posts.cjs"
+    "gen:demo": "node tools/gen-demo-posts.cjs",
+    "compress:pet-images": "node tools/compress-pet-images.cjs"
   },
   "hexo": {
     "version": "7.3.0"
@@ -22,7 +23,8 @@
     "concurrently": "^9.2.1",
     "cross-env": "^10.1.0",
     "decap-server": "^3.6.0",
-    "http-server": "^14.1.1"
+    "http-server": "^14.1.1",
+    "sharp": "^0.33.5"
   },
   "dependencies": {
     "hexo": "^7.3.0",

@@ -53,22 +53,12 @@ function fmtShareDate(d) {
     <% } %>
   </header>
 
-  <aside class="music-share-live" id="music-share-live" aria-label="当前网络位置实时天气参考">
-    <div class="music-share-live__inner">
-      <p class="music-share-live__title">当前位置天气（自动 · 仅供参考）</p>
-      <p class="music-share-live__explain">根据访问时网络大致定位，与下方时间轴里每条记录的日期无关。静态博客无法在保存时自动写入后台；写新一条时可点按钮复制下面两行，分别粘贴到 Decap 的「天气」「地点」。</p>
-      <div class="music-share-live__out" id="music-share-live-out">正在获取当前网络位置的天气…</div>
-      <p class="music-share-live__err" id="music-share-live-err" hidden></p>
-      <button type="button" class="music-share-live__copy" id="music-share-live-copy" hidden>复制天气与地点（粘贴到后台）</button>
-    </div>
-  </aside>
-
   <% if (_entries.length === 0) { %>
   <div class="music-timeline-empty md-block">
-    <%- render_md(_msui.empty_hint || '暂无分享记录。可在后台 **音乐分享时间轴** 中添加条目；**天气、心情为可选**，适合在对应栏直接写 emoji（如 ☀️、😌）；**歌曲名可不填**。顶栏播放器会播放**时间轴里最新一条**已上传音频。') %>
+    <%- render_md(_msui.empty_hint || '暂无分享记录。可在后台 **音乐时间轴** 中添加条目；**天气、心情为可选**，适合在对应栏直接写 emoji（如 ☀️、😌）；**歌曲名可不填**。顶栏播放器会播放**时间轴里最新一条**已上传音频。') %>
   </div>
   <% } else { %>
-  <ol class="music-timeline" aria-label="音乐分享时间轴">
+  <ol class="music-timeline" aria-label="音乐时间轴">
     <% _entries.forEach(function (row) { %>
     <%   var title = timelineEntrySongTitle(row); %>
     <%   var _iso = ''; if (row.date != null && row.date !== '') { var _dt = new Date(row.date); if (!isNaN(_dt.getTime())) _iso = _dt.toISOString(); } %>
@@ -110,4 +100,3 @@ function fmtShareDate(d) {
   </div>
   <% } %>
 </article>
-<script src="<%- url_for('/js/music-share-live.js') %>" defer></script>

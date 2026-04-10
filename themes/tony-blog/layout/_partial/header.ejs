@@ -22,6 +22,7 @@
     </nav>
   </div>
   <div class="site-header__end">
+    <%- partial('_partial/weather-chip', { variant: 'header' }) %>
     <%- partial('_partial/music-player') %>
     <button type="button" class="theme-toggle" id="theme-toggle" aria-label="切换夜间模式" aria-pressed="false" title="日间 / 夜间">
       <svg class="theme-toggle__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">

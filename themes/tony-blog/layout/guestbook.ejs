@@ -17,6 +17,12 @@ var gbIntro = gbIntroRaw || (page.description && String(page.description).trim()
     <%- page.content %>
   </div>
   <% } %>
+  <% var _wgb = (site.data.site_ui && site.data.site_ui.weather_chip) || {}; %>
+  <% if (_wgb.enable !== false && _wgb.show_on_guestbook !== false) { %>
+  <div class="guestbook-weather-slot">
+    <%- partial('_partial/weather-chip', { variant: 'guestbook' }) %>
+  </div>
+  <% } %>
 
   <% if (serverURL) { %>
   <section class="guestbook-compose guestbook-waline-wrap" aria-label="评论">

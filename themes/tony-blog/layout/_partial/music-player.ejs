@@ -79,7 +79,7 @@
   <div class="music-player__panel" id="music-player-panel" hidden role="region" aria-label="音乐播放器">
     <div class="music-player__track" id="music-player-trackname">—</div>
     <% if (_updStr) { %>
-    <time class="music-player__updated"<% if (_updIso) { %> datetime="<%= _updIso %>"<% } %> title="与音乐分享时间轴中最新一条一致">更新 <%= _updStr %></time>
+    <time class="music-player__updated"<% if (_updIso) { %> datetime="<%= _updIso %>"<% } %> title="与音乐时间轴中最新一条一致">更新 <%= _updStr %></time>
     <% } %>
     <div class="music-player__controls">
       <button type="button" class="music-player__play" id="music-player-play" aria-label="播放">▶</button>

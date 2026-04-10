@@ -296,6 +296,61 @@ html[data-theme="dark"] .site-header.site-header--scrolled {
   flex-shrink: 0;
 }
 
+/* 顶栏：固定城市实况（Open-Meteo），在音乐按钮左侧 */
+.weather-chip--header {
+  max-width: 11rem;
+  padding: 0.2rem 0.45rem;
+  font-size: 0.72rem;
+  line-height: 1.35;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+html[data-theme="dark"] .weather-chip--header {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.weather-chip__inner {
+  font-variant-numeric: tabular-nums;
+}
+
+.weather-chip__muted {
+  opacity: 0.75;
+}
+
+/* 留言墙页：标题区下方同款天气条 */
+.guestbook-weather-slot {
+  margin: 0.75rem 0 1.25rem;
+}
+
+.weather-chip--guestbook {
+  display: inline-block;
+  padding: 0.45rem 0.75rem;
+  font-size: 0.88rem;
+  line-height: 1.4;
+  color: var(--text-muted);
+  background: rgba(0, 0, 0, 0.04);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+}
+
+html[data-theme="dark"] .weather-chip--guestbook {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 520px) {
+  .weather-chip--header {
+    max-width: 7.5rem;
+    font-size: 0.68rem;
+    padding: 0.15rem 0.35rem;
+  }
+}
+
 .theme-toggle {
   display: inline-flex;
   align-items: center;
@@ -1666,88 +1721,11 @@ html[data-theme="dark"] .music-player__play:hover {
   cursor: pointer;
 }
 
-/* ========== 音乐分享时间轴 /music-share/ ========== */
+/* ========== 音乐页时间轴 /music-share/ ========== */
 .music-share-header__desc {
   margin-top: 0.35rem;
   color: var(--text-muted);
   font-size: 0.92rem;
-}
-
-.music-share-live {
-  margin: 1rem 0 1.25rem;
-  padding: 0.85rem 1rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: rgba(0, 0, 0, 0.03);
-  font-size: 0.88rem;
-}
-
-html[data-theme="dark"] .music-share-live {
-  background: rgba(255, 255, 255, 0.06);
-}
-
-.music-share-live__title {
-  font-weight: 600;
-  margin: 0 0 0.35rem;
-  font-size: 0.9rem;
-}
-
-.music-share-live__explain {
-  margin: 0 0 0.6rem;
-  color: var(--text-muted);
-  line-height: 1.45;
-  font-size: 0.82rem;
-}
-
-.music-share-live__out {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem 0.75rem;
-  align-items: center;
-  margin-bottom: 0.5rem;
-  line-height: 1.4;
-}
-
-.music-share-live__loc {
-  font-weight: 500;
-}
-
-.music-share-live__wx {
-  color: var(--text-muted);
-}
-
-.music-share-live__temp {
-  font-variant-numeric: tabular-nums;
-  color: var(--text-muted);
-}
-
-.music-share-live__err {
-  margin: 0 0 0.5rem;
-  color: #b45309;
-  font-size: 0.82rem;
-}
-
-html[data-theme="dark"] .music-share-live__err {
-  color: #fbbf24;
-}
-
-.music-share-live__copy {
-  font-size: 0.82rem;
-  padding: 0.35rem 0.65rem;
-  border-radius: var(--radius-sm);
-  border: 1px solid var(--border);
-  background: var(--bg);
-  cursor: pointer;
-  font-family: inherit;
-  color: var(--text);
-}
-
-.music-share-live__copy:hover {
-  background: rgba(0, 0, 0, 0.05);
-}
-
-html[data-theme="dark"] .music-share-live__copy:hover {
-  background: rgba(255, 255, 255, 0.08);
 }
 
 .music-timeline-empty {
@@ -1917,6 +1895,112 @@ html[data-theme="dark"] .music-timeline__pill--location {
 }
 
 .music-share-footer {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+/* ========== 宠物页时间轴 /pets/ ========== */
+.pets-header__desc {
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.pets-timeline-empty {
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+  background: rgba(0, 0, 0, 0.02);
+  color: var(--text-muted);
+}
+
+html[data-theme="dark"] .pets-timeline-empty {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pets-timeline {
+  list-style: none;
+  margin: 1rem 0 0;
+  padding: 0 0 0 1.1rem;
+  position: relative;
+}
+
+.pets-timeline::before {
+  content: "";
+  position: absolute;
+  left: 0.35rem;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  width: 2px;
+  background: var(--border);
+  border-radius: 1px;
+}
+
+.pets-timeline__item {
+  position: relative;
+  padding-bottom: 1.35rem;
+}
+
+.pets-timeline__item:last-child {
+  padding-bottom: 0;
+}
+
+.pets-timeline__marker {
+  position: absolute;
+  left: -0.85rem;
+  top: 0.35rem;
+  width: 0.55rem;
+  height: 0.55rem;
+  border-radius: 50%;
+  background: var(--text-muted);
+  border: 2px solid var(--bg);
+  box-sizing: content-box;
+}
+
+.pets-timeline__card {
+  padding: 0.65rem 0.85rem 0.85rem;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--surface);
+}
+
+html[data-theme="dark"] .pets-timeline__card {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.pets-timeline__date {
+  display: block;
+  font-size: 0.78rem;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-muted);
+  margin-bottom: 0.55rem;
+}
+
+.pets-timeline__figure {
+  margin: 0 0 0.65rem;
+}
+
+.pets-timeline__img {
+  display: block;
+  width: 100%;
+  max-width: 36rem;
+  height: auto;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+}
+
+.pets-timeline__note {
+  font-size: 0.92rem;
+  color: var(--text);
+}
+
+.pets-timeline__note p:last-child {
+  margin-bottom: 0;
+}
+
+.pets-footer {
   margin-top: 2rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--border);

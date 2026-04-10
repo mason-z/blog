@@ -1,0 +1,18 @@
+<% var _wcv = typeof variant !== 'undefined' ? variant : 'header'; %>
+<% var wc = (site.data.site_ui && site.data.site_ui.weather_chip) || {}; %>
+<% if (wc.enable !== false) { %>
+<% var _lat = (wc.latitude != null && String(wc.latitude).trim()) ? String(wc.latitude).trim() : '22.5431'; %>
+<% var _lon = (wc.longitude != null && String(wc.longitude).trim()) ? String(wc.longitude).trim() : '114.0579'; %>
+<% var _city = (wc.city_label != null && String(wc.city_label).trim()) ? String(wc.city_label).trim() : '深圳'; %>
+<div
+  class="weather-chip weather-chip--<%- _wcv %>"
+  data-weather-chip
+  data-lat="<%- _lat %>"
+  data-lon="<%- _lon %>"
+  data-label="<%- _city %>"
+  aria-live="polite"
+  title="实况天气（<%- _city %>）"
+>
+  <span class="weather-chip__inner"><span class="weather-chip__muted">天气 …</span></span>
+</div>
+<% } %>

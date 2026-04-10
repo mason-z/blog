@@ -13,8 +13,10 @@ menu:
     path: /news/
   - label: 旅行
     path: /travel/
-  - label: 音乐分享
+  - label: 音乐
     path: /music-share/
+  - label: 宠物
+    path: /pets/
   - label: 留言
     path: /guestbook/
 footer: © Mason's Blog

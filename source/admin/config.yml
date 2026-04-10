@@ -90,7 +90,7 @@ collections:
                 hint: "与站点内文章地址一致，无域名。发布文章后从浏览器复制路径段，如 2026/04/01/hello-hexo/；不填则仅标点、不跳转博文"
 
   - name: music_share_timeline
-    label: 音乐分享时间轴
+    label: 音乐时间轴
     description: 唯一音乐数据源：/music-share/ 时间轴展示心情与文字；顶栏音符播放器自动播放**按时间最新一条、且已填写音频**的分享。保存后需重新构建站点。
     files:
       - label: 分享条目
@@ -186,6 +186,37 @@ collections:
                 widget: markdown
                 required: false
                 hint: "像朋友圈一样写一段话；支持 Markdown。天气与心情请用上方的下拉框选择。"
+
+  - name: pets_timeline
+    label: 宠物时间轴
+    description: /pets/ 页面时间轴；照片存于全站 uploads。单张建议 ≤100KB，过大可在仓库执行 npm run compress:pet-images。保存后需重新构建站点。
+    files:
+      - label: 宠物记录
+        name: pets_data
+        file: source/_data/pets_timeline.yml
+        format: yaml
+        fields:
+          - label: 条目（按日期从新到旧展示）
+            name: entries
+            widget: list
+            summary: "{{fields.date}}"
+            fields:
+              - label: 时间
+                name: date
+                widget: datetime
+                date_format: YYYY-MM-DD
+                time_format: HH:mm
+                hint: "记录这一刻的日期与时间"
+              - label: 照片
+                name: photo
+                widget: image
+                required: true
+                hint: "建议每张 ≤100KB、宽度不必过大。JPG 上传后若仍超 100KB，可在项目根目录执行 npm run compress:pet-images（仅处理 uploads 内偏大的 JPEG）。PNG 请先导出为 JPG 再传，或自行用 Squoosh 压缩。"
+              - label: 配文（Markdown）
+                name: note
+                widget: markdown
+                required: false
+                hint: "一小段话，支持 Markdown。"
 
   - name: site_and_pages
     label: 全站与独立页面
@@ -285,7 +316,7 @@ collections:
                   - { label: 全站归档无障碍标题, name: sr_only_all, widget: string }
                   - { label: 无文章提示, name: empty_posts, widget: markdown, hint: "支持 Markdown。" }
                   - { label: 左侧目录标题, name: toc_title, widget: string }
-              - label: 音乐分享页 /music-share/
+              - label: 音乐页 /music-share/
                 name: music_share_page
                 widget: object
                 collapsed: true
@@ -294,12 +325,27 @@ collections:
                     name: page_desc
                     widget: markdown
                     required: false
-                    hint: "显示在标题下方；也可只在「音乐分享」页面 front-matter 里写 description。"
+                    hint: "显示在标题下方；也可只在「音乐」页面 front-matter 里写 description。"
                   - label: 无条目时的提示
                     name: empty_hint
                     widget: markdown
                     required: false
                     hint: "当时间轴没有任何条目时展示。"
+              - label: 宠物页 /pets/
+                name: pets_page
+                widget: object
+                collapsed: true
+                fields:
+                  - label: 页头说明（可选）
+                    name: page_desc
+                    widget: markdown
+                    required: false
+                    hint: "显示在标题下方；也可在「宠物」页 front-matter 里写 description。"
+                  - label: 无条目时的提示
+                    name: empty_hint
+                    widget: markdown
+                    required: false
+                    hint: "当没有任何宠物记录时展示。"
               - label: 顶栏无障碍
                 name: header
                 widget: object
@@ -308,6 +354,34 @@ collections:
                   - { label: 首页链接, name: aria_home, widget: string }
                   - { label: 主导航区域, name: aria_nav, widget: string }
                   - { label: 移动端菜单按钮, name: nav_toggle_label, widget: string }
+              - label: 顶栏 / 留言墙 · 天气小模块（固定城市实况）
+                name: weather_chip
+                widget: object
+                collapsed: true
+                fields:
+                  - label: 开启
+                    name: enable
+                    widget: boolean
+                    default: true
+                    hint: "关闭后顶栏与留言墙均不显示。数据来自 Open-Meteo，访客浏览器直接请求，不写进文章。"
+                  - label: 城市显示名
+                    name: city_label
+                    widget: string
+                    default: "深圳"
+                  - label: 纬度
+                    name: latitude
+                    widget: string
+                    default: "22.5431"
+                    hint: "小数；与经度一起决定实况。可地图搜索城市后复制坐标。"
+                  - label: 经度
+                    name: longitude
+                    widget: string
+                    default: "114.0579"
+                  - label: 在留言墙页正文区再显示一块
+                    name: show_on_guestbook
+                    widget: boolean
+                    default: true
+                    hint: "开启时除顶栏外，留言墙标题说明下方再显示同款天气（仅 /guestbook/）。"
           - label: 四、留言墙（标题、说明与 Waline）
             name: guestbook
             widget: object
@@ -334,7 +408,7 @@ collections:
                     widget: string
                     required: false
                     hint: "可填他人提供的 Waline 服务地址；自建见 https://waline.js.org/guide/get-started.html"
-          - label: 五、顶栏音乐按钮（与「音乐分享时间轴」联动）
+          - label: 五、顶栏音乐按钮（与「音乐时间轴」联动）
             name: music_player
             widget: object
             collapsed: true
@@ -343,9 +417,9 @@ collections:
                 name: enable
                 widget: boolean
                 default: false
-                hint: "开启后顶栏显示音符；播放内容与曲目名取自 **音乐分享时间轴** 里「日期最新」且已上传/填写音频的那一条，无需在此重复配置。"
+                hint: "开启后顶栏显示音符；播放内容与曲目名取自 **音乐时间轴** 里「日期最新」且已上传/填写音频的那一条，无需在此重复配置。"
 
-      - label: 音乐分享页（/music-share/）
+      - label: 音乐页（/music-share/）
         name: page_music_share
         file: source/music-share/index.md
         format: frontmatter
@@ -357,7 +431,25 @@ collections:
             name: description
             widget: markdown
             required: false
-            hint: "显示在标题下方；也可在「站点配置 → 全站界面文案 → 音乐分享页」写 page_desc。"
+            hint: "显示在标题下方；也可在「站点配置 → 全站界面文案 → 音乐页」写 page_desc。"
+          - label: 页尾补充正文（可选）
+            name: body
+            widget: markdown
+            required: false
+            hint: "显示在时间轴列表下方。"
+      - label: 宠物页（/pets/）
+        name: page_pets
+        file: source/pets/index.md
+        format: frontmatter
+        fields:
+          - { label: 页面标题, name: title, widget: string }
+          - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
+          - { label: layout, name: layout, widget: hidden, default: pets }
+          - label: 页头说明（可选，Markdown）
+            name: description
+            widget: markdown
+            required: false
+            hint: "显示在标题下方；也可在「站点配置 → 全站界面文案 → 宠物页」写 page_desc。"
           - label: 页尾补充正文（可选）
             name: body
             widget: markdown
