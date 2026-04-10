@@ -1,6 +1,7 @@
 ---
-title: 宠物
-layout: pets
+title: 大脚
 date: 2026-04-11 12:00:00
-description: 按时间记录毛孩子的照片与随笔。
+layout: pets
+avatar: /images/uploads/fb247dbb2b614b4952791310388792a0.jpg
+description: 24年9月到我家的流浪猫😸，是我最爱的灵宠，陪伴我度过了那段艰难岁月，是治愈我的小可爱，帮我看家护院，不过现在已经大橘为重了🤲。它的名字叫大脚，因为它的脚很大。
 ---
