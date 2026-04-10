@@ -84,4 +84,5 @@ music_player:
   enable: true
   tracks:
     - title: 音轨
-      url: https://www.gequbao.com/music/542316
+      url: ""
+      file: /images/uploads/.mp3
