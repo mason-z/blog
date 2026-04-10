@@ -80,3 +80,9 @@ guestbook:
       个人邮箱📭  990832426@qq.com
   waline:
     serverURL: https://waline.wuyuan.dev
+music_player:
+  updated_at: 2026-04-10T17:54
+  enable: true
+  tracks:
+    - title: 音轨
+      file: /images/uploads/.mp3
