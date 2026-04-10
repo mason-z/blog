@@ -1457,6 +1457,22 @@ a.cat-card .count {
   flex-shrink: 0;
 }
 
+.music-player__head {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.music-player__updated {
+  font-size: 0.72rem;
+  line-height: 1.2;
+  color: var(--text-muted);
+  white-space: nowrap;
+  max-width: 9.5rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
 .music-player__toggle {
   display: inline-flex;
   align-items: center;

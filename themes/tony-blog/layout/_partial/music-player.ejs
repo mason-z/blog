@@ -15,15 +15,35 @@
 <%   } else if (u) { src = u; } %>
 <%   if (src) resolved.push({ title: title, url: src }); %>
 <% }); %>
+<%
+  var _updRaw = mp.updated_at;
+  var _updStr = '';
+  if (_updRaw != null && String(_updRaw).trim() !== '') {
+    _updStr = String(_updRaw).trim().replace('T', ' ').replace(/\.\d{3}Z?$/, '').replace(/Z$/, '');
+  }
+  var _updIso = '';
+  if (_updRaw != null && String(_updRaw).trim() !== '') {
+    var _u0 = String(_updRaw).trim();
+    if (/^\d{4}-\d{2}-\d{2}/.test(_u0)) {
+      _updIso = _u0.indexOf('T') > -1 ? _u0.split('.')[0].replace('Z', '') : _u0;
+      if (_updIso.indexOf(' ') > -1) _updIso = _updIso.replace(' ', 'T');
+    }
+  }
+%>
 <% if (mp.enable && resolved.length) { %>
 <div class="music-player-wrap" data-music-player>
-  <button type="button" class="music-player__toggle" id="music-player-toggle" aria-label="音乐" aria-expanded="false" aria-controls="music-player-panel" title="音乐">
-    <svg class="music-player__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-      <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.75"/>
-      <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.75"/>
-    </svg>
-  </button>
+  <div class="music-player__head">
+    <button type="button" class="music-player__toggle" id="music-player-toggle" aria-label="音乐" aria-expanded="false" aria-controls="music-player-panel" title="音乐">
+      <svg class="music-player__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+        <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+        <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.75"/>
+        <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.75"/>
+      </svg>
+    </button>
+    <% if (_updStr) { %>
+    <time class="music-player__updated"<% if (_updIso) { %> datetime="<%= _updIso %>"<% } %> title="播放列表更新时间">更新 <%= _updStr %></time>
+    <% } %>
+  </div>
   <div class="music-player__panel" id="music-player-panel" hidden role="region" aria-label="音乐播放器">
     <div class="music-player__track" id="music-player-trackname">—</div>
     <div class="music-player__controls">
@@ -43,7 +63,7 @@
           <path d="M15.54 8.46a5 5 0 010 7.07M19.07 4.93a9 9 0 010 14.14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
         </svg>
       </span>
-      <input type="range" class="music-player__vol" id="music-player-vol" min="0" max="1" step="0.05" value="0.85" aria-label="音量" />
+      <input type="range" class="music-player__vol" id="music-player-vol" min="0" max="1" step="0.05" value="0.06" aria-label="音量" />
     </div>
   </div>
   <audio id="music-player-audio" preload="metadata"></audio>

@@ -82,6 +82,7 @@ guestbook:
     serverURL: https://waline.wuyuan.dev
 music_player:
   enable: true
+  updated_at: 2026-04-10T17:57
   tracks:
     - title: 音轨
       url: ""

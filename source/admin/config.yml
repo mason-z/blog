@@ -230,6 +230,13 @@ collections:
                 widget: boolean
                 default: false
                 hint: "开启后顶栏显示音符按钮；至少配置一首有效音源。"
+              - label: 播放列表更新时间（顶栏音乐旁展示）
+                name: updated_at
+                widget: datetime
+                required: false
+                date_format: YYYY-MM-DD
+                time_format: HH:mm
+                hint: "修改播放列表后更新此项，读者可在音乐按钮旁看到「更新 …」时间。"
               - label: 播放列表
                 name: tracks
                 widget: list

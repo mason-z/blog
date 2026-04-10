@@ -32,26 +32,38 @@
 
   if (!audio || !btnToggle || !panel) return;
 
+  /** 打开网页后 60s 内从较低音量线性升到 100%；用户拖动音量滑块则取消渐升 */
+  var RAMP_MS = 60000;
+  var VOL_START = 0.06;
+  var rampActive = true;
+  var rampStart = performance.now();
+
   var idx = 0;
   try {
     var si = sessionStorage.getItem(SK.i);
     if (si !== null && si !== '') idx = Math.max(0, Math.min(tracks.length - 1, parseInt(si, 10) || 0));
   } catch (e) {}
 
-  try {
-    var sv = sessionStorage.getItem(SK.vol);
-    if (sv !== null && sv !== '') {
-      var v = parseFloat(sv);
-      if (!isNaN(v)) {
-        audio.volume = v;
-        if (vol) vol.value = String(v);
-      }
-    } else if (vol) {
-      audio.volume = parseFloat(vol.value) || 0.85;
+  audio.volume = VOL_START;
+  if (vol) vol.value = String(VOL_START);
+
+  function applyVolumeRamp() {
+    if (!rampActive) return;
+    var elapsed = performance.now() - rampStart;
+    var t = Math.min(1, elapsed / RAMP_MS);
+    var v = VOL_START + (1 - VOL_START) * t;
+    audio.volume = v;
+    if (vol) vol.value = String(v);
+    if (t >= 1) {
+      rampActive = false;
+      try {
+        sessionStorage.setItem(SK.vol, '1');
+      } catch (e) {}
+      return;
     }
-  } catch (e) {
-    audio.volume = 0.85;
+    requestAnimationFrame(applyVolumeRamp);
   }
+  requestAnimationFrame(applyVolumeRamp);
 
   function fmt(t) {
     if (!isFinite(t) || t < 0) return '0:00';
@@ -185,6 +197,7 @@
 
   if (vol) {
     vol.addEventListener('input', function () {
+      rampActive = false;
       audio.volume = parseFloat(vol.value) || 0;
       try {
         sessionStorage.setItem(SK.vol, String(audio.volume));
