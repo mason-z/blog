@@ -2,10 +2,14 @@
 var _msui = (site.data.site_ui && site.data.site_ui.music_share_page) || {};
 var _raw = (site.data.music_share_timeline && site.data.music_share_timeline.entries) ? site.data.music_share_timeline.entries : [];
 var _entries = _raw.slice().sort(function (a, b) {
+  var pa = a.pinned === true ? 1 : 0;
+  var pb = b.pinned === true ? 1 : 0;
+  if (pa !== pb) return pb - pa;
   var da = new Date(a.date != null ? a.date : 0).getTime();
   var db = new Date(b.date != null ? b.date : 0).getTime();
   return db - da;
 });
+var _msPin = _msui.pinned_label || ((site.data.site_ui && site.data.site_ui.labels && site.data.site_ui.labels.pinned_label) || '置顶');
 
 /** 与顶栏播放器一致：未填 song_title 时用文件名（去扩展名）或外链末段 */
 function trackDisplayTitleFromFile(t) {
@@ -46,7 +50,7 @@ function fmtShareDate(d) {
 %>
 <article class="page-doc inner-wrap music-share-page">
   <header class="music-share-header">
-    <h1 class="page-title"><%= page.title %></h1>
+    <h1 class="sr-only"><%= page.title %></h1>
     <% var _desc = page.description || _msui.page_desc; %>
     <% if (_desc) { %>
     <div class="page-desc md-block music-share-header__desc"><%- render_md(_desc) %></div>
@@ -66,7 +70,12 @@ function fmtShareDate(d) {
       <div class="music-timeline__marker" aria-hidden="true"></div>
       <div class="music-timeline__card">
         <div class="music-timeline__meta">
-          <time class="music-timeline__date"<% if (_iso) { %> datetime="<%= _iso %>"<% } %>><%= fmtShareDate(row.date) %></time>
+          <div class="music-timeline__time-row">
+            <time class="music-timeline__date"<% if (_iso) { %> datetime="<%= _iso %>"<% } %>><%= fmtShareDate(row.date) %></time>
+            <% if (row.pinned === true) { %>
+            <span class="music-timeline__pinned-badge"><%= _msPin %></span>
+            <% } %>
+          </div>
           <h2 class="music-timeline__song"><%= title %></h2>
         </div>
         <%   var _w = row.weather && String(row.weather).trim(); %>

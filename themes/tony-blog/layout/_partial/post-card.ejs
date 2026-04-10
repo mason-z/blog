@@ -34,7 +34,7 @@ var upd = post.updated || post.date;
     style="--thumb-angle: <%= ang %>deg<% if (cover) { %>;background-image: linear-gradient(180deg, rgba(0,0,0,0.1) 0%, transparent 55%), url(<%= JSON.stringify(cover) %>); background-size: cover, cover; background-position: center, center; background-repeat: no-repeat, no-repeat<% } %>"
   ></div>
   <div class="post-card__body">
-    <h2><a href="<%- url_for(post.path) %>"><%= post.title %></a></h2>
+    <h2><a href="<%- url_for(post.path) %>"><% if (Number(post.sticky) > 0) { %><span class="post-card__pinned"><%= _uilc.pinned_label || '置顶' %></span> <% } %><%= post.title %></a></h2>
     <p class="post-meta">
       <%= date(post.date, 'YYYY-MM-DD HH:mm') %>
       <span class="dot">·</span>

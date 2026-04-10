@@ -1,22 +1,25 @@
-# 旅行地图标注：name + 经纬度 lat/lng 必填；date、note 可选
+# 旅行地图标注：name + 经纬度 lat/lng 必填；date、note 可选；pinned: true 时排在侧栏列表最前
 # url：对应一篇博文的路径（与文章 front-matter 的永久链接一致，无域名），如 2026/04/01/hello-hexo/
 # 填写后：侧栏与地图标记点击会进入该文；不填则仅在地图上标点、展开说明
 # 坐标可用地图软件或 https://www.openstreetmap.org/ 右键查询
 
 cities:
   - name: 北京
+    pinned: false
     lat: 39.9042
     lng: 116.4074
     date: "2024-01"
     note: 故宫与胡同
     url: 2026/04/01/hello-hexo/
   - name: 成都
+    pinned: false
     lat: 30.5728
     lng: 104.0668
     date: "2023-10"
     note: 火锅与熊猫基地
     url: 2026/04/05/second-note/
   - name: 上海
+    pinned: false
     lat: 31.2304
     lng: 121.4737
     date: "2022-06"

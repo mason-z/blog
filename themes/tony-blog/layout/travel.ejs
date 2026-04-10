@@ -1,13 +1,21 @@
 <%
 var _rawCities = (site.data.travel && site.data.travel.cities) ? site.data.travel.cities : [];
-var _markers = _rawCities.map(function (c) {
+var _sortedCities = _rawCities.slice().sort(function (a, b) {
+  var pa = a.pinned === true ? 1 : 0;
+  var pb = b.pinned === true ? 1 : 0;
+  if (pa !== pb) return pb - pa;
+  return String(b.date || '').localeCompare(String(a.date || ''));
+});
+var _travelPin = ((site.data.site_ui && site.data.site_ui.labels && site.data.site_ui.labels.pinned_label) || '置顶');
+var _markers = _sortedCities.map(function (c) {
   var row = {
     name: c.name,
     lat: c.lat,
     lng: c.lng,
     date: c.date,
     note: c.note,
-    url: c.url
+    url: c.url,
+    pinned: c.pinned === true
   };
   if (c.url) {
     row.href = url_for(c.url);
@@ -33,12 +41,18 @@ var _markers = _rawCities.map(function (c) {
           <li class="travel-city-list__item">
             <% if (c.href) { %>
             <a href="<%- c.href %>" class="travel-city-list__btn travel-city-list__btn--link">
-              <span class="travel-city-list__name"><%= c.name || '未命名' %></span>
+              <span class="travel-city-list__primary">
+                <% if (c.pinned) { %><span class="travel-city-list__badge"><%= _travelPin %></span><% } %>
+                <span class="travel-city-list__name"><%= c.name || '未命名' %></span>
+              </span>
               <% if (c.date) { %><span class="travel-city-list__date"><%= c.date %></span><% } %>
             </a>
             <% } else { %>
             <button type="button" class="travel-city-list__btn" data-travel-index="<%= i %>">
-              <span class="travel-city-list__name"><%= c.name || '未命名' %></span>
+              <span class="travel-city-list__primary">
+                <% if (c.pinned) { %><span class="travel-city-list__badge"><%= _travelPin %></span><% } %>
+                <span class="travel-city-list__name"><%= c.name || '未命名' %></span>
+              </span>
               <% if (c.date) { %><span class="travel-city-list__date"><%= c.date %></span><% } %>
             </button>
             <% } %>

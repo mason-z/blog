@@ -14,7 +14,16 @@
   var isFiltered = isYearly || isMonthly;
   var list = isFiltered ? page.posts : site.posts;
   var byYear = {};
-  list.sort('date', -1).each(function (post) {
+  var _archArr = list.toArray();
+  _archArr.sort(function (a, b) {
+    var sa = Number(a.sticky) || 0;
+    var sb = Number(b.sticky) || 0;
+    if (sa !== sb) return sb - sa;
+    var da = a.date ? a.date.valueOf() : 0;
+    var dbb = b.date ? b.date.valueOf() : 0;
+    return dbb - da;
+  });
+  _archArr.forEach(function (post) {
     var y = date(post.date, 'YYYY');
     if (!byYear[y]) byYear[y] = [];
     byYear[y].push(post);
@@ -59,7 +68,7 @@
       <% var catName = _uia.uncategorized || '未分类'; var cf = true; post.categories.each(function (c) { if (cf) { catName = c.name; cf = false; } }); %>
       <article class="archive-full-item" id="<%= archiveItemId(post) %>">
         <header class="archive-full-header">
-          <h2 class="archive-full-title"><a href="<%- url_for(post.path) %>"><%= post.title %></a></h2>
+          <h2 class="archive-full-title"><a href="<%- url_for(post.path) %>"><% if (Number(post.sticky) > 0) { %><span class="archive-full-pinned"><%= _uia.pinned_label || '置顶' %></span> <% } %><%= post.title %></a></h2>
           <p class="archive-full-meta">
             <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD HH:mm') %></time>
             <span class="dot">·</span>

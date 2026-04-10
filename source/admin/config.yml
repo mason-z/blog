@@ -60,6 +60,13 @@ collections:
         widget: string
         required: false
         hint: "可选；与主题 post-card 封面一致"
+      - label: 置顶权重（sticky）
+        name: sticky
+        widget: number
+        default: 0
+        value_type: int
+        required: false
+        hint: "0 表示不置顶；大于 0 时在首页/分类/标签/归档等列表靠前，数字越大越靠前（Hexo 原生字段）。"
       - label: 正文（摘要可用 <!-- more --> 分隔）
         name: body
         widget: markdown
@@ -79,6 +86,12 @@ collections:
             summary: "{{fields.name}} → {{fields.url}}"
             fields:
               - { label: 城市名, name: name, widget: string }
+              - label: 置顶
+                name: pinned
+                widget: boolean
+                default: false
+                required: false
+                hint: "开启后排在侧栏与地图标注列表最前；多条置顶时仍按「旅行时间」字符串降序。"
               - { label: 纬度, name: lat, widget: number, value_type: float, step: 0.0001, hint: "北纬为正，如 39.90" }
               - { label: 经度, name: lng, widget: number, value_type: float, step: 0.0001, hint: "东经为正，如 116.40" }
               - { label: 旅行时间（展示用）, name: date, widget: string, required: false, hint: "如 2024-01，可空" }
@@ -109,6 +122,12 @@ collections:
                 date_format: YYYY-MM-DD
                 time_format: HH:mm
                 hint: "想记录的那一天与时间"
+              - label: 置顶
+                name: pinned
+                widget: boolean
+                default: false
+                required: false
+                hint: "开启后排在时间轴最前；多条置顶时仍按时间从新到旧。顶栏播放器仍按「日期最新 + 有音频」选取，不受此项影响。"
               - label: 歌曲名（可选）
                 name: song_title
                 widget: string
@@ -207,6 +226,12 @@ collections:
                 date_format: YYYY-MM-DD
                 time_format: HH:mm
                 hint: "记录这一刻的日期与时间"
+              - label: 置顶
+                name: pinned
+                widget: boolean
+                default: false
+                required: false
+                hint: "开启后排在时间轴最前；多条置顶时仍按时间从新到旧。"
               - label: 照片
                 name: photo
                 widget: image
@@ -340,6 +365,7 @@ collections:
                   - { label: 上一页, name: pagination_prev, widget: string }
                   - { label: 下一页, name: pagination_next, widget: string }
                   - { label: 分页区域 aria, name: pagination_aria, widget: string }
+                  - { label: 「置顶」角标（文章卡片/侧栏/归档）, name: pinned_label, widget: string, default: "置顶" }
               - label: 归档页
                 name: archive
                 widget: object
@@ -358,6 +384,12 @@ collections:
                     widget: markdown
                     required: false
                     hint: "显示在标题下方；也可只在「音乐」页面 front-matter 里写 description。"
+                  - label: 「置顶」标签文案
+                    name: pinned_label
+                    widget: string
+                    default: 置顶
+                    required: false
+                    hint: "时间轴上置顶条目的角标（与全站「置顶角标」可二选一配置）。"
                   - label: 无条目时的提示
                     name: empty_hint
                     widget: markdown
@@ -368,17 +400,28 @@ collections:
                 widget: object
                 collapsed: true
                 fields:
+                  - label: 页头圆形头像
+                    name: avatar
+                    widget: image
+                    required: false
+                    hint: "显示在页面顶部（无大标题）；方形图即可，主题为圆形裁切。与宠物时间轴共用 uploads。"
                   - label: 页头说明（可选）
                     name: page_desc
                     widget: markdown
                     required: false
-                    hint: "显示在标题下方；也可在「宠物」页 front-matter 里写 description。"
+                    hint: "显示在头像下方；也可在「宠物」页 front-matter 里写 description。"
                   - label: 左侧时间大纲标题
                     name: outline_title
                     widget: string
                     default: 时间大纲
                     required: false
                     hint: "有记录时左侧可点击跳转到对应条目。"
+                  - label: 「置顶」标签文案
+                    name: pinned_label
+                    widget: string
+                    default: 置顶
+                    required: false
+                    hint: "时间轴与左侧大纲中置顶条目的角标。"
                   - label: 无条目时的提示
                     name: empty_hint
                     widget: markdown
@@ -510,11 +553,16 @@ collections:
           - { label: 页面标题, name: title, widget: string }
           - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
           - { label: layout, name: layout, widget: hidden, default: pets }
+          - label: 页头头像（可选，覆盖站点配置）
+            name: avatar
+            widget: image
+            required: false
+            hint: "圆形展示；不填则用站点配置 → 宠物页里的头像。"
           - label: 页头说明（可选，Markdown）
             name: description
             widget: markdown
             required: false
-            hint: "显示在标题下方；也可在「站点配置 → 全站界面文案 → 宠物页」写 page_desc。"
+            hint: "显示在头像下方；也可在「站点配置 → 宠物页」写 page_desc。"
           - label: 页尾补充正文（可选）
             name: body
             widget: markdown

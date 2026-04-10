@@ -660,6 +660,13 @@ html[data-theme="dark"] .guestbook-placeholder {
   padding: clamp(1.5rem, 4vw, 2.5rem) clamp(1rem, 4vw, 1.5rem);
 }
 
+/* 近况 / 音乐 / 宠物：与首页博客区（.home-shell）同宽 */
+.pets-page.inner-wrap,
+.music-share-page.inner-wrap,
+.news-page.inner-wrap {
+  max-width: var(--home-max);
+}
+
 .home-grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) 300px;
@@ -789,6 +796,25 @@ html[data-theme="dark"] .guestbook-placeholder {
   color: var(--accent-cyan);
   text-decoration: underline;
   text-decoration-color: rgba(29, 78, 216, 0.35);
+}
+
+.post-card__pinned {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.1rem 0.42rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-cyan);
+  background: rgba(29, 78, 216, 0.08);
+  border: 1px solid rgba(29, 78, 216, 0.22);
+  border-radius: 999px;
+  vertical-align: 0.12em;
+}
+
+html[data-theme="dark"] .post-card__pinned {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.28);
 }
 
 .post-meta {
@@ -923,6 +949,24 @@ html[data-theme="dark"] .guestbook-placeholder {
 
 .aside-latest-item:hover {
   color: var(--accent-cyan);
+}
+
+.aside-latest__pinned {
+  display: inline-block;
+  margin-right: 0.35rem;
+  padding: 0.06rem 0.35rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--accent-cyan);
+  background: rgba(29, 78, 216, 0.08);
+  border: 1px solid rgba(29, 78, 216, 0.2);
+  border-radius: 999px;
+  vertical-align: 0.08em;
+}
+
+html[data-theme="dark"] .aside-latest__pinned {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.26);
 }
 
 /* ========== 按钮与分页 ========== */
@@ -1106,6 +1150,33 @@ html[data-theme="dark"] .guestbook-placeholder {
 .travel-map-ui .travel-sidebar .travel-city-list__item:last-child {
   border-bottom: none;
   padding-bottom: 0;
+}
+
+.travel-city-list__primary {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.35rem;
+  min-width: 0;
+  flex: 1;
+}
+
+.travel-city-list__badge {
+  display: inline-block;
+  padding: 0.08rem 0.38rem;
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-cyan);
+  background: rgba(29, 78, 216, 0.1);
+  border: 1px solid rgba(29, 78, 216, 0.24);
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+
+html[data-theme="dark"] .travel-city-list__badge {
+  background: rgba(96, 165, 250, 0.14);
+  border-color: rgba(96, 165, 250, 0.3);
 }
 
 .travel-city-list__btn {
@@ -1455,6 +1526,25 @@ a.cat-card .count {
   color: var(--accent-cyan);
   text-decoration: underline;
   text-decoration-color: rgba(29, 78, 216, 0.35);
+}
+
+.archive-full-pinned {
+  display: inline-block;
+  margin-right: 0.45rem;
+  padding: 0.12rem 0.48rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--accent-cyan);
+  background: rgba(29, 78, 216, 0.08);
+  border: 1px solid rgba(29, 78, 216, 0.22);
+  border-radius: 999px;
+  vertical-align: 0.08em;
+}
+
+html[data-theme="dark"] .archive-full-pinned {
+  background: rgba(96, 165, 250, 0.12);
+  border-color: rgba(96, 165, 250, 0.28);
 }
 
 .archive-full-meta {
@@ -1817,13 +1907,19 @@ html[data-theme="dark"] .music-timeline__card {
   margin-bottom: 0.5rem;
 }
 
+.music-timeline__time-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+  margin-bottom: 0.35rem;
+}
+
 .music-timeline__date {
-  display: block;
   font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   color: var(--text-soft);
-  margin-bottom: 0.35rem;
   letter-spacing: 0.02em;
 }
 
@@ -1914,11 +2010,34 @@ html[data-theme="dark"] .music-timeline__pill--location {
 }
 
 /* ========== 宠物 / 近况 时间轴（/pets/、/news/） ========== */
+.pets-header__brand {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.25rem;
+}
+
+.pets-header__avatar {
+  width: 5rem;
+  height: 5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 2px solid var(--border);
+  box-shadow: var(--glow-card);
+}
+
+html[data-theme="dark"] .pets-header__avatar {
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
 .pets-header__desc,
 .news-header__desc {
   margin-top: 0.35rem;
   color: var(--text-muted);
   font-size: 0.92rem;
+}
+
+.pets-header__brand + .pets-header__desc {
+  margin-top: 0.65rem;
 }
 
 .pets-with-toc,
@@ -2079,13 +2198,19 @@ html[data-theme="dark"] .news-timeline__card {
   box-shadow: none;
 }
 
+.pets-timeline__meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.45rem 0.65rem;
+  margin-bottom: 0.55rem;
+}
+
 .pets-timeline__date {
-  display: block;
   font-size: 0.78rem;
   font-variant-numeric: tabular-nums;
   font-weight: 600;
   color: var(--text-soft);
-  margin-bottom: 0.55rem;
   letter-spacing: 0.02em;
 }
 
@@ -2105,7 +2230,9 @@ html[data-theme="dark"] .news-timeline__card {
   letter-spacing: 0.02em;
 }
 
-.news-timeline__pinned-badge {
+.news-timeline__pinned-badge,
+.pets-timeline__pinned-badge,
+.music-timeline__pinned-badge {
   display: inline-block;
   padding: 0.12rem 0.45rem;
   font-size: 0.68rem;
@@ -2117,12 +2244,15 @@ html[data-theme="dark"] .news-timeline__card {
   border-radius: 999px;
 }
 
-html[data-theme="dark"] .news-timeline__pinned-badge {
+html[data-theme="dark"] .news-timeline__pinned-badge,
+html[data-theme="dark"] .pets-timeline__pinned-badge,
+html[data-theme="dark"] .music-timeline__pinned-badge {
   background: rgba(96, 165, 250, 0.12);
   border-color: rgba(96, 165, 250, 0.28);
 }
 
-.news-outline__pinned-mark {
+.news-outline__pinned-mark,
+.pets-outline__pinned-mark {
   font-weight: 600;
   color: var(--accent-cyan);
   margin-right: 0.15rem;

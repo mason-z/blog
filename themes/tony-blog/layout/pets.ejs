@@ -1,7 +1,11 @@
 <%
 var _pui = (site.data.site_ui && site.data.site_ui.pets_page) || {};
+var _pinLbl = _pui.pinned_label || ((site.data.site_ui && site.data.site_ui.labels && site.data.site_ui.labels.pinned_label) || '置顶');
 var _raw = (site.data.pets_timeline && site.data.pets_timeline.entries) ? site.data.pets_timeline.entries : [];
 var _entries = _raw.slice().sort(function (a, b) {
+  var pa = a.pinned === true ? 1 : 0;
+  var pb = b.pinned === true ? 1 : 0;
+  if (pa !== pb) return pb - pa;
   var da = new Date(a.date != null ? a.date : 0).getTime();
   var db = new Date(b.date != null ? b.date : 0).getTime();
   return db - da;
@@ -32,7 +36,14 @@ function fmtPetDate(d) {
 %>
 <article class="page-doc inner-wrap pets-page">
   <header class="pets-header">
-    <h1 class="page-title"><%= page.title %></h1>
+    <h1 class="sr-only"><%= page.title %></h1>
+    <% var _avatarRaw = (page.avatar != null && String(page.avatar).trim()) ? String(page.avatar).trim() : (_pui.avatar != null && String(_pui.avatar).trim() ? String(_pui.avatar).trim() : ''); %>
+    <% var _avatarSrc = _avatarRaw ? resolvePetPhoto({ photo: _avatarRaw }) : ''; %>
+    <% if (_avatarSrc) { %>
+    <div class="pets-header__brand">
+      <img class="pets-header__avatar" src="<%- _avatarSrc %>" alt="" width="80" height="80" loading="lazy" decoding="async" />
+    </div>
+    <% } %>
     <% var _desc = page.description || _pui.page_desc; %>
     <% if (_desc) { %>
     <div class="page-desc md-block pets-header__desc"><%- render_md(_desc) %></div>
@@ -49,8 +60,8 @@ function fmtPetDate(d) {
       <h2 class="pets-outline__title"><%= _pui.outline_title || '时间大纲' %></h2>
       <ul class="pets-outline__list">
         <% _entries.forEach(function (row, idx) { %>
-        <li class="pets-outline__item">
-          <a class="pets-outline__link" href="#pets-entry-<%= idx %>"><%= fmtPetDate(row.date) %></a>
+        <li class="pets-outline__item<% if (row.pinned === true) { %> pets-outline__item--pinned<% } %>">
+          <a class="pets-outline__link" href="#pets-entry-<%= idx %>"><% if (row.pinned === true) { %><span class="pets-outline__pinned-mark"><%= _pinLbl %></span> <% } %><%= fmtPetDate(row.date) %></a>
         </li>
         <% }); %>
       </ul>
@@ -60,10 +71,15 @@ function fmtPetDate(d) {
         <% _entries.forEach(function (row, idx) { %>
         <%   var src = resolvePetPhoto(row); %>
         <%   var _iso = ''; if (row.date != null && row.date !== '') { var _dt = new Date(row.date); if (!isNaN(_dt.getTime())) _iso = _dt.toISOString(); } %>
-        <li class="pets-timeline__item" id="pets-entry-<%= idx %>">
+        <li class="pets-timeline__item<% if (row.pinned === true) { %> pets-timeline__item--pinned<% } %>" id="pets-entry-<%= idx %>">
           <div class="pets-timeline__marker" aria-hidden="true"></div>
           <div class="pets-timeline__card">
-            <time class="pets-timeline__date"<% if (_iso) { %> datetime="<%= _iso %>"<% } %>><%= fmtPetDate(row.date) %></time>
+            <div class="pets-timeline__meta">
+              <time class="pets-timeline__date"<% if (_iso) { %> datetime="<%= _iso %>"<% } %>><%= fmtPetDate(row.date) %></time>
+              <% if (row.pinned === true) { %>
+              <span class="pets-timeline__pinned-badge"><%= _pinLbl %></span>
+              <% } %>
+            </div>
             <% if (src) { %>
             <figure class="pets-timeline__figure">
               <img class="pets-timeline__img" src="<%- src %>" alt="" loading="lazy" decoding="async" />
