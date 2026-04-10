@@ -1,4 +1,5 @@
 # 本地预览用（与 _config.yml 合并）。线上 CI 若执行 npm run build:prod，则只使用 _config.yml，不合并本文件。
+# 须与 npm run dev / start / preview 的端口一致（package.json 里固定为 4001）。
 url: http://localhost:4001
 root: /
 

@@ -33,6 +33,10 @@ theme:
       path: /guestbook/
   footer: © Mason's Blog
 site_ui:
+  archive:
+    toc_title: 目录
+    empty_posts: 暂无文章。
+    sr_only_all: 博客归档
   meta:
     site_title: I'm Mason
     site_description: |-
@@ -43,6 +47,39 @@ site_ui:
       开这个博客主要是为了**记录生活/分享思考/也许还有整理技术的嫌疑**，我还是希望我有一个较快的更新频率。
 
       如果你也喜欢同类内容，欢迎常来坐坐。
+    favicon: /images/uploads/91334478039dbd472f3e5fc77a3219d0.png
+  music_share_page:
+    pinned_label: 置顶
+    empty_hint: >
+      暂无分享记录。请在后台 **音乐时间轴** 中添加条目。天气、心情为可选，可在对应栏用
+      emoji；歌曲名可不填。顶栏播放器会播放时间轴里**最新一条**已填写音频的分享。
+  header:
+    aria_home: 首页
+    aria_nav: 主导航
+    nav_toggle_label: 菜单
+  categories_page:
+    page_title: 分类
+    page_desc: 按栏目浏览文章
+    empty_hint: "暂无分类，请在文章 front-matter 中设置 categories:"
+    articles_count_suffix: 篇文章
+  weather_chip:
+    enable: true
+    city_label: 深圳
+    latitude: "22.5431"
+    longitude: "114.0579"
+    show_on_guestbook: true
+  pets_page:
+    outline_title: 时间大纲
+    pinned_label: 置顶
+    empty_hint: >
+      还没有宠物记录。请在后台 **宠物时间轴** 里添加照片与配文。构建站点时（`npm run build` / `npm run
+      build:prod`）会自动把 `uploads` 里超过 100KB 的照片压到约 100KB 以下；本地也可单独执行 `npm run
+      compress:pet-images`。
+  news_page:
+    outline_title: 时间大纲
+    pinned_label: 置顶
+    empty_hint: |
+      还没有近况记录。请在后台 **近况时间轴** 里添加条目（日期 + Markdown 正文）。
   home:
     sr_only_title: 博客
     stat_total_prefix: 文库共
@@ -52,50 +89,17 @@ site_ui:
     aside_categories_title: 分类
     aside_latest_title: 最新
     aside_aria_label: 站点侧栏
-  categories_page:
-    page_title: 分类
-    page_desc: 按栏目浏览文章
-    empty_hint: "暂无分类，请在文章 front-matter 中设置 categories:"
-    articles_count_suffix: 篇文章
   labels:
     head_fallback_blog: 博客
     tag_page_title_prefix: 标签：
     category_page_title_prefix: 分类：
+    pinned_label: 置顶
     pagination_aria: 分页
     uncategorized: 未分类
     head_tag_prefix: 标签：
     pagination_next: 下一页
     pagination_prev: 上一页
     updated: 更新
-    pinned_label: 置顶
-  archive:
-    toc_title: 目录
-    empty_posts: 暂无文章。
-    sr_only_all: 博客归档
-  music_share_page:
-    pinned_label: 置顶
-    empty_hint: |
-      暂无分享记录。请在后台 **音乐时间轴** 中添加条目。天气、心情为可选，可在对应栏用 emoji；歌曲名可不填。顶栏播放器会播放时间轴里**最新一条**已填写音频的分享。
-  pets_page:
-    outline_title: 时间大纲
-    pinned_label: 置顶
-    empty_hint: |
-      还没有宠物记录。请在后台 **宠物时间轴** 里添加照片与配文。构建站点时（`npm run build` / `npm run build:prod`）会自动把 `uploads` 里超过 100KB 的照片压到约 100KB 以下；本地也可单独执行 `npm run compress:pet-images`。
-  news_page:
-    outline_title: 时间大纲
-    pinned_label: 置顶
-    empty_hint: |
-      还没有近况记录。请在后台 **近况时间轴** 里添加条目（日期 + Markdown 正文）。
-  header:
-    aria_home: 首页
-    aria_nav: 主导航
-    nav_toggle_label: 菜单
-  weather_chip:
-    enable: true
-    city_label: 深圳
-    latitude: "22.5431"
-    longitude: "114.0579"
-    show_on_guestbook: true
 guestbook:
   page:
     title: 留言墙

@@ -329,6 +329,11 @@ collections:
                     required: false
                     hint: "若已设置站点名称，一般以站点名称为准；此处可作为未设置站点名称时的后备"
                   - { label: 站点描述, name: site_description, widget: markdown, hint: "支持 Markdown；用于页头 meta 时会自动转为纯文本摘要。" }
+                  - label: 网站图标（浏览器标签）
+                    name: favicon
+                    widget: image
+                    required: false
+                    hint: "可选。上传 JPG/PNG/WebP 等方形小图；留空则使用仓库根目录 source/favicon.ico。保存后需重新构建站点。"
               - label: 首页列表区
                 name: home
                 widget: object

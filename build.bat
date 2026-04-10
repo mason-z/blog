@@ -14,7 +14,7 @@ if not exist "node_modules\hexo\" (
 )
 
 echo.
-echo 正在生成 public/（与本地预览相同配置：npm run build）...
+echo 一键生成 public\（npm run build：同步后台配置、检查、压缩宠物图、生成站点）...
 echo.
 
 call npm.cmd run build
@@ -27,6 +27,6 @@ if errorlevel 1 (
 
 echo.
 echo 已完成：输出目录为 public\
-echo 需要本地预览请另开终端执行：npm run server  或  npm run server:4001
+echo 本地预览：npm run dev 或 npm run start（均为 4001，与 _config.local.yml 一致）
 echo.
 pause

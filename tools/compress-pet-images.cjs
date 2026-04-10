@@ -1,15 +1,16 @@
 /**
  * 将 source/images/uploads 下偏大的照片压缩到约 ≤100KB（输出 JPEG）。
- * 一次性读入内存再处理，避免 Windows 上同一路径被 sharp 多次打开导致 UNKNOWN/open 失败。
- *
- * 用法：npm run compress:pet-images（build / build:prod 已自动执行）
+ * 默认仅处理「宠物时间轴 + 宠物页头像」引用的图片，避免误压其他上传资源。
+ * 环境变量 COMPRESS_PET_IMAGES=all 时处理 uploads 下全部偏大图片。
  */
 const fs = require("fs");
 const path = require("path");
+const yaml = require("js-yaml");
 const sharp = require("sharp");
 
 const MAX_BYTES = 100 * 1024;
-const UPLOADS_DIR = path.join(__dirname, "..", "source", "images", "uploads");
+const ROOT = path.join(__dirname, "..");
+const UPLOADS_DIR = path.join(ROOT, "source", "images", "uploads");
 
 function collectFiles(dir, acc = []) {
   if (!fs.existsSync(dir)) return acc;
@@ -20,6 +21,82 @@ function collectFiles(dir, acc = []) {
     else acc.push(p);
   }
   return acc;
+}
+
+/** 站内路径 → source 下绝对路径（仅处理 uploads 内图片） */
+function mediaUrlToAbs(u) {
+  if (u == null || typeof u !== "string") return null;
+  let s = u.trim();
+  if (!s || /^https?:\/\//i.test(s)) return null;
+  s = s.replace(/^source\//, "");
+  if (s.startsWith("/images/uploads/")) {
+    return path.join(ROOT, "source", s.replace(/^\//, ""));
+  }
+  if (s.startsWith("images/uploads/")) {
+    return path.join(ROOT, "source", s);
+  }
+  if (s.startsWith("/") && s.includes("uploads")) {
+    return path.join(ROOT, "source", s.replace(/^\//, ""));
+  }
+  return null;
+}
+
+function parseFrontMatter(md) {
+  if (!/^---\r?\n/.test(md)) return {};
+  const end = md.indexOf("\n---", 4);
+  if (end === -1) return {};
+  try {
+    return yaml.load(md.slice(4, end)) || {};
+  } catch {
+    return {};
+  }
+}
+
+/** 收集宠物相关引用的图片绝对路径 */
+function collectReferencedPetImageAbsPaths() {
+  const set = new Set();
+
+  const petsYml = path.join(ROOT, "source", "_data", "pets_timeline.yml");
+  if (fs.existsSync(petsYml)) {
+    try {
+      const data = yaml.load(fs.readFileSync(petsYml, "utf8"));
+      (data && data.entries ? data.entries : []).forEach((e) => {
+        if (e && e.photo) {
+          const abs = mediaUrlToAbs(String(e.photo));
+          if (abs) set.add(path.normalize(abs));
+        }
+      });
+    } catch (_) {
+      /* health check 已校验 YAML；此处忽略 */
+    }
+  }
+
+  const siteCms = path.join(ROOT, "source", "_data", "site_cms.yml");
+  if (fs.existsSync(siteCms)) {
+    try {
+      const data = yaml.load(fs.readFileSync(siteCms, "utf8"));
+      const av =
+        data &&
+        data.site_ui &&
+        data.site_ui.pets_page &&
+        data.site_ui.pets_page.avatar;
+      if (av) {
+        const abs = mediaUrlToAbs(String(av));
+        if (abs) set.add(path.normalize(abs));
+      }
+    } catch (_) {}
+  }
+
+  const petsIdx = path.join(ROOT, "source", "pets", "index.md");
+  if (fs.existsSync(petsIdx)) {
+    const fm = parseFrontMatter(fs.readFileSync(petsIdx, "utf8"));
+    if (fm.avatar) {
+      const abs = mediaUrlToAbs(String(fm.avatar));
+      if (abs) set.add(path.normalize(abs));
+    }
+  }
+
+  return set;
 }
 
 async function jpegFromBuffer(inputBuf, maxW, quality) {
@@ -108,14 +185,37 @@ async function main() {
     console.log("目录不存在，跳过：", UPLOADS_DIR);
     process.exit(0);
   }
-  const files = collectFiles(UPLOADS_DIR).filter((f) => {
+
+  let files = collectFiles(UPLOADS_DIR).filter((f) => {
     const e = path.extname(f).toLowerCase();
     return [".jpg", ".jpeg", ".png", ".webp"].includes(e);
   });
 
+  const scopeAll = process.env.COMPRESS_PET_IMAGES === "all";
+  if (!scopeAll) {
+    const refs = collectReferencedPetImageAbsPaths();
+    if (refs.size > 0) {
+      files = files.filter((f) => refs.has(path.normalize(f)));
+      console.log(
+        `[compress-pet-images] 仅处理宠物相关引用（${refs.size} 个路径）。COMPRESS_PET_IMAGES=all 可处理全部 uploads。`
+      );
+    } else {
+      console.log(
+        "[compress-pet-images] 未解析到宠物引用，回退为处理 uploads 下全部偏大图片。"
+      );
+    }
+  } else {
+    console.log("[compress-pet-images] COMPRESS_PET_IMAGES=all：处理全部 uploads。");
+  }
+
   let n = 0;
   for (const f of files) {
-    const st = fs.statSync(f);
+    let st;
+    try {
+      st = fs.statSync(f);
+    } catch {
+      continue;
+    }
     if (st.size <= MAX_BYTES) continue;
     try {
       const r = await compressOne(f);

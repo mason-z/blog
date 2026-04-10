@@ -6,26 +6,20 @@
 
 ## 一键生成 public（Windows）
 
-双击 **`build-public.bat`**：会自动 `npm install`（仅首次），再执行 **`npm run build`** 生成 **`public/`**，**不启动**本地预览服务。需要本地预览请在终端执行 `npm run server` 或 `npm run server:4001`。
+**平常不用记一堆命令**：在仓库根目录执行 **`npm run build`**（或同义的 **`npm run site`** / **`npm run gen`**）即可；会先**自动同步** `source/admin` → `public/admin`，再检查数据、压缩宠物相关图片、生成 **`public/`**。Windows **一键生成**：双击根目录 **`build.bat`**（仅几 KB 脚本，不占额外空间；首次会自动 `npm install`）。**一键「先完整构建再预览」**：双击 **`preview-local.bat`**（或终端 **`npm run preview:local`**），流程与 `build.bat` 一致后再开 4001 预览。只想快速起服务、不先跑整条 build 时，用 **`npm run dev`** 或 **`npm run start`**（均为 **4001**，与 `_config.local.yml` 一致）。
 
 ## 使用
 
-在**本仓库根目录**安装依赖并启动：
+在**本仓库根目录**安装依赖并启动本地预览：
 
 ```bash
 npm install
-npm run server
+npm run dev
 ```
 
-浏览器打开提示的地址（默认 `http://localhost:4000`）。
+浏览器打开 **`http://localhost:4001`**。本地 **`npm run dev`** / **`start`** / **`preview`** 均已固定 **4001**，避免与 `_config.local.yml` 里 `http://localhost:4001` 不一致导致链接、书签打不开。
 
-若提示 **Port 4000 has been used**，先关掉之前开的 Hexo 终端，或换端口：
-
-```bat
-npm.cmd run server:4001
-```
-
-也可：`npm.cmd run server -- -p 4001`（任意未被占用端口均可）。
+若提示 **端口已被占用**，关掉之前的 Hexo 终端，或换端口：`npm.cmd run server -- -p 4003 --config _config.yml,_config.local.yml`，并**同步**把 `_config.local.yml` 的 `url` 改成对应端口（例如 `http://localhost:4003`）。
 
 ### Windows cmd 注意
 
@@ -82,7 +76,7 @@ npm install
 npm run build:prod
 ```
 
-`build` / `build:prod` 会先执行 **`npm run validate`**（扫描 YAML/Markdown 等是否含未解决的 Git 合并标记，并检查 `source/_data/site_cms.yml` 是否存在）。也可单独运行 **`npm run validate`**。
+`build` / `build:prod` 内部顺序：**每次执行 `validate` 前会自动 `sync:admin`**（不必手记）→ 健康检查 → **`compress:pet-images`**（默认只压宠物引用图；`COMPRESS_PET_IMAGES=all` 压全部 uploads）→ **`hexo generate`** → 最后再 **`sync:admin`** 收尾。一般**只跑 `npm run build` 即可**；若需单独检查数据可 **`npm run validate`**。
 
 在托管平台中把 **发布目录** 设为 **`public`**。仓库根目录含 **`.nvmrc`**（Node **20**），便于 CI 与本地一致。部署前请在 **`_config.yml`** 里把 **`url`** 改成你的**真实站点地址**（含 `https://`，无末尾斜杠），并保持 **`root: /`**。
 

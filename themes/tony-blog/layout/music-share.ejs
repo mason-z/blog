@@ -1,14 +1,7 @@
 <%
 var _msui = (site.data.site_ui && site.data.site_ui.music_share_page) || {};
 var _raw = (site.data.music_share_timeline && site.data.music_share_timeline.entries) ? site.data.music_share_timeline.entries : [];
-var _entries = _raw.slice().sort(function (a, b) {
-  var pa = a.pinned === true ? 1 : 0;
-  var pb = b.pinned === true ? 1 : 0;
-  if (pa !== pb) return pb - pa;
-  var da = new Date(a.date != null ? a.date : 0).getTime();
-  var db = new Date(b.date != null ? b.date : 0).getTime();
-  return db - da;
-});
+var _entries = timeline_sort_entries(_raw);
 var _msPin = _msui.pinned_label || ((site.data.site_ui && site.data.site_ui.labels && site.data.site_ui.labels.pinned_label) || '置顶');
 
 /** 与顶栏播放器一致：未填 song_title 时用文件名（去扩展名）或外链末段 */
@@ -34,19 +27,6 @@ function timelineEntrySongTitle(row) {
   if (st) return st;
   return trackDisplayTitleFromFile({ file: row.file, url: row.url });
 }
-
-function fmtShareDate(d) {
-  if (d == null || d === '') return '—';
-  var dt = new Date(d);
-  if (isNaN(dt.getTime())) return String(d);
-  var y = dt.getFullYear();
-  var m = dt.getMonth() + 1;
-  var day = dt.getDate();
-  var hh = dt.getHours();
-  var mm = dt.getMinutes();
-  function pad(n) { return n < 10 ? '0' + n : '' + n; }
-  return y + ' 年 ' + m + ' 月 ' + day + ' 日 ' + pad(hh) + ':' + pad(mm);
-}
 %>
 <article class="page-doc inner-wrap music-share-page">
   <header class="music-share-header">
@@ -71,7 +51,7 @@ function fmtShareDate(d) {
       <div class="music-timeline__card">
         <div class="music-timeline__meta">
           <div class="music-timeline__time-row">
-            <time class="music-timeline__date"<% if (_iso) { %> datetime="<%= _iso %>"<% } %>><%= fmtShareDate(row.date) %></time>
+            <time class="music-timeline__date"<% if (_iso) { %> datetime="<%= _iso %>"<% } %>><%= fmt_timeline_date(row.date) %></time>
             <% if (row.pinned === true) { %>
             <span class="music-timeline__pinned-badge"><%= _msPin %></span>
             <% } %>

@@ -3,12 +3,28 @@
 <% var _sn = (site.data.site_name && site.data.site_name.name && String(site.data.site_name.name).trim()) || ''; %>
 <% var _siteTitle = _sn || _uim.site_title || config.title %>
 <% var _siteDesc = plain_from_md(_uim.site_description || config.description) %>
+<%
+var _favRaw = (_uim.favicon != null && String(_uim.favicon).trim()) ? String(_uim.favicon).trim() : '';
+var _favResolved = _favRaw ? resolve_upload_url(_favRaw) : '';
+var _useCustomFavicon = _favRaw && _favResolved;
+var _favHref = _useCustomFavicon ? url_for(_favResolved) : url_for('/favicon.ico');
+var _favType = 'image/x-icon';
+if (_useCustomFavicon) {
+  var _favLow = _favRaw.toLowerCase();
+  if (/\.jpe?g$/i.test(_favLow)) { _favType = 'image/jpeg'; }
+  else if (/\.png$/i.test(_favLow)) { _favType = 'image/png'; }
+  else if (/\.webp$/i.test(_favLow)) { _favType = 'image/webp'; }
+  else if (/\.gif$/i.test(_favLow)) { _favType = 'image/gif'; }
+  else if (/\.svg$/i.test(_favLow)) { _favType = 'image/svg+xml'; }
+  else { _favType = 'image/jpeg'; }
+}
+%>
 <% var _gbHead = (page.layout === 'guestbook' && site.data.guestbook && site.data.guestbook.page) ? site.data.guestbook.page : null; %>
 <% var _gbHeadTitle = (_gbHead && _gbHead.title && String(_gbHead.title).trim()) || ''; %>
 <% var _gbHeadIntro = (_gbHead && _gbHead.intro !== undefined && _gbHead.intro !== null) ? plain_from_md(_gbHead.intro) : ''; %>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<link rel="icon" href="<%- url_for('/favicon.ico') %>" type="image/x-icon" />
+<link rel="icon" href="<%- _favHref %>" type="<%= _favType %>" />
 <script>
 (function () {
   try {
