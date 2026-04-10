@@ -18,8 +18,9 @@ local_backend: true
 media_folder: source/images/uploads
 public_folder: /images/uploads
 
+# 与 Decap 默认媒体库共用：ascii 会去掉非拉丁字符，中文文件名会变成「.mp3」；unicode 保留 UTF-8 文件名
 slug:
-  encoding: ascii
+  encoding: unicode
   clean_accents: true
   sanitize_replacement: "-"
 
