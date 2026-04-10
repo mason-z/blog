@@ -1,0 +1,80 @@
+<%
+var _nui = (site.data.site_ui && site.data.site_ui.news_page) || {};
+var _raw = (site.data.news_timeline && site.data.news_timeline.entries) ? site.data.news_timeline.entries : [];
+var _entries = _raw.slice().sort(function (a, b) {
+  var pa = a.pinned === true ? 1 : 0;
+  var pb = b.pinned === true ? 1 : 0;
+  if (pa !== pb) return pb - pa;
+  var da = new Date(a.date != null ? a.date : 0).getTime();
+  var db = new Date(b.date != null ? b.date : 0).getTime();
+  return db - da;
+});
+
+function fmtNewsDate(d) {
+  if (d == null || d === '') return '—';
+  var dt = new Date(d);
+  if (isNaN(dt.getTime())) return String(d);
+  var y = dt.getFullYear();
+  var m = dt.getMonth() + 1;
+  var day = dt.getDate();
+  var hh = dt.getHours();
+  var mm = dt.getMinutes();
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  return y + ' 年 ' + m + ' 月 ' + day + ' 日 ' + pad(hh) + ':' + pad(mm);
+}
+%>
+<article class="page-doc inner-wrap news-page">
+  <header class="news-header">
+    <h1 class="page-title"><%= page.title %></h1>
+    <% var _desc = page.description || _nui.page_desc; %>
+    <% if (_desc) { %>
+    <div class="page-desc md-block news-header__desc"><%- render_md(_desc) %></div>
+    <% } %>
+  </header>
+
+  <% if (_entries.length === 0) { %>
+  <div class="news-timeline-empty md-block">
+    <%- render_md(_nui.empty_hint || '还没有近况记录。请在后台 **近况时间轴** 中添加条目（时间与正文，支持 Markdown）。') %>
+  </div>
+  <% } else { %>
+  <div class="news-with-toc">
+    <aside class="news-outline" aria-label="<%= _nui.outline_title || '时间大纲' %> 导航">
+      <h2 class="news-outline__title"><%= _nui.outline_title || '时间大纲' %></h2>
+      <ul class="news-outline__list">
+        <% _entries.forEach(function (row, idx) { %>
+        <li class="news-outline__item<% if (row.pinned === true) { %> news-outline__item--pinned<% } %>">
+          <a class="news-outline__link" href="#news-entry-<%= idx %>"><% if (row.pinned === true) { %><span class="news-outline__pinned-mark"><%= _nui.pinned_label || '置顶' %></span> <% } %><%= fmtNewsDate(row.date) %></a>
+        </li>
+        <% }); %>
+      </ul>
+    </aside>
+    <div class="news-timeline-wrap">
+      <ol class="news-timeline" aria-label="近况时间轴">
+        <% _entries.forEach(function (row, idx) { %>
+        <%   var _iso = ''; if (row.date != null && row.date !== '') { var _dt = new Date(row.date); if (!isNaN(_dt.getTime())) _iso = _dt.toISOString(); } %>
+        <li class="news-timeline__item<% if (row.pinned === true) { %> news-timeline__item--pinned<% } %>" id="news-entry-<%= idx %>">
+          <div class="news-timeline__marker" aria-hidden="true"></div>
+          <div class="news-timeline__card">
+            <div class="news-timeline__meta">
+              <time class="news-timeline__date"<% if (_iso) { %> datetime="<%= _iso %>"<% } %>><%= fmtNewsDate(row.date) %></time>
+              <% if (row.pinned === true) { %>
+              <span class="news-timeline__pinned-badge"><%= _nui.pinned_label || '置顶' %></span>
+              <% } %>
+            </div>
+            <% if (row.note && String(row.note).trim()) { %>
+            <div class="news-timeline__note md-block"><%- render_md(row.note) %></div>
+            <% } %>
+          </div>
+        </li>
+        <% }); %>
+      </ol>
+    </div>
+  </div>
+  <% } %>
+
+  <% if (page.content && String(page.content).trim()) { %>
+  <div class="article-body news-footer md-block">
+    <%- page.content %>
+  </div>
+  <% } %>
+</article>

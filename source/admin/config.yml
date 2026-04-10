@@ -189,7 +189,7 @@ collections:
 
   - name: pets_timeline
     label: 宠物时间轴
-    description: /pets/ 页面时间轴；照片存于全站 uploads。单张建议 ≤100KB，过大可在仓库执行 npm run compress:pet-images。保存后需重新构建站点。
+    description: /pets/ 页面时间轴；照片存于全站 uploads。npm run build 会自动压缩 uploads 内超过 100KB 的图片；保存后需重新构建站点。
     files:
       - label: 宠物记录
         name: pets_data
@@ -211,12 +211,44 @@ collections:
                 name: photo
                 widget: image
                 required: true
-                hint: "建议每张 ≤100KB、宽度不必过大。JPG 上传后若仍超 100KB，可在项目根目录执行 npm run compress:pet-images（仅处理 uploads 内偏大的 JPEG）。PNG 请先导出为 JPG 再传，或自行用 Squoosh 压缩。"
+                hint: "建议宽度适中；构建站点（npm run build）时会自动把 uploads 里超过 100KB 的图压到约 100KB 以下。也可手动执行 npm run compress:pet-images。"
               - label: 配文（Markdown）
                 name: note
                 widget: markdown
                 required: false
                 hint: "一小段话，支持 Markdown。"
+
+  - name: news_timeline
+    label: 近况时间轴
+    description: /news/ 页面时间轴；纯文字动态，支持 Markdown。保存后需重新构建站点。
+    files:
+      - label: 近况记录
+        name: news_data
+        file: source/_data/news_timeline.yml
+        format: yaml
+        fields:
+          - label: 条目（按日期从新到旧展示）
+            name: entries
+            widget: list
+            summary: "{{fields.date}}"
+            fields:
+              - label: 时间
+                name: date
+                widget: datetime
+                date_format: YYYY-MM-DD
+                time_format: HH:mm
+                hint: "本条近况的日期与时间"
+              - label: 置顶
+                name: pinned
+                widget: boolean
+                default: false
+                required: false
+                hint: "开启后排在列表最前；多条置顶时仍按时间从新到旧。"
+              - label: 正文（Markdown）
+                name: note
+                widget: markdown
+                required: false
+                hint: "支持标题、列表等 Markdown。"
 
   - name: site_and_pages
     label: 全站与独立页面
@@ -341,11 +373,44 @@ collections:
                     widget: markdown
                     required: false
                     hint: "显示在标题下方；也可在「宠物」页 front-matter 里写 description。"
+                  - label: 左侧时间大纲标题
+                    name: outline_title
+                    widget: string
+                    default: 时间大纲
+                    required: false
+                    hint: "有记录时左侧可点击跳转到对应条目。"
                   - label: 无条目时的提示
                     name: empty_hint
                     widget: markdown
                     required: false
                     hint: "当没有任何宠物记录时展示。"
+              - label: 近况页 /news/
+                name: news_page
+                widget: object
+                collapsed: true
+                fields:
+                  - label: 页头说明（可选）
+                    name: page_desc
+                    widget: markdown
+                    required: false
+                    hint: "显示在标题下方；也可在「近况」页 front-matter 里写 description。"
+                  - label: 左侧时间大纲标题
+                    name: outline_title
+                    widget: string
+                    default: 时间大纲
+                    required: false
+                    hint: "有记录时左侧可点击跳转到对应条目。"
+                  - label: 「置顶」标签文案
+                    name: pinned_label
+                    widget: string
+                    default: 置顶
+                    required: false
+                    hint: "时间轴与左侧大纲中置顶条目的角标文字。"
+                  - label: 无条目时的提示
+                    name: empty_hint
+                    widget: markdown
+                    required: false
+                    hint: "当时间轴没有任何条目时展示。"
               - label: 顶栏无障碍
                 name: header
                 widget: object
@@ -471,8 +536,17 @@ collections:
         fields:
           - { label: 页面标题, name: title, widget: string }
           - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
-          - { label: layout, name: layout, widget: hidden, default: page }
-          - { label: 正文, name: body, widget: markdown }
+          - { label: layout, name: layout, widget: hidden, default: news }
+          - label: 页头说明（可选，Markdown）
+            name: description
+            widget: markdown
+            required: false
+            hint: "显示在标题下方；也可在「站点配置 → 近况页」写 page_desc。"
+          - label: 页尾补充正文（可选）
+            name: body
+            widget: markdown
+            required: false
+            hint: "显示在时间轴列表下方。"
       - label: 分类页头（/categories/）
         name: page_categories
         file: source/categories/index.md

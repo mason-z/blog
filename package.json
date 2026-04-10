@@ -4,8 +4,8 @@
   "private": true,
   "scripts": {
     "validate": "node tools/check-repo-health.cjs",
-    "build": "npm run validate && hexo generate --config _config.yml,_config.local.yml",
-    "build:prod": "npm run validate && hexo generate",
+    "build": "npm run validate && npm run compress:pet-images && hexo generate --config _config.yml,_config.local.yml",
+    "build:prod": "npm run validate && npm run compress:pet-images && hexo generate",
     "clean": "hexo clean",
     "server": "hexo server --config _config.yml,_config.local.yml",
     "server:4001": "hexo server -p 4001 --config _config.yml,_config.local.yml",

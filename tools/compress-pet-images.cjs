@@ -1,7 +1,8 @@
 /**
- * 将 source/images/uploads 下偏大的照片压缩到约 ≤100KB（优先 JPEG）。
- * 用法：npm run compress:pet-images
- * 依赖：sharp（devDependency）
+ * 将 source/images/uploads 下偏大的照片压缩到约 ≤100KB（输出 JPEG）。
+ * 一次性读入内存再处理，避免 Windows 上同一路径被 sharp 多次打开导致 UNKNOWN/open 失败。
+ *
+ * 用法：npm run compress:pet-images（build / build:prod 已自动执行）
  */
 const fs = require("fs");
 const path = require("path");
@@ -21,6 +22,14 @@ function collectFiles(dir, acc = []) {
   return acc;
 }
 
+async function jpegFromBuffer(inputBuf, maxW, quality) {
+  let p = sharp(inputBuf).rotate();
+  if (maxW > 0) {
+    p = p.resize({ width: maxW, withoutEnlargement: true });
+  }
+  return p.jpeg({ quality, mozjpeg: true }).toBuffer();
+}
+
 async function compressOne(absPath) {
   const ext = path.extname(absPath).toLowerCase();
   const stat = fs.statSync(absPath);
@@ -31,39 +40,52 @@ async function compressOne(absPath) {
   const jpegPath =
     ext === ".jpeg" || ext === ".jpg" ? absPath : path.join(dir, `${base}.jpg`);
 
-  let input = sharp(absPath).rotate();
-  const meta = await input.metadata();
-  let width = meta.width || 2000;
+  let inputBuf = fs.readFileSync(absPath);
+  const meta = await sharp(inputBuf).metadata();
+  const origW = meta.width || 2000;
 
-  const tryWrite = async (w, q) => {
-    const pipeline = sharp(absPath).rotate();
-    const resized = w < width ? pipeline.resize({ width: w, withoutEnlargement: true }) : pipeline;
-    return resized.jpeg({ quality: q, mozjpeg: true }).toBuffer();
-  };
+  const qualities = [82, 75, 68, 60, 52, 45, 38, 32];
+  const maxWidths = [
+    origW,
+    Math.min(origW, 1600),
+    1400,
+    1200,
+    1000,
+    900,
+    800,
+    700,
+    600,
+    520,
+    440,
+    380,
+  ];
 
   let bestBuf = null;
-  const qualities = [82, 75, 68, 60, 52, 45];
-  const widths = [width, Math.min(width, 1600), 1400, 1200, 1000, 800, 640];
+  let bestSize = Infinity;
 
-  outer: for (const w of widths) {
+  outer: for (const maxW of maxWidths) {
     for (const q of qualities) {
-      const buf = await tryWrite(w, q);
+      const buf = await jpegFromBuffer(inputBuf, maxW < origW ? maxW : 0, q);
       if (buf.length <= MAX_BYTES) {
         bestBuf = buf;
         break outer;
       }
-      if (!bestBuf || buf.length < bestBuf.length) bestBuf = buf;
+      if (buf.length < bestSize) {
+        bestSize = buf.length;
+        bestBuf = buf;
+      }
     }
   }
 
   if (!bestBuf) return { skipped: true, reason: "empty" };
 
-  if (jpegPath !== absPath && fs.existsSync(absPath) && ext !== ".jpg" && ext !== ".jpeg") {
+  if (jpegPath !== absPath && ext !== ".jpg" && ext !== ".jpeg") {
     fs.writeFileSync(jpegPath, bestBuf);
     fs.unlinkSync(absPath);
+    inputBuf = null;
     if (bestBuf.length > MAX_BYTES) {
       console.warn(
-        `仍约 ${(bestBuf.length / 1024).toFixed(1)} KB（目标 ≤100KB）。请改用小图或手动调低质量。`
+        `仍约 ${(bestBuf.length / 1024).toFixed(1)} KB（目标 ≤100KB）。请换更小的原图。`
       );
     }
     console.warn(
@@ -105,7 +127,7 @@ async function main() {
           : `已压缩: ${r.path} (${(r.bytes / 1024).toFixed(1)} KB)`
       );
     } catch (err) {
-      console.error("失败:", f, err.message);
+      console.error("失败:", f, err.message || err);
     }
   }
   if (n === 0) console.log("没有需要压缩的文件（或均已 ≤100KB）。");

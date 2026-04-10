@@ -41,29 +41,43 @@ function fmtPetDate(d) {
 
   <% if (_entries.length === 0) { %>
   <div class="pets-timeline-empty md-block">
-    <%- render_md(_pui.empty_hint || '还没有记录。请在后台 **宠物时间轴** 中添加条目（时间、照片与配文）。**单张照片建议 ≤100KB**；若 JPG 偏大，可在仓库根目录执行 `npm run compress:pet-images` 压缩 `source/images/uploads` 内过大的 JPEG。') %>
+    <%- render_md(_pui.empty_hint || '还没有记录。请在后台 **宠物时间轴** 中添加条目（时间、照片与配文）。执行 `npm run build` 时会自动压缩偏大的上传图；也可单独运行 `npm run compress:pet-images`。') %>
   </div>
   <% } else { %>
-  <ol class="pets-timeline" aria-label="宠物时间轴">
-    <% _entries.forEach(function (row) { %>
-    <%   var src = resolvePetPhoto(row); %>
-    <%   var _iso = ''; if (row.date != null && row.date !== '') { var _dt = new Date(row.date); if (!isNaN(_dt.getTime())) _iso = _dt.toISOString(); } %>
-    <li class="pets-timeline__item">
-      <div class="pets-timeline__marker" aria-hidden="true"></div>
-      <div class="pets-timeline__card">
-        <time class="pets-timeline__date"<% if (_iso) { %> datetime="<%= _iso %>"<% } %>><%= fmtPetDate(row.date) %></time>
-        <% if (src) { %>
-        <figure class="pets-timeline__figure">
-          <img class="pets-timeline__img" src="<%- src %>" alt="" loading="lazy" decoding="async" />
-        </figure>
-        <% } %>
-        <% if (row.note && String(row.note).trim()) { %>
-        <div class="pets-timeline__note md-block"><%- render_md(row.note) %></div>
-        <% } %>
-      </div>
-    </li>
-    <% }); %>
-  </ol>
+  <div class="pets-with-toc">
+    <aside class="pets-outline" aria-label="<%= _pui.outline_title || '时间大纲' %> 导航">
+      <h2 class="pets-outline__title"><%= _pui.outline_title || '时间大纲' %></h2>
+      <ul class="pets-outline__list">
+        <% _entries.forEach(function (row, idx) { %>
+        <li class="pets-outline__item">
+          <a class="pets-outline__link" href="#pets-entry-<%= idx %>"><%= fmtPetDate(row.date) %></a>
+        </li>
+        <% }); %>
+      </ul>
+    </aside>
+    <div class="pets-timeline-wrap">
+      <ol class="pets-timeline" aria-label="宠物时间轴">
+        <% _entries.forEach(function (row, idx) { %>
+        <%   var src = resolvePetPhoto(row); %>
+        <%   var _iso = ''; if (row.date != null && row.date !== '') { var _dt = new Date(row.date); if (!isNaN(_dt.getTime())) _iso = _dt.toISOString(); } %>
+        <li class="pets-timeline__item" id="pets-entry-<%= idx %>">
+          <div class="pets-timeline__marker" aria-hidden="true"></div>
+          <div class="pets-timeline__card">
+            <time class="pets-timeline__date"<% if (_iso) { %> datetime="<%= _iso %>"<% } %>><%= fmtPetDate(row.date) %></time>
+            <% if (src) { %>
+            <figure class="pets-timeline__figure">
+              <img class="pets-timeline__img" src="<%- src %>" alt="" loading="lazy" decoding="async" />
+            </figure>
+            <% } %>
+            <% if (row.note && String(row.note).trim()) { %>
+            <div class="pets-timeline__note md-block"><%- render_md(row.note) %></div>
+            <% } %>
+          </div>
+        </li>
+        <% }); %>
+      </ol>
+    </div>
+  </div>
   <% } %>
 
   <% if (page.content && String(page.content).trim()) { %>

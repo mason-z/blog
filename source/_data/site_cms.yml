@@ -75,8 +75,14 @@ site_ui:
     empty_hint: |
       暂无分享记录。请在后台 **音乐时间轴** 中添加条目。天气、心情为可选，可在对应栏用 emoji；歌曲名可不填。顶栏播放器会播放时间轴里**最新一条**已填写音频的分享。
   pets_page:
+    outline_title: 时间大纲
     empty_hint: |
-      还没有宠物记录。请在后台 **宠物时间轴** 里添加照片与配文；单张 JPG 建议 **≤100KB**，上传后若仍偏大可在仓库根目录执行 `npm run compress:pet-images`。
+      还没有宠物记录。请在后台 **宠物时间轴** 里添加照片与配文。构建站点时（`npm run build` / `npm run build:prod`）会自动把 `uploads` 里超过 100KB 的照片压到约 100KB 以下；本地也可单独执行 `npm run compress:pet-images`。
+  news_page:
+    outline_title: 时间大纲
+    pinned_label: 置顶
+    empty_hint: |
+      还没有近况记录。请在后台 **近况时间轴** 里添加条目（日期 + Markdown 正文）。
   header:
     aria_home: 首页
     aria_nav: 主导航
