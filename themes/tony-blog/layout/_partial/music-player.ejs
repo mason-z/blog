@@ -32,20 +32,18 @@
 %>
 <% if (mp.enable && resolved.length) { %>
 <div class="music-player-wrap" data-music-player>
-  <div class="music-player__head">
-    <button type="button" class="music-player__toggle" id="music-player-toggle" aria-label="音乐" aria-expanded="false" aria-controls="music-player-panel" title="音乐">
-      <svg class="music-player__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
-        <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.75"/>
-        <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.75"/>
-      </svg>
-    </button>
+  <button type="button" class="music-player__toggle" id="music-player-toggle" aria-label="音乐" aria-expanded="false" aria-controls="music-player-panel" title="音乐">
+    <svg class="music-player__icon" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+      <path d="M9 18V5l12-2v13" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="6" cy="18" r="3" stroke="currentColor" stroke-width="1.75"/>
+      <circle cx="18" cy="16" r="3" stroke="currentColor" stroke-width="1.75"/>
+    </svg>
+  </button>
+  <div class="music-player__panel" id="music-player-panel" hidden role="region" aria-label="音乐播放器">
+    <div class="music-player__track" id="music-player-trackname">—</div>
     <% if (_updStr) { %>
     <time class="music-player__updated"<% if (_updIso) { %> datetime="<%= _updIso %>"<% } %> title="播放列表更新时间">更新 <%= _updStr %></time>
     <% } %>
-  </div>
-  <div class="music-player__panel" id="music-player-panel" hidden role="region" aria-label="音乐播放器">
-    <div class="music-player__track" id="music-player-trackname">—</div>
     <div class="music-player__controls">
       <button type="button" class="music-player__icon-btn" id="music-player-prev" aria-label="上一首">‹</button>
       <button type="button" class="music-player__play" id="music-player-play" aria-label="播放">▶</button>
@@ -66,7 +64,7 @@
       <input type="range" class="music-player__vol" id="music-player-vol" min="0" max="1" step="0.05" value="0.06" aria-label="音量" />
     </div>
   </div>
-  <audio id="music-player-audio" preload="metadata"></audio>
+  <audio id="music-player-audio" preload="metadata" playsinline></audio>
 </div>
 <script type="application/json" id="music-player-data"><%- JSON.stringify({ tracks: resolved }) %></script>
 <% } %>

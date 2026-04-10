@@ -25,6 +25,8 @@ theme:
       path: /news/
     - label: 旅行
       path: /travel/
+    - label: 音乐分享
+      path: /music-share/
     - label: 留言
       path: /guestbook/
   footer: © Mason's Blog
@@ -67,6 +69,9 @@ site_ui:
     toc_title: 目录
     empty_posts: 暂无文章。
     sr_only_all: 博客归档
+  music_share_page:
+    empty_hint: |
+      暂无分享记录。请在后台侧边栏 **音乐分享时间轴** 中添加条目（分享时间、歌曲、音频、天气、心情与记事）。
   header:
     aria_home: 首页
     aria_nav: 主导航

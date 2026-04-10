@@ -88,6 +88,54 @@ collections:
                 required: false
                 hint: "与站点内文章地址一致，无域名。发布文章后从浏览器复制路径段，如 2026/04/01/hello-hexo/；不填则仅标点、不跳转博文"
 
+  - name: music_share_timeline
+    label: 音乐分享时间轴
+    description: 时间轴页面展示条目（歌曲、天气、心情、记事）；与顶栏全局音乐独立，可同一音频文件。保存后需重新构建站点。
+    files:
+      - label: 分享条目
+        name: music_share_data
+        file: source/_data/music_share_timeline.yml
+        format: yaml
+        fields:
+          - label: 条目（页面按日期从新到旧排序）
+            name: entries
+            widget: list
+            summary: "{{fields.date}} · {{fields.song_title}}"
+            fields:
+              - label: 分享时间
+                name: date
+                widget: datetime
+                date_format: YYYY-MM-DD
+                time_format: HH:mm
+                hint: "想记录的那一天与时间"
+              - label: 歌曲名
+                name: song_title
+                widget: string
+                hint: "展示用标题"
+              - label: 音频外链（HTTPS 直链）
+                name: url
+                widget: string
+                required: false
+                hint: "与上传二选一；均填写时优先使用上传文件。"
+              - label: 上传音频
+                name: file
+                widget: file
+                required: false
+                hint: "mp3/m4a 等，与全站媒体同一 uploads 目录。"
+              - label: 天气
+                name: weather
+                widget: string
+                required: false
+              - label: 心情
+                name: mood
+                widget: string
+                required: false
+              - label: 记事（Markdown）
+                name: note
+                widget: markdown
+                required: false
+                hint: "那天发生的事、随笔等"
+
   - name: site_and_pages
     label: 全站与独立页面
     description: "「站点配置」合并网站名称、外观、全站文案与留言墙后端，保存一次即可；下方为各独立页面的 Markdown。"
@@ -186,6 +234,21 @@ collections:
                   - { label: 全站归档无障碍标题, name: sr_only_all, widget: string }
                   - { label: 无文章提示, name: empty_posts, widget: markdown, hint: "支持 Markdown。" }
                   - { label: 左侧目录标题, name: toc_title, widget: string }
+              - label: 音乐分享页 /music-share/
+                name: music_share_page
+                widget: object
+                collapsed: true
+                fields:
+                  - label: 页头说明（可选，若页面正文未写 description 则显示此项）
+                    name: page_desc
+                    widget: markdown
+                    required: false
+                    hint: "显示在标题下方；也可只在「音乐分享」页面 front-matter 里写 description。"
+                  - label: 无条目时的提示
+                    name: empty_hint
+                    widget: markdown
+                    required: false
+                    hint: "当时间轴没有任何条目时展示。"
               - label: 顶栏无障碍
                 name: header
                 widget: object
@@ -230,13 +293,13 @@ collections:
                 widget: boolean
                 default: false
                 hint: "开启后顶栏显示音符按钮；至少配置一首有效音源。"
-              - label: 播放列表更新时间（顶栏音乐旁展示）
+              - label: 播放列表更新时间（展开音乐面板内展示）
                 name: updated_at
                 widget: datetime
                 required: false
                 date_format: YYYY-MM-DD
                 time_format: HH:mm
-                hint: "修改播放列表后更新此项，读者可在音乐按钮旁看到「更新 …」时间。"
+                hint: "修改播放列表后更新此项；读者点击顶栏音符展开面板后可见「更新 …」时间。"
               - label: 播放列表
                 name: tracks
                 widget: list
@@ -255,6 +318,24 @@ collections:
                     required: false
                     hint: "上传 mp3/m4a 等，保存在网站 uploads；大文件建议用外链以减小仓库体积。"
 
+      - label: 音乐分享页（/music-share/）
+        name: page_music_share
+        file: source/music-share/index.md
+        format: frontmatter
+        fields:
+          - { label: 页面标题, name: title, widget: string }
+          - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
+          - { label: layout, name: layout, widget: hidden, default: music-share }
+          - label: 页头说明（可选，Markdown）
+            name: description
+            widget: markdown
+            required: false
+            hint: "显示在标题下方；也可在「站点配置 → 全站界面文案 → 音乐分享页」写 page_desc。"
+          - label: 页尾补充正文（可选）
+            name: body
+            widget: markdown
+            required: false
+            hint: "显示在时间轴列表下方。"
       - label: 关于（/about/）
         name: page_about
         file: source/about/index.md

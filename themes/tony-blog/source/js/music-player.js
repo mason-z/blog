@@ -30,7 +30,7 @@
   var elDur = document.getElementById('music-player-dur');
   var elName = document.getElementById('music-player-trackname');
 
-  if (!audio || !btnToggle || !panel) return;
+  if (!audio || !btnToggle || !panel || !btnPlay) return;
 
   /** 打开网页后 60s 内从较低音量线性升到 100%；用户拖动音量滑块则取消渐升 */
   var RAMP_MS = 60000;
@@ -75,7 +75,7 @@
   function loadTrack(i) {
     idx = (i + tracks.length) % tracks.length;
     var tr = tracks[idx];
-    elName.textContent = tr.title || '—';
+    if (elName) elName.textContent = tr.title || '—';
     audio.src = tr.url;
     audio.load();
     try {
@@ -112,7 +112,18 @@
 
   btnToggle.addEventListener('click', function (e) {
     e.stopPropagation();
-    togglePanel(panel.hasAttribute('hidden'));
+    var willOpen = panel.hasAttribute('hidden');
+    togglePanel(willOpen);
+    if (willOpen) {
+      audio.play().then(function () {
+        setPlayIcon(true);
+        try {
+          sessionStorage.setItem(SK.playing, '1');
+        } catch (err) {}
+      }).catch(function () {
+        setPlayIcon(false);
+      });
+    }
   });
 
   document.addEventListener('click', function (e) {
@@ -124,6 +135,7 @@
   loadTrack(idx);
 
   function syncSeek() {
+    if (!seek || !elCur || !elDur) return;
     var d = audio.duration;
     if (!isFinite(d) || d <= 0) return;
     seek.value = String(Math.round((audio.currentTime / d) * 1000));
@@ -154,17 +166,21 @@
   });
 
   function setPlayIcon(playing) {
+    if (!btnPlay) return;
     btnPlay.textContent = playing ? '❚❚' : '▶';
     btnPlay.setAttribute('aria-label', playing ? '暂停' : '播放');
   }
 
-  btnPlay.addEventListener('click', function () {
+  btnPlay.addEventListener('click', function (e) {
+    e.stopPropagation();
     if (audio.paused) {
       audio.play().then(function () {
         setPlayIcon(true);
         try {
           sessionStorage.setItem(SK.playing, '1');
-        } catch (e) {}
+        } catch (err) {}
+      }).catch(function () {
+        setPlayIcon(false);
       });
     } else {
       audio.pause();
@@ -175,24 +191,36 @@
     }
   });
 
-  btnPrev.addEventListener('click', function () {
+  btnPrev.addEventListener('click', function (e) {
+    e.stopPropagation();
     loadTrack(idx - 1);
     audio.play().then(function () {
       setPlayIcon(true);
+    }).catch(function () {
+      setPlayIcon(false);
     });
   });
 
-  btnNext.addEventListener('click', function () {
+  btnNext.addEventListener('click', function (e) {
+    e.stopPropagation();
     loadTrack(idx + 1);
     audio.play().then(function () {
       setPlayIcon(true);
+    }).catch(function () {
+      setPlayIcon(false);
     });
   });
 
-  seek.addEventListener('input', function () {
-    var d = audio.duration;
-    if (!isFinite(d) || d <= 0) return;
-    audio.currentTime = (parseFloat(seek.value) / 1000) * d;
+  if (seek) {
+    seek.addEventListener('input', function () {
+      var d = audio.duration;
+      if (!isFinite(d) || d <= 0) return;
+      audio.currentTime = (parseFloat(seek.value) / 1000) * d;
+    });
+  }
+
+  audio.addEventListener('error', function () {
+    setPlayIcon(false);
   });
 
   if (vol) {
