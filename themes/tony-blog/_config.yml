@@ -16,3 +16,7 @@ menu:
   - label: 留言
     path: /guestbook/
 footer: © Mason's Blog
+
+music_player:
+  enable: false
+  tracks: []

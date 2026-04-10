@@ -80,3 +80,8 @@ guestbook:
       个人邮箱📭  990832426@qq.com
   waline:
     serverURL: https://waline.wuyuan.dev
+music_player:
+  enable: true
+  tracks:
+    - title: 音轨
+      url: https://www.gequbao.com/music/542316

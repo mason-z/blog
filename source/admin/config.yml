@@ -220,6 +220,33 @@ collections:
                     widget: string
                     required: false
                     hint: "可填他人提供的 Waline 服务地址；自建见 https://waline.js.org/guide/get-started.html"
+          - label: 五、全局音乐（顶栏「小太阳」左侧）
+            name: music_player
+            widget: object
+            collapsed: true
+            fields:
+              - label: 开启播放器
+                name: enable
+                widget: boolean
+                default: false
+                hint: "开启后顶栏显示音符按钮；至少配置一首有效音源。"
+              - label: 播放列表
+                name: tracks
+                widget: list
+                summary: "{{fields.title}}"
+                required: false
+                fields:
+                  - { label: 标题, name: title, widget: string, default: "音轨" }
+                  - label: 外链（HTTPS 音频直链）
+                    name: url
+                    widget: string
+                    required: false
+                    hint: "与上传二选一；若同时填写，优先使用下方上传文件。"
+                  - label: 上传音频
+                    name: file
+                    widget: file
+                    required: false
+                    hint: "上传 mp3/m4a 等，保存在网站 uploads；大文件建议用外链以减小仓库体积。"
 
       - label: 关于（/about/）
         name: page_about
