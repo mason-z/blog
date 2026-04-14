@@ -27,7 +27,7 @@ var _markers = _sortedCities.map(function (c) {
   <h1 class="sr-only"><%= page.title %></h1>
   <div class="travel-map-stage">
     <div class="travel-map-wrap">
-      <div id="travel-map" class="travel-map" role="application" aria-label="中国及旅行城市地图"></div>
+      <div id="travel-map" class="travel-map" role="application" aria-label="中国及足迹城市地图"></div>
     </div>
     <div class="travel-map-ui" aria-hidden="false">
       <% if (page.description) { %>
@@ -60,7 +60,7 @@ var _markers = _sortedCities.map(function (c) {
           </li>
           <% }); %>
           <% if (_markers.length === 0) { %>
-          <li class="travel-city-list__empty">暂无城市，请在 <code>source/_data/travel.yml</code> 或后台「旅行地图」中添加。</li>
+          <li class="travel-city-list__empty">暂无城市，请在 <code>source/_data/travel.yml</code> 或后台「足迹地图」中添加。</li>
           <% } %>
         </ol>
       </aside>

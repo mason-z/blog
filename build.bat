@@ -14,7 +14,7 @@ if not exist "node_modules\hexo\" (
 )
 
 echo.
-echo 一键生成 public\（npm run build：同步后台配置、检查、压缩宠物图、生成站点）...
+echo 一键生成 public\（npm run build：同步后台配置、检查、生成站点）...
 echo.
 
 call npm.cmd run build

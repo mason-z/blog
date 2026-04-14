@@ -31,7 +31,7 @@ function fmtTimelineDate(d) {
   return y + ' 年 ' + m + ' 月 ' + day + ' 日 ' + pad(hh) + ':' + pad(mm);
 }
 
-/** 字符串路径，或带 .photo 字段的对象（宠物时间轴行） */
+/** 字符串路径，或带 .photo 字段的对象（时间轴行，如含 photo 字段） */
 function resolveUploadUrl(input) {
   var f = '';
   if (input != null && typeof input === 'object' && !Array.isArray(input)) {

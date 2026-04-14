@@ -11,15 +11,8 @@ menu:
     path: /categories/
   - label: 近况
     path: /news/
-  - label: 旅行
+  - label: 足迹
     path: /travel/
-  - label: 音乐
-    path: /music-share/
-  - label: 宠物
-    path: /pets/
   - label: 留言
     path: /guestbook/
 footer: © Mason's Blog
-
-music_player:
-  enable: false

@@ -6,7 +6,7 @@
 
 ## 一键生成 public（Windows）
 
-**平常不用记一堆命令**：在仓库根目录执行 **`npm run build`**（或同义的 **`npm run site`** / **`npm run gen`**）即可；会先**自动同步** `source/admin` → `public/admin`，再检查数据、压缩宠物相关图片、生成 **`public/`**。Windows **一键生成**：双击根目录 **`build.bat`**（仅几 KB 脚本，不占额外空间；首次会自动 `npm install`）。**一键「先完整构建再预览」**：双击 **`preview-local.bat`**（或终端 **`npm run preview:local`**），流程与 `build.bat` 一致后再开 4001 预览。只想快速起服务、不先跑整条 build 时，用 **`npm run dev`** 或 **`npm run start`**（均为 **4001**，与 `_config.local.yml` 一致）。
+**平常不用记一堆命令**：在仓库根目录执行 **`npm run build`**（或同义的 **`npm run site`** / **`npm run gen`**）即可；会先**自动同步** `source/admin` → `public/admin`，再检查数据、生成 **`public/`**。Windows **一键生成**：双击根目录 **`build.bat`**（仅几 KB 脚本，不占额外空间；首次会自动 `npm install`）。**一键「先完整构建再预览」**：双击 **`preview-local.bat`**（或终端 **`npm run preview:local`**），流程与 `build.bat` 一致后再开 4001 预览。只想快速起服务、不先跑整条 build 时，用 **`npm run dev`** 或 **`npm run start`**（均为 **4001**，与 `_config.local.yml` 一致）。
 
 ## 使用
 
@@ -76,7 +76,7 @@ npm install
 npm run build:prod
 ```
 
-`build` / `build:prod` 内部顺序：**每次执行 `validate` 前会自动 `sync:admin`**（不必手记）→ 健康检查 → **`compress:pet-images`**（默认只压宠物引用图；`COMPRESS_PET_IMAGES=all` 压全部 uploads）→ **`hexo generate`** → 最后再 **`sync:admin`** 收尾。一般**只跑 `npm run build` 即可**；若需单独检查数据可 **`npm run validate`**。
+`build` / `build:prod` 内部顺序：**每次执行 `validate` 前会自动 `sync:admin`**（不必手记）→ 健康检查 → **`hexo generate`** → 最后再 **`sync:admin`** 收尾。一般**只跑 `npm run build` 即可**；若需单独检查数据可 **`npm run validate`**。
 
 在托管平台中把 **发布目录** 设为 **`public`**。仓库根目录含 **`.nvmrc`**（Node **20**），便于 CI 与本地一致。部署前请在 **`_config.yml`** 里把 **`url`** 改成你的**真实站点地址**（含 `https://`，无末尾斜杠），并保持 **`root: /`**。
 
@@ -98,7 +98,7 @@ npm run build:prod
 
 博客主题**导航里不显示**后台入口；管理地址为：**`https://你的域名/admin`**（部署后与本地 `public/admin` 一致）。
 
-后台里可编辑内容（保存后刷新本地预览即可）：**「全站与独立页面」**（**站点配置** 合并名称/外观/全站文案/留言墙，对应 `source/_data/site_cms.yml`；以及关于、近况、分类页、留言墙补充正文等独立页面）、**「旅行地图」**、**「博客文章」**。站点技术项（如 `url`、`root`）仍在根目录 `_config.yml` 手动改，避免误操作。
+后台里可编辑内容（保存后刷新本地预览即可）：**「全站与独立页面」**（**站点配置** 合并名称/外观/全站文案/留言墙，对应 `source/_data/site_cms.yml`；以及关于、近况、分类页、留言墙补充正文等独立页面）、**「足迹地图」**、**「博客文章」**。站点技术项（如 `url`、`root`）仍在根目录 `_config.yml` 手动改，避免误操作。
 
 1. 编辑 **`source/admin/config.yml`**：将 **`repo`** 改成你的 GitHub 仓库（格式 `用户名/仓库名`），**`branch`** 与默认分支一致（一般为 `main`）。**`base_url`** 须与你在浏览器里打开后台的站点 **完全一致**（例如 `https://masonblog.pages.dev`，若只用自定义域则改成 `https://你的域名`，不要混用）。  
 2. **Cloudflare Pages（本仓库方式）**：默认的 `https://api.netlify.com/auth` 在 CF 上会 **404**，因此仓库根目录已提供 **`functions/auth.ts`** 与 **`functions/callback.ts`** 作为 GitHub OAuth 代理（与 [decap-proxy](https://github.com/sterlingwes/decap-proxy) 同类逻辑）。部署后请在 **Cloudflare Pages → 你的项目 → 设置 → 环境变量** 中添加（**加密**推荐）：  
