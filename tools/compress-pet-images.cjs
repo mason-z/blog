@@ -6,7 +6,19 @@
 const fs = require("fs");
 const path = require("path");
 const yaml = require("js-yaml");
-const sharp = require("sharp");
+
+let sharp;
+try {
+  sharp = require("sharp");
+} catch (err) {
+  const msg = err && err.message ? err.message : String(err);
+  console.warn("[compress-pet-images] sharp 不可用，已跳过图片压缩（构建继续）。");
+  if (msg) console.warn(msg);
+  console.warn(
+    "若需启用压缩：在项目根目录执行 npm install；仍失败见 https://sharp.pixelplumbing.com/install"
+  );
+  process.exit(0);
+}
 
 const MAX_BYTES = 100 * 1024;
 const ROOT = path.join(__dirname, "..");

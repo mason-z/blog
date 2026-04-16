@@ -22,12 +22,12 @@ if errorlevel 1 (
 )
 
 echo.
-echo [2/2] 启动 Hexo 本地预览（端口 4001，与 _config.local.yml 中 url 一致）...
+echo [2/2] 启动 Hexo 本地预览（优先端口 4001；若被占用则自动换 4010、4011…）...
 echo 浏览器将在服务就绪后自动打开；仅预览站点，不含 Decap 代理。需要与远程同步时请在本目录执行： git pull
 echo.
 
-REM -o：等服务启动后再打开浏览器，避免「页面无法连接」。请始终访问 http://localhost:4001/
-call npx.cmd hexo server -p 4001 -o --config _config.yml,_config.local.yml
+REM -o：等服务启动后再打开浏览器。端口占用时请看终端提示的实际地址（可能与 _config.local.yml 中 url 不一致属正常）
+call node tools\hexo-preview-port.cjs -o
 if errorlevel 1 (
   echo.
   echo 预览进程异常退出。

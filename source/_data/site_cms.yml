@@ -25,6 +25,8 @@ theme:
       path: /news/
     - label: 旅行
       path: /travel/
+    - label: 徒步
+      path: /hiking/
     - label: 音乐
       path: /music-share/
     - label: 宠物
@@ -32,6 +34,7 @@ theme:
     - label: 留言
       path: /guestbook/
   footer: © Mason's Blog
+  dark_mode_bg_image: /images/uploads/【哲风壁纸】夜空-山脉-极光.png
 site_ui:
   archive:
     toc_title: 目录
@@ -62,6 +65,10 @@ site_ui:
     page_desc: 按栏目浏览文章
     empty_hint: "暂无分类，请在文章 front-matter 中设置 categories:"
     articles_count_suffix: 篇文章
+  hiking_page:
+    how_to_hint: >
+      **写法**：在侧边栏 **徒步时间轴** 里添加记录（日期、标题、可选照片、天气/心情/地点、Markdown 正文）。数据在
+      `hiking_timeline.yml`，**不占用博客文章**。
   weather_chip:
     enable: true
     city_label: 深圳

@@ -13,6 +13,8 @@ menu:
     path: /news/
   - label: 旅行
     path: /travel/
+  - label: 徒步
+    path: /hiking/
   - label: 音乐
     path: /music-share/
   - label: 宠物
@@ -20,6 +22,9 @@ menu:
   - label: 留言
     path: /guestbook/
 footer: © Mason's Blog
+
+# 关灯模式全站背景图（可选）；后台「站点配置 → 网站外观」上传可覆盖。留空则夜间为默认纯色。
+dark_mode_bg_image: ""
 
 music_player:
   enable: false

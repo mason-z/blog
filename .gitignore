@@ -1,5 +1,6 @@
 node_modules/
 public/
+tools/sync-blog-architecture.config.json
 db.json
 .deploy*/
 _multiconfig.yml

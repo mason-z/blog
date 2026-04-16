@@ -11,17 +11,19 @@
     "site": "npm run build",
     "gen": "npm run build",
     "clean": "hexo clean",
-    "server": "hexo server -p 4001 --config _config.yml,_config.local.yml",
-    "server:4001": "npm run server",
+    "server": "node tools/hexo-preview-port.cjs",
+    "server:4001": "hexo server -p 4001 --config _config.yml,_config.local.yml",
     "start": "npm run server",
     "dev": "npm run server",
-    "preview": "hexo server -p 4001 --config _config.yml,_config.local.yml",
+    "preview": "node tools/hexo-preview-port.cjs",
     "preview:local": "npm run build && npm run preview",
     "serve:public": "http-server public -p 4002 -c-1",
     "cms:proxy": "cross-env MODE=git decap-server",
     "dev:admin": "concurrently -k -n proxy,hexo -c cyan,magenta \"npm run cms:proxy\" \"npm run server:4001\"",
     "gen:demo": "node tools/gen-demo-posts.cjs",
-    "compress:pet-images": "node tools/compress-pet-images.cjs"
+    "compress:pet-images": "node tools/compress-pet-images.cjs",
+    "sync:public": "node tools/sync-blog-architecture.cjs",
+    "sync:public:dry": "node tools/sync-blog-architecture.cjs --dry-run"
   },
   "hexo": {
     "version": "7.3.0"

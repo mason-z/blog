@@ -2009,6 +2009,77 @@ html[data-theme="dark"] .music-timeline__pill--location {
   border-top: 1px solid var(--border);
 }
 
+/* ========== 徒步页 /hiking/（博客分类列表） ========== */
+.hiking-header__desc {
+  margin-top: 0.35rem;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+.hiking-howto {
+  margin-top: 0.75rem;
+  padding: 0.65rem 0.85rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+  border: 1px dashed var(--border);
+  border-radius: var(--radius-sm);
+  background: rgba(0, 0, 0, 0.02);
+}
+
+html[data-theme="dark"] .hiking-howto {
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.hiking-empty {
+  margin-top: 1rem;
+  padding: 1rem 1.1rem;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border);
+  color: var(--text-muted);
+}
+
+.hiking-meta-line {
+  margin: 0.75rem 0 0.5rem;
+  font-size: 0.88rem;
+  color: var(--text-muted);
+}
+
+.hiking-meta-line .dot {
+  margin: 0 0.35rem;
+  opacity: 0.6;
+}
+
+.hiking-meta-line__link {
+  color: var(--text-muted);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.hiking-meta-line__link:hover {
+  color: var(--text);
+}
+
+.hiking-footer {
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--border);
+}
+
+.hiking-timeline__photo {
+  margin: 0 0 0.65rem;
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.03);
+}
+
+.hiking-timeline__photo img {
+  display: block;
+  width: 100%;
+  height: auto;
+  vertical-align: middle;
+}
+
 /* ========== 宠物 / 近况 时间轴（/pets/、/news/） ========== */
 .pets-header__brand {
   display: flex;

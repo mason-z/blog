@@ -19,6 +19,12 @@ if (_useCustomFavicon) {
   else { _favType = 'image/jpeg'; }
 }
 %>
+<% var _tcm = site.data.theme_cms || {}; %>
+<% var _dmBgRaw = (_tcm.dark_mode_bg_image != null && String(_tcm.dark_mode_bg_image).trim()) ? String(_tcm.dark_mode_bg_image).trim() : ''; %>
+<% if (!_dmBgRaw && theme.dark_mode_bg_image != null && String(theme.dark_mode_bg_image).trim()) { _dmBgRaw = String(theme.dark_mode_bg_image).trim(); } %>
+<% var _dmBgResolved = _dmBgRaw ? resolve_upload_url(_dmBgRaw) : ''; %>
+<% var _dmBgHref = ''; %>
+<% if (_dmBgResolved) { _dmBgHref = /^https?:\/\//i.test(_dmBgResolved) ? _dmBgResolved : url_for(_dmBgResolved); } %>
 <% var _gbHead = (page.layout === 'guestbook' && site.data.guestbook && site.data.guestbook.page) ? site.data.guestbook.page : null; %>
 <% var _gbHeadTitle = (_gbHead && _gbHead.title && String(_gbHead.title).trim()) || ''; %>
 <% var _gbHeadIntro = (_gbHead && _gbHead.intro !== undefined && _gbHead.intro !== null) ? plain_from_md(_gbHead.intro) : ''; %>
@@ -56,6 +62,18 @@ if (_useCustomFavicon) {
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;500;600;700&family=Source+Serif+4:ital,opsz,wght@0,8..60,400;0,8..60,600;1,8..60,400&display=swap" rel="stylesheet" />
 <link rel="stylesheet" href="<%- url_for('/css/style.css') %>" />
+<% if (_dmBgHref) { %>
+<style id="dark-mode-bg-custom">
+  html[data-theme="dark"] body {
+    background-color: #12121a;
+    background-image: linear-gradient(rgba(18, 18, 26, 0.88), rgba(18, 18, 26, 0.88)), url(<%- JSON.stringify(_dmBgHref) %>);
+    background-size: cover, cover;
+    background-position: center, center;
+    background-repeat: no-repeat, no-repeat;
+    background-attachment: fixed, fixed;
+  }
+</style>
+<% } %>
 <% if (page.layout === 'travel') { %>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 <% } %>

@@ -1,0 +1,18 @@
+{
+  "from": "E:/desktop/pycode/mcblog_git/mcblog_git_Private",
+  "to": "E:/desktop/pycode/mcblog_git/mcblog_git_public",
+  "mirror": true,
+  "forbidPathPrefixes": ["source/_posts", "source/_drafts"],
+  "skipForbiddenPathCheck": false,
+  "paths": [
+    "themes",
+    "scripts",
+    "scaffolds",
+    "tools",
+    "package.json",
+    "package-lock.json",
+    "_config.yml",
+    "source/admin",
+    "functions"
+  ]
+}

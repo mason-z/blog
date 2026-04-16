@@ -275,6 +275,61 @@ collections:
                 required: false
                 hint: "支持标题、列表等 Markdown。"
 
+  - name: hiking_timeline
+    label: 徒步时间轴
+    description: /hiking/ 页面专用；与博客文章、音乐时间轴相互独立。保存后需重新构建站点。
+    files:
+      - label: 徒步记录
+        name: hiking_data
+        file: source/_data/hiking_timeline.yml
+        format: yaml
+        fields:
+          - label: 条目（按日期从新到旧展示，置顶优先）
+            name: entries
+            widget: list
+            summary: "{{fields.date}} · {{fields.title}}"
+            fields:
+              - label: 时间
+                name: date
+                widget: datetime
+                date_format: YYYY-MM-DD
+                time_format: HH:mm
+                hint: "这次徒步的日期与时间"
+              - label: 置顶
+                name: pinned
+                widget: boolean
+                default: false
+                required: false
+                hint: "开启后排在时间轴最前；多条置顶时仍按时间从新到旧。"
+              - label: 标题
+                name: title
+                widget: string
+                hint: "路线名、山名或一句话标题"
+              - label: 天气（可选）
+                name: weather
+                widget: string
+                required: false
+                hint: "可手写或带 emoji，如 ☀️ 晴"
+              - label: 心情（可选）
+                name: mood
+                widget: string
+                required: false
+              - label: 地点（可选）
+                name: location
+                widget: string
+                required: false
+                hint: "城市、区县或路线区域"
+              - label: 配图（可选）
+                name: photo
+                widget: image
+                required: false
+                hint: "单张封面图；更多图可写在正文 Markdown 里。"
+              - label: 正文（Markdown）
+                name: note
+                widget: markdown
+                required: false
+                hint: "路况、装备、同行、照片等；支持 Markdown。"
+
   - name: site_and_pages
     label: 全站与独立页面
     description: "「站点配置」合并网站名称、外观、全站文案与留言墙后端，保存一次即可；下方为各独立页面的 Markdown。"
@@ -313,6 +368,14 @@ collections:
                   - { label: 显示文字, name: label, widget: string }
                   - { label: 链接路径, name: path, widget: string, hint: "相对站点根，如 /about/、/archives/" }
               - { label: 页脚版权, name: footer, widget: string }
+              - label: 关灯模式背景图（可选）
+                name: dark_mode_bg_image
+                widget: image
+                required: false
+                media_library:
+                  config:
+                    max_file_size: 20971520
+                hint: "上传后作为夜间模式全站页面背景（带半透明遮罩，保证正文可读）。留空则使用主题默认纯色背景。单张图片须小于 20MB。"
           - label: 三、全站界面文案
             name: site_ui
             widget: object
@@ -459,6 +522,31 @@ collections:
                     widget: markdown
                     required: false
                     hint: "当时间轴没有任何条目时展示。"
+              - label: 徒步页 /hiking/
+                name: hiking_page
+                widget: object
+                collapsed: true
+                fields:
+                  - label: 页头说明（可选）
+                    name: page_desc
+                    widget: markdown
+                    required: false
+                    hint: "显示在标题下方；也可在「徒步」页 front-matter 里写 description。"
+                  - label: 「置顶」角标文案
+                    name: pinned_label
+                    widget: string
+                    default: 置顶
+                    required: false
+                  - label: 写作说明（列表上方灰色提示）
+                    name: how_to_hint
+                    widget: markdown
+                    required: false
+                    hint: "提示如何编辑徒步时间轴；留空则不显示该区域。"
+                  - label: 尚无记录时的提示
+                    name: empty_hint
+                    widget: markdown
+                    required: false
+                    hint: "当徒步时间轴没有任何条目时展示；留空则用站点默认说明。"
               - label: 顶栏无障碍
                 name: header
                 widget: object
@@ -568,6 +656,24 @@ collections:
             widget: markdown
             required: false
             hint: "显示在头像下方；也可在「站点配置 → 宠物页」写 page_desc。"
+          - label: 页尾补充正文（可选）
+            name: body
+            widget: markdown
+            required: false
+            hint: "显示在时间轴列表下方。"
+      - label: 徒步页（/hiking/）
+        name: page_hiking
+        file: source/hiking/index.md
+        format: frontmatter
+        fields:
+          - { label: 页面标题, name: title, widget: string }
+          - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
+          - { label: layout, name: layout, widget: hidden, default: hiking }
+          - label: 页头说明（可选）
+            name: description
+            widget: markdown
+            required: false
+            hint: "显示在标题下方；也可在「站点配置 → 徒步页」写 page_desc。列表数据在「徒步时间轴」。"
           - label: 页尾补充正文（可选）
             name: body
             widget: markdown
