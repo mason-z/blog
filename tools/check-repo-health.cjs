@@ -21,9 +21,7 @@ const MARKERS = ['<<<<<<<', '=======', '>>>>>>>'];
 /** 需能 parse 的站点数据（损坏则构建后页面异常） */
 const DATA_YAML_FILES = [
   ['source/_data/site_cms.yml', 'site_cms'],
-  ['source/_data/pets_timeline.yml', 'pets_timeline'],
   ['source/_data/news_timeline.yml', 'news_timeline'],
-  ['source/_data/music_share_timeline.yml', 'music_share_timeline'],
   ['source/_data/travel.yml', 'travel'],
 ];
 

@@ -5,12 +5,60 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>内容管理</title>
+  <style>
+    .nc-tag-chips { width: 100%; max-width: 100%; }
+    .nc-tag-chips__chip {
+      display: inline-flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.25rem;
+      min-width: 0;
+      padding: 0.2rem 0.35rem 0.2rem 0.5rem;
+      border: 1px solid rgba(127, 127, 127, 0.35);
+      border-radius: 6px;
+      font-size: 0.88rem;
+      line-height: 1.35;
+      background: rgba(127, 127, 127, 0.08);
+    }
+    .nc-tag-chips__text {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .nc-tag-chips__remove {
+      flex-shrink: 0;
+      margin: 0;
+      padding: 0 0.2rem;
+      border: none;
+      background: transparent;
+      cursor: pointer;
+      font-size: 1.1rem;
+      line-height: 1;
+      opacity: 0.65;
+      color: inherit;
+    }
+    .nc-tag-chips__remove:hover { opacity: 1; }
+    .nc-tag-chips__input {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 0.45rem 0.55rem;
+      font: inherit;
+      border-radius: 6px;
+      border: 1px solid rgba(127, 127, 127, 0.35);
+    }
+    @media (max-width: 720px) {
+      .nc-tag-chips__grid {
+        grid-template-columns: repeat(5, minmax(0, 1fr)) !important;
+      }
+    }
+  </style>
 </head>
 <body>
-  <!-- Decap CMS：主 CDN 用 jsDelivr（国内比 unpkg 更易加载）；失败则回退 unpkg -->
+  <!-- Decap CMS：主 CDN 用 jsDelivr；失败则回退 unpkg。先加载 CMS，再注册自定义标签控件。 -->
   <script
     src="https://cdn.jsdelivr.net/npm/decap-cms@3.4.0/dist/decap-cms.js"
     onerror="this.onerror=null;this.src='https://unpkg.com/decap-cms@3.4.0/dist/decap-cms.js'"
   ></script>
+  <script src="./tags-widget.js"></script>
 </body>
 </html>

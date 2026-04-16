@@ -34,8 +34,11 @@ if (_useCustomFavicon) {
 <script>
 (function () {
   try {
-    if (localStorage.getItem("tony-theme") === "dark") document.documentElement.setAttribute("data-theme", "dark");
-  } catch (e) {}
+    var stored = localStorage.getItem("tony-theme");
+    if (stored !== "light") document.documentElement.setAttribute("data-theme", "dark");
+  } catch (e) {
+    document.documentElement.setAttribute("data-theme", "dark");
+  }
 })();
 </script>
 <title>
@@ -64,13 +67,17 @@ if (_useCustomFavicon) {
 <link rel="stylesheet" href="<%- url_for('/css/style.css') %>" />
 <% if (_dmBgHref) { %>
 <style id="dark-mode-bg-custom">
-  html[data-theme="dark"] body {
+  /* 壁纸画在 html 上，避免被 body 纯色盖住；遮罩约半透，否则几乎看不见图 */
+  html[data-theme="dark"].tony-dark-bg-root {
     background-color: #12121a;
-    background-image: linear-gradient(rgba(18, 18, 26, 0.88), rgba(18, 18, 26, 0.88)), url(<%- JSON.stringify(_dmBgHref) %>);
-    background-size: cover, cover;
-    background-position: center, center;
-    background-repeat: no-repeat, no-repeat;
-    background-attachment: fixed, fixed;
+    background-image: linear-gradient(rgba(12, 12, 18, 0.5), rgba(12, 12, 22, 0.58)), url(<%- JSON.stringify(_dmBgHref) %>);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+  }
+  html[data-theme="dark"].tony-dark-bg-root body {
+    background: transparent !important;
   }
 </style>
 <% } %>

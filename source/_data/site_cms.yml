@@ -25,12 +25,6 @@ theme:
       path: /news/
     - label: 旅行
       path: /travel/
-    - label: 徒步
-      path: /hiking/
-    - label: 音乐
-      path: /music-share/
-    - label: 宠物
-      path: /pets/
     - label: 留言
       path: /guestbook/
   footer: © Mason's Blog
@@ -51,11 +45,6 @@ site_ui:
 
       如果你也喜欢同类内容，欢迎常来坐坐。
     favicon: /images/uploads/91334478039dbd472f3e5fc77a3219d0.png
-  music_share_page:
-    pinned_label: 置顶
-    empty_hint: >
-      暂无分享记录。请在后台 **音乐时间轴** 中添加条目。天气、心情为可选，可在对应栏用
-      emoji；歌曲名可不填。顶栏播放器会播放时间轴里**最新一条**已填写音频的分享。
   header:
     aria_home: 首页
     aria_nav: 主导航
@@ -65,23 +54,12 @@ site_ui:
     page_desc: 按栏目浏览文章
     empty_hint: "暂无分类，请在文章 front-matter 中设置 categories:"
     articles_count_suffix: 篇文章
-  hiking_page:
-    how_to_hint: >
-      **写法**：在侧边栏 **徒步时间轴** 里添加记录（日期、标题、可选照片、天气/心情/地点、Markdown 正文）。数据在
-      `hiking_timeline.yml`，**不占用博客文章**。
   weather_chip:
     enable: true
     city_label: 深圳
     latitude: "22.5431"
     longitude: "114.0579"
     show_on_guestbook: true
-  pets_page:
-    outline_title: 时间大纲
-    pinned_label: 置顶
-    empty_hint: >
-      还没有宠物记录。请在后台 **宠物时间轴** 里添加照片与配文。构建站点时（`npm run build` / `npm run
-      build:prod`）会自动把 `uploads` 里超过 100KB 的照片压到约 100KB 以下；本地也可单独执行 `npm run
-      compress:pet-images`。
   news_page:
     outline_title: 时间大纲
     pinned_label: 置顶
@@ -116,5 +94,3 @@ guestbook:
       个人邮箱📭  990832426@qq.com
   waline:
     serverURL: https://waline.wuyuan.dev
-music_player:
-  enable: true
