@@ -12,7 +12,7 @@ if not exist "node_modules\hexo\" (
 )
 
 echo.
-echo [1/2] 完整构建（与 build.bat 相同：检查、压缩宠物图、生成 public）...
+echo [1/2] 完整构建（与 build.bat 相同：检查、生成 public）...
 call npm.cmd run build
 if errorlevel 1 (
   echo.

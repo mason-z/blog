@@ -23,7 +23,7 @@ theme:
       path: /categories/
     - label: 近况
       path: /news/
-    - label: 旅行
+    - label: 足迹
       path: /travel/
     - label: 留言
       path: /guestbook/

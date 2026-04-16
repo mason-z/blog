@@ -11,11 +11,14 @@ menu:
     path: /categories/
   - label: 近况
     path: /news/
-  - label: 旅行
+  - label: 足迹
     path: /travel/
   - label: 留言
     path: /guestbook/
 footer: © Mason's Blog
+<<<<<<< HEAD
 
 # 关灯模式全站背景图（可选）；后台「站点配置 → 网站外观」上传可覆盖。留空则夜间为默认纯色。
 dark_mode_bg_image: ""
+=======
+>>>>>>> 19f9bf0f12cf6187bbb09bcbc5db76d3a8bd8283

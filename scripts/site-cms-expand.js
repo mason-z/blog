@@ -20,7 +20,10 @@ hexo.extend.filter.register(
     if (cms.site_ui) site.data.site_ui = cms.site_ui;
     if (cms.guestbook) site.data.guestbook = cms.guestbook;
     if (cms.theme) site.data.theme_cms = cms.theme;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 19f9bf0f12cf6187bbb09bcbc5db76d3a8bd8283
     return locals;
   },
   1

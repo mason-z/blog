@@ -74,7 +74,7 @@ collections:
         widget: markdown
 
   - name: travel_map
-    label: 旅行地图
+    label: 足迹地图
     description: 管理地图上的城市标点及与博文的关联；保存后需重新执行 hexo generate（本地预览可 hexo server --watch）
     files:
       - label: 城市与博文
@@ -93,10 +93,10 @@ collections:
                 widget: boolean
                 default: false
                 required: false
-                hint: "开启后排在侧栏与地图标注列表最前；多条置顶时仍按「旅行时间」字符串降序。"
+                hint: "开启后排在侧栏与地图标注列表最前；多条置顶时仍按「足迹时间」字符串降序。"
               - { label: 纬度, name: lat, widget: number, value_type: float, step: 0.0001, hint: "北纬为正，如 39.90" }
               - { label: 经度, name: lng, widget: number, value_type: float, step: 0.0001, hint: "东经为正，如 116.40" }
-              - { label: 旅行时间（展示用）, name: date, widget: string, required: false, hint: "如 2024-01，可空" }
+              - { label: 足迹时间（展示用）, name: date, widget: string, required: false, hint: "如 2024-01，可空" }
               - { label: 备注, name: note, widget: string, required: false }
               - label: 关联博文路径
                 name: url

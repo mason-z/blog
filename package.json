@@ -20,10 +20,14 @@
     "serve:public": "http-server public -p 4002 -c-1",
     "cms:proxy": "cross-env MODE=git decap-server",
     "dev:admin": "concurrently -k -n proxy,hexo -c cyan,magenta \"npm run cms:proxy\" \"npm run server:4001\"",
+<<<<<<< HEAD
     "gen:demo": "node tools/gen-demo-posts.cjs",
     "compress:pet-images": "node tools/compress-pet-images.cjs",
     "sync:public": "node tools/sync-blog-architecture.cjs",
     "sync:public:dry": "node tools/sync-blog-architecture.cjs --dry-run"
+=======
+    "gen:demo": "node tools/gen-demo-posts.cjs"
+>>>>>>> 19f9bf0f12cf6187bbb09bcbc5db76d3a8bd8283
   },
   "hexo": {
     "version": "7.3.0"
@@ -36,7 +40,6 @@
     "js-yaml": "^4.1.0"
   },
   "dependencies": {
-    "sharp": "^0.33.5",
     "hexo": "^7.3.0",
     "hexo-generator-archive": "^2.0.0",
     "hexo-generator-category": "^2.0.0",
