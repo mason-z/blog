@@ -1,12 +1,14 @@
 @echo off
-chcp 65001 >nul
+rem ¾É¿ØÖÆÌ¨ÒÑÍËÒÛ£ºÍ³Ò»´Ó blog-admin Æô¶¯£¨ºóÌ¨ 8780 + Ô¤ÀÀ 4010£©
 cd /d "%~dp0"
 
-if /I "%~1"=="debug" (
-  echo [åšå®¢æ§åˆ¶å°] è°ƒè¯•æ¨¡å¼ï¼ˆæ˜¾ç¤º CMD çª—å£ï¼‰
-  call "%~dp0start-manage.bat"
+if exist "..\blog-admin\Æô¶¯ºóÌ¨.bat" (
+  call "..\blog-admin\Æô¶¯ºóÌ¨.bat"
   exit /b %errorlevel%
 )
 
-wscript.exe //nologo "%~dp0start-manage-hidden.vbs"
-exit /b 0
+echo.
+echo ÕÒ²»µ½ ..\blog-admin\Æô¶¯ºóÌ¨.bat
+echo ÇëÈ·ÈÏ blog-admin Ä¿Â¼Óë mcblog_git_public ÔÚÍ¬Ò»¼¶¡£
+pause
+exit /b 1

@@ -411,7 +411,7 @@ html[data-theme="dark"] .theme-toggle:hover {
 .landing-title {
   margin: 0 0 1.15rem;
   font-family: var(--font-display);
-  font-size: clamp(1.9rem, 4.6vw, 2.35rem);
+  font-size: clamp(1.7rem, 4.1vw, 2.1rem);
   font-weight: 600;
   letter-spacing: -0.02em;
   color: var(--text);
@@ -420,8 +420,8 @@ html[data-theme="dark"] .theme-toggle:hover {
 
 .landing-lead {
   margin: 0;
-  font-size: 1.08rem;
-  line-height: 1.95;
+  font-size: 1.02rem;
+  line-height: 1.9;
   color: var(--text-soft);
 }
 
@@ -493,7 +493,7 @@ html[data-theme="dark"] .md-block a:hover {
 .page-title {
   margin: 0 0 0.5rem;
   font-family: var(--font-display);
-  font-size: clamp(1.7rem, 3.4vw, 2.05rem);
+  font-size: clamp(1.55rem, 3.1vw, 1.85rem);
   font-weight: 600;
   letter-spacing: -0.015em;
   line-height: 1.35;
@@ -703,7 +703,7 @@ html[data-theme="dark"] .guestbook-placeholder {
 .post-card h2 {
   margin: 0 0 0.45rem;
   font-family: var(--font-display);
-  font-size: 1.34rem;
+  font-size: 1.24rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   line-height: 1.45;
@@ -730,7 +730,7 @@ html[data-theme="dark"] .guestbook-placeholder {
 }
 
 .post-meta {
-  font-size: 0.84rem;
+  font-size: 0.8rem;
   color: var(--text-muted);
   margin-bottom: 0.65rem;
   font-variant-numeric: tabular-nums;
@@ -778,7 +778,7 @@ html[data-theme="dark"] .guestbook-placeholder {
 
 .post-excerpt {
   margin: 0.1rem 0 0;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   line-height: 1.85;
   color: var(--text-muted);
   display: -webkit-box;
@@ -949,14 +949,14 @@ html[data-theme="dark"] .aside-latest__pinned {
 }
 
 .article-body {
-  font-size: 1.06rem;
-  line-height: 1.9;
+  font-size: 1rem;
+  line-height: 1.88;
   color: var(--text-soft);
 }
 
 .article-body h2 {
   margin: 2.2rem 0 0.85rem;
-  font-size: 1.35rem;
+  font-size: 1.25rem;
   font-weight: 600;
   letter-spacing: -0.01em;
   color: var(--text);
@@ -964,7 +964,7 @@ html[data-theme="dark"] .aside-latest__pinned {
 
 .article-body h3 {
   margin: 1.7rem 0 0.55rem;
-  font-size: 1.14rem;
+  font-size: 1.06rem;
   font-weight: 600;
   color: var(--text);
 }
@@ -1287,8 +1287,8 @@ html.article-lightbox-open {
 
 /* ========== 博客归档：左侧目录（按年）+ 全文列表 ========== */
 .archive-shell--full {
-  --archive-font-size: 0.95rem;
-  --archive-title-size: 1.35rem;
+  --archive-font-size: 0.88rem;
+  --archive-title-size: 1.22rem;
   --archive-panel-opacity: 0;
   padding: clamp(1.75rem, 4vw, 2.75rem) clamp(1rem, 4vw, 1.5rem) 3rem;
   text-align: left;
@@ -1436,7 +1436,7 @@ html[data-theme="dark"] .archive-toc--float {
 
 .archive-toc__month {
   margin: 0 0 0.5rem;
-  font-size: 0.95rem;
+  font-size: 0.9rem;
   font-weight: 600;
   font-family: var(--font-display);
   color: var(--text);
@@ -1585,7 +1585,7 @@ html[data-theme="dark"] .archive-full-pinned {
 /* ========== 窄屏微调（扁平版式） ========== */
 @media (max-width: 640px) {
   .landing-title {
-    font-size: 1.68rem;
+    font-size: 1.55rem;
     line-height: 1.45;
   }
 
@@ -1599,7 +1599,7 @@ html[data-theme="dark"] .archive-full-pinned {
   }
 
   .post-card h2 {
-    font-size: 1.22rem;
+    font-size: 1.14rem;
   }
 
   .archive-full-item {
@@ -1608,6 +1608,6 @@ html[data-theme="dark"] .archive-full-pinned {
   }
 
   .archive-full-title {
-    font-size: 1.2rem;
+    font-size: 1.12rem;
   }
 }

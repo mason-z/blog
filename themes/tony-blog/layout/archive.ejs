@@ -47,10 +47,10 @@
   });
   var filterCats = [];
   site.categories.each(function (cat) { filterCats.push({ name: cat.name, count: cat.length }); });
-  var _archFs = (_archUi.content_font_size != null && String(_archUi.content_font_size).trim() !== '') ? Number(_archUi.content_font_size) : 0.95;
-  if (!isFinite(_archFs) || _archFs <= 0) _archFs = 0.95;
-  var _archTitleFs = (_archUi.title_font_size != null && String(_archUi.title_font_size).trim() !== '') ? Number(_archUi.title_font_size) : 1.35;
-  if (!isFinite(_archTitleFs) || _archTitleFs <= 0) _archTitleFs = 1.35;
+  var _archFs = (_archUi.content_font_size != null && String(_archUi.content_font_size).trim() !== '') ? Number(_archUi.content_font_size) : 0.88;
+  if (!isFinite(_archFs) || _archFs <= 0) _archFs = 0.88;
+  var _archTitleFs = (_archUi.title_font_size != null && String(_archUi.title_font_size).trim() !== '') ? Number(_archUi.title_font_size) : 1.22;
+  if (!isFinite(_archTitleFs) || _archTitleFs <= 0) _archTitleFs = 1.22;
   var _archPanelOp = (_archUi.panel_bg_opacity != null && String(_archUi.panel_bg_opacity).trim() !== '') ? Number(_archUi.panel_bg_opacity) : 0;
   if (!isFinite(_archPanelOp)) _archPanelOp = 0;
   _archPanelOp = Math.max(0, Math.min(1, _archPanelOp));

@@ -45,15 +45,15 @@
 | --- | --- |
 | 根字号 `html` | `18px`（原 17px）。全站 `rem` 尺寸跟着变，改这一处等于整体缩放 |
 | 正文 `body` | `line-height: 1.8` |
-| 文章正文 `.article-body` | `1.06rem`（≈19px）/ `line-height: 1.9` / `--text-soft` |
-| 正文 h2 / h3 | `1.35rem` / `1.14rem`，`font-weight: 600`，负字距 `-0.01em` |
-| 文章标题 `.page-title` | 衬线，`clamp(1.7rem, 3.4vw, 2.05rem)`，`600` |
-| 首页条目标题 `.post-card h2` | 衬线，`1.34rem`（≤640px 时 `1.22rem`） |
-| 列表摘要 `.post-excerpt` | `0.95rem`，2 行截断（`-webkit-line-clamp: 2`） |
-| 元信息 `.post-meta` | `0.84rem`，`tabular-nums`，格式 `2026-11-07 · 分类 · 阅读需 N 分钟` |
-| 归档正文 `--archive-font-size` | 默认 `0.95rem`，实际值来自 `source/_data/site_cms.yml` |
-| 归档标题 `--archive-title-size` | 默认 `1.35rem`，同上 |
-| 首页条目间距 | `padding: 1.7rem 0` + `border-bottom: 1px solid var(--border-faint)`，最后一条无线 |
+| 文章正文 `.article-body` | `1rem`（18px）/ `line-height: 1.88` / `--text-soft` |
+| 正文 h2 / h3 | `1.25rem` / `1.06rem`，`font-weight: 600`，负字距 `-0.01em` |
+| 文章标题 `.page-title` | 衬线，`clamp(1.55rem, 3.1vw, 1.85rem)`，`600` |
+| 首页条目标题 `.post-card h2` | 衬线，`1.24rem`（≤640px 时 `1.14rem`） |
+| 列表摘要 `.post-excerpt` | `0.9rem`，2 行截断（`-webkit-line-clamp: 2`） |
+| 元信息 `.post-meta` | `0.8rem`，`tabular-nums`，格式 `2026-11-07 · 分类 · 阅读需 N 分钟` |
+| 归档正文 `--archive-font-size` | 默认 `0.88rem`，实际值来自 `source/_data/site_cms.yml` |
+| 归档标题 `--archive-title-size` | 默认 `1.22rem`，同上 |
+| 首页欢迎标题 `.landing-title` | 衬线，`clamp(1.7rem, 4.1vw, 2.1rem)`（≤640px 时 `1.55rem`） |
 | 归档文章间距 | `margin-bottom` + `padding-bottom` 各 `2.4rem` + 细线，最后一条清零 |
 | 首页欢迎区 `.landing-page` | 不再占满一屏，`align-items: flex-end`，左对齐到 `--home-max` 列 |
 
