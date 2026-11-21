@@ -1,5 +1,8 @@
 'use strict';
 
+const fs = require('fs');
+const path = require('path');
+
 /**
  * 将 source/_data/site_cms.yml 展开为与旧版多文件一致的结构（site_name / site_ui / guestbook / theme_cms）。
  *
@@ -17,14 +20,52 @@ hexo.extend.filter.register(
 
     const cms = site.data.site_cms;
     if (cms.site_name) site.data.site_name = cms.site_name;
-    if (cms.site_ui) site.data.site_ui = cms.site_ui;
+    if (cms.site_ui) site.data.site_ui = rewriteSiteUiMedia(cms.site_ui);
     if (cms.guestbook) site.data.guestbook = cms.guestbook;
-    if (cms.theme) site.data.theme_cms = cms.theme;
-<<<<<<< HEAD
+    if (cms.theme) site.data.theme_cms = rewriteThemeMedia(cms.theme);
 
-=======
->>>>>>> 19f9bf0f12cf6187bbb09bcbc5db76d3a8bd8283
     return locals;
   },
   1
 );
+
+function loadWebImageManifest() {
+  try {
+    const p = path.join(hexo.base_dir, 'tools', '.web-image-manifest.json');
+    return JSON.parse(fs.readFileSync(p, 'utf8'));
+  } catch {
+    return {};
+  }
+}
+
+function rewriteMediaUrl(url, manifest) {
+  if (!url || typeof url !== 'string') return url;
+  const s = url.trim();
+  if (!s || /^https?:\/\//i.test(s)) return url;
+  if (manifest[s]) return manifest[s];
+  const base = path.basename(s);
+  if (manifest['../../assets/' + base]) return manifest['../../assets/' + base];
+  if (manifest['/images/uploads/' + base]) return manifest['/images/uploads/' + base];
+  if (manifest['assets/' + base]) return manifest['assets/' + base];
+  return url;
+}
+
+function rewriteThemeMedia(theme) {
+  const manifest = loadWebImageManifest();
+  if (!theme || !Object.keys(manifest).length) return theme;
+  const out = JSON.parse(JSON.stringify(theme));
+  if (out.dark_mode_bg_image) {
+    out.dark_mode_bg_image = rewriteMediaUrl(out.dark_mode_bg_image, manifest);
+  }
+  return out;
+}
+
+function rewriteSiteUiMedia(siteUi) {
+  const manifest = loadWebImageManifest();
+  if (!siteUi || !Object.keys(manifest).length) return siteUi;
+  const out = JSON.parse(JSON.stringify(siteUi));
+  if (out.meta && out.meta.favicon) {
+    out.meta.favicon = rewriteMediaUrl(out.meta.favicon, manifest);
+  }
+  return out;
+}

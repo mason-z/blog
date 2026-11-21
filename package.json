@@ -1,13 +1,17 @@
 {
-  "name": "tony-hexo-blog",
+  "name": "meiso-blog",
   "version": "1.0.0",
   "private": true,
   "scripts": {
     "prevalidate": "node tools/sync-admin-config.cjs",
     "validate": "node tools/check-repo-health.cjs",
     "sync:admin": "node tools/sync-admin-config.cjs",
-    "build": "npm run validate && hexo generate -f --config _config.yml,_config.local.yml && npm run sync:admin",
-    "build:prod": "npm run validate && hexo generate -f && npm run sync:admin",
+    "build": "npm run validate && npm run prepare:images && hexo generate -f --config _config.yml,_config.local.yml && npm run prune:public-uploads && npm run sync:admin",
+    "build:prod": "npm run validate && npm run prepare:images && hexo generate -f && npm run prune:public-uploads && npm run sync:admin",
+    "prepare:images": "node tools/prepare-web-images.cjs",
+    "prune:public-uploads": "node tools/prune-public-uploads.cjs",
+    "deploy": "npm run build:prod && node tools/strip-manage-preview-artifacts.cjs && node tools/public-size.cjs && wrangler pages deploy public --project-name=meiso",
+    "stats:public": "node tools/public-size.cjs",
     "site": "npm run build",
     "gen": "npm run build",
     "clean": "hexo clean",
@@ -20,14 +24,17 @@
     "serve:public": "http-server public -p 4002 -c-1",
     "cms:proxy": "cross-env MODE=git decap-server",
     "dev:admin": "concurrently -k -n proxy,hexo -c cyan,magenta \"npm run cms:proxy\" \"npm run server:4001\"",
-<<<<<<< HEAD
+    "manage:install": "npm install --prefix manage && npm install --prefix manage/frontend",
+    "manage:dev": "npm run dev --prefix manage",
+    "manage:build": "npm run build:frontend --prefix manage",
+    "manage:start": "npm run start --prefix manage",
     "gen:demo": "node tools/gen-demo-posts.cjs",
     "compress:pet-images": "node tools/compress-pet-images.cjs",
     "sync:public": "node tools/sync-blog-architecture.cjs",
-    "sync:public:dry": "node tools/sync-blog-architecture.cjs --dry-run"
-=======
-    "gen:demo": "node tools/gen-demo-posts.cjs"
->>>>>>> 19f9bf0f12cf6187bbb09bcbc5db76d3a8bd8283
+    "sync:public:dry": "node tools/sync-blog-architecture.cjs --dry-run",
+    "sync:phone": "node tools/sync-phone-channel.cjs",
+    "publish:phone": "node tools/sync-phone-channel.cjs && npm run deploy",
+    "deploy:one": "node tools/sync-phone-channel.cjs && npm run deploy"
   },
   "hexo": {
     "version": "7.3.0"
@@ -37,7 +44,9 @@
     "cross-env": "^10.1.0",
     "decap-server": "^3.6.0",
     "http-server": "^14.1.1",
-    "js-yaml": "^4.1.0"
+    "js-yaml": "^4.1.0",
+    "sharp": "^0.33.5",
+    "wrangler": "^4.0.0"
   },
   "dependencies": {
     "hexo": "^7.3.0",

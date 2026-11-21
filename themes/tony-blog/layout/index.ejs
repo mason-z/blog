@@ -36,7 +36,15 @@
       <div class="aside-block">
         <h3><%= _uih.aside_latest_title || '最新' %></h3>
         <div class="aside-latest">
-          <% var _latest = site.posts.toArray().sort(function (a, b) {
+          <% var _incPrivIdx = config.include_private === true || config.include_private === 'true' || config.include_private === 1;
+          function _visIdx(p) {
+            if (_incPrivIdx) return true;
+            if (p.published === false) return false;
+            var pv = p.meiso_private != null ? p.meiso_private : p.private;
+            if (pv === true || pv === 'true' || pv === 1 || pv === '1') return false;
+            return true;
+          }
+          var _latest = site.posts.toArray().filter(_visIdx).sort(function (a, b) {
             var sa = Number(a.sticky) || 0;
             var sb = Number(b.sticky) || 0;
             if (sa !== sb) return sb - sa;

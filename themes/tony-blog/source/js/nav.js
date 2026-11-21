@@ -1,5 +1,5 @@
 (function () {
-  var THEME_KEY = "tony-theme";
+  var THEME_KEY = "meiso-theme";
   var root = document.documentElement;
   var themeBtn = document.getElementById("theme-toggle");
 

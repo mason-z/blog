@@ -67,48 +67,73 @@ npm.cmd run server
 - 主题默认与后备：`themes/tony-blog/_config.yml`（线上/后台修改外观时写入 `site_cms.yml`，构建时优先于此处）  
 - 文章封面：在 Markdown front-matter 中加 `cover: https://...`  
 
-## 部署（静态托管）
+## 部署（方案 3：本地 build + wrangler 上传）
 
-构建产物为 **`public/`**，构建命令一般为：
+**Git 只存 Markdown 与配置**；原图在 **`assets/`**（不进 Git）；构建时压缩到 **`source/images/web/`** → 随 Hexo 输出到 **`public/images/web/`**；线上只有网页用压缩图。
+
+### 日常流程
 
 ```bash
 npm install
-npm run build:prod
+npm run build:prod    # validate → 压图 → hexo generate → sync admin
+npm run deploy        # 上一步 + wrangler pages deploy public
 ```
 
-`build` / `build:prod` 内部顺序：**每次执行 `validate` 前会自动 `sync:admin`**（不必手记）→ 健康检查 → **`hexo generate`** → 最后再 **`sync:admin`** 收尾。一般**只跑 `npm run build` 即可**；若需单独检查数据可 **`npm run validate`**。
+首次部署前：`npx wrangler login`，并在 `wrangler.toml` / deploy 命令里确认 **project-name**（默认 `meiso`）。
 
-在托管平台中把 **发布目录** 设为 **`public`**。仓库根目录含 **`.nvmrc`**（Node **20**），便于 CI 与本地一致。部署前请在 **`_config.yml`** 里把 **`url`** 改成你的**真实站点地址**（含 `https://`，无末尾斜杠），并保持 **`root: /`**。
+**Windows 一键部署**：双击根目录 **`deploy.bat`**（或终端 `npm run deploy`）。
 
-### Cloudflare Pages
+### 图片约定
 
-1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/) → **Workers 与 Pages** → **Pages** → **创建应用程序** → 连接 **GitHub/GitLab** 并选中本仓库。  
-2. **构建设置**（Build settings）：  
-   - **框架预设**：无（None）  
-   - **构建命令**：`npm run build:prod`  
-   - **构建输出目录**：`public`  
-   - **根目录**（项目路径）：留空或 `/`  
-3. **环境变量**（可选）：若构建报 Node 版本问题，在项目的 **设置 → 环境变量** 中添加 **`NODE_VERSION`** = `20`（与 `.nvmrc` 一致）。  
-4. 保存后等待首次构建；站点地址形如 **`https://<项目名>.pages.dev`**，也可在 **自定义域** 里绑定自己的域名。  
-5. 将 **`_config.yml`** 中的 **`url`** 改为上述 **https** 地址（自定义域则填你的域名）。
+| 位置 | 说明 |
+|------|------|
+| `assets/` | 原图（Obsidian / manage 上传），**不 commit** |
+| Markdown | `![](../../assets/photo.jpg)` 或 front-matter `cover: ../../assets/photo.jpg` |
+| 构建产物 | `/images/web/photo.webp`（自动压缩，默认 ≤180KB） |
 
-构建日志可在该 Pages 项目的 **部署** 标签页查看；推送新 commit 会触发重新构建。
+旧路径 `/images/uploads/...` 构建时仍会尝试从 `source/images/uploads/` 或 `assets/` 解析；建议逐步改到 `../../assets/`。
+
+环境变量（可选）：`WEB_IMAGE_MAX_KB=180`、`WEB_IMAGE_MAX_WIDTH=1920`。
+
+### Cloudflare Pages（Git 自动构建，可选）
+
+若仍希望 push 触发云端构建，构建设置：
+
+- **构建命令**：`npm run build:prod`
+- **输出目录**：`public`
+
+**推荐**本地方案 3：`npm run deploy`，不把原图与大体积 `assets/` 推上 Git。
+
+### 访问统计（Cloudflare Web Analytics）
+
+主题已支持在 **`head`** 中按需注入 Cloudflare Beacon；**留空 token 则不加载**，不影响性能。
+
+1. 登录 [Cloudflare Dashboard](https://dash.cloudflare.com/) → **Web Analytics** → **添加站点**（hostname 填 `meiso-945.pages.dev`（或你的 `*.pages.dev` / 自定义域）。
+2. 选择 **通过 JavaScript 代码片段安装**，复制 **`token`**（Beacon 里 `"token": "……"` 那一段）。
+3. 任选一种写入方式（保存后 **`npm run build`** 并部署）：
+   - **后台**：`/admin` → **全站与独立页面** → **站点配置** → **三、全站界面文案** → **访问统计（Cloudflare Web Analytics）** → 粘贴 **Beacon Token**；
+   - **或** 编辑 `source/_data/site_cms.yml` 的 `site_ui.analytics.cf_web_analytics_token`；
+   - **或** `themes/tony-blog/_config.yml` 的 `analytics.cf_web_analytics_token`（后台未填时的后备）。
+4. 部署后访问几页，在 **Web Analytics** 面板查看 **页面浏览量、引荐来源、国家/地区、访问路径** 等（数据可能有数分钟延迟）。
 
 ## Decap CMS 后台（网页编辑文章）
 
 博客主题**导航里不显示**后台入口；管理地址为：**`https://你的域名/admin`**（部署后与本地 `public/admin` 一致）。
 
-后台里可编辑内容（保存后刷新本地预览即可）：**「全站与独立页面」**（**站点配置** 合并名称/外观/全站文案/留言墙，对应 `source/_data/site_cms.yml`；以及关于、近况、分类页、留言墙补充正文等独立页面）、**「足迹地图」**、**「博客文章」**。站点技术项（如 `url`、`root`）仍在根目录 `_config.yml` 手动改，避免误操作。
+后台里可编辑内容（保存后刷新本地预览即可）：**「全站与独立页面」**（**站点配置** 合并名称/外观/全站文案/留言墙，对应 `source/_data/site_cms.yml`；以及关于、留言墙补充正文等独立页面）、**「博客文章」**。站点技术项（如 `url`、`root`）仍在根目录 `_config.yml` 手动改，避免误操作。
 
-1. 编辑 **`source/admin/config.yml`**：将 **`repo`** 改成你的 GitHub 仓库（格式 `用户名/仓库名`），**`branch`** 与默认分支一致（一般为 `main`）。**`base_url`** 须与你在浏览器里打开后台的站点 **完全一致**（例如 `https://masonblog.pages.dev`，若只用自定义域则改成 `https://你的域名`，不要混用）。  
+1. 编辑 **`source/admin/config.yml`**：将 **`repo`** 改成你的 GitHub 仓库（格式 `用户名/仓库名`），**`branch`** 与默认分支一致（一般为 `main`）。**`base_url`** 须与浏览器地址栏 **完全一致**（当前部署域名为 **`https://meiso-945.pages.dev`**，不是 `meiso.pages.dev`）。  
 2. **Cloudflare Pages（本仓库方式）**：默认的 `https://api.netlify.com/auth` 在 CF 上会 **404**，因此仓库根目录已提供 **`functions/auth.ts`** 与 **`functions/callback.ts`** 作为 GitHub OAuth 代理（与 [decap-proxy](https://github.com/sterlingwes/decap-proxy) 同类逻辑）。部署后请在 **Cloudflare Pages → 你的项目 → 设置 → 环境变量** 中添加（**加密**推荐）：  
    - **`GITHUB_OAUTH_ID`**：GitHub OAuth App 的 Client ID  
    - **`GITHUB_OAUTH_SECRET`**：Client Secret  
    若仓库为 **私有**，再增加 **`GITHUB_REPO_PRIVATE`** = `1`（与 Functions 内 scope 一致）。  
-3. 在 **GitHub → Settings → Developer settings → OAuth Apps** 中编辑（或新建）应用：**Homepage URL** 填你的站点根地址；**Authorization callback URL** 填 **`https://<与 base_url 相同的域名>/callback`**（示例：`https://masonblog.pages.dev/callback`）。若同时使用 `*.pages.dev` 与自定义域访问后台，可在 GitHub 里 **添加多条** callback。  
+3. 在 **GitHub → Settings → Developer settings → OAuth Apps** 中编辑（或新建）应用：**Homepage URL** 填你的站点根地址；**Authorization callback URL** 填 **`https://meiso-945.pages.dev/callback`**（须与 `base_url` 同域）。  
 4. 推送代码让 Pages 重新部署后，打开 **`https://你的域名/admin/`**，再点 **Log in with GitHub**。保存会提交到 Git 远程，是否触发构建取决于 CF Pages 与分支设置。
 
-图片上传目录为 **`source/images/uploads`**，构建后访问路径为 **`/images/uploads/...`**。
+### 媒体：assets/ 原图（方案 3）
+
+Decap 与 manage 上传写入 **`assets/`**（不进 Git），Markdown 里保存 **`../../assets/文件名`**，Obsidian 可直接预览。  
+执行 **`npm run build:prod`** 时自动压缩到 **`/images/web/`** 并部署到 Pages。
 
 ### 本地使用后台（无需 GitHub 登录）
 

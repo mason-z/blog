@@ -1,0 +1,88 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  * {
+    @apply border-surface-border;
+  }
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    @apply rounded-full bg-surface-border hover:bg-gray-600;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-all duration-150 disabled:opacity-40 disabled:pointer-events-none;
+  }
+
+  .btn-primary {
+    @apply btn bg-accent text-surface hover:bg-accent-dim shadow-glow;
+  }
+
+  .btn-ghost {
+    @apply btn text-gray-300 hover:bg-surface-overlay hover:text-white;
+  }
+
+  .btn-outline {
+    @apply btn border border-surface-border text-gray-300 hover:border-accent/50 hover:text-accent;
+  }
+
+  .chip {
+    @apply inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium transition-colors;
+  }
+
+  .chip-active {
+    @apply chip bg-accent/20 text-accent ring-1 ring-accent/40;
+  }
+
+  .chip-inactive {
+    @apply chip bg-surface-overlay text-gray-400 hover:bg-surface-border hover:text-gray-200 cursor-pointer;
+  }
+
+  .input {
+    @apply w-full rounded-lg border border-surface-border bg-surface-raised px-3 py-2 text-sm text-gray-100 placeholder-gray-500 outline-none transition focus:border-accent/60 focus:ring-2 focus:ring-accent/20;
+  }
+
+  .textarea {
+    @apply input min-h-[120px] resize-y font-mono text-[13px] leading-relaxed;
+  }
+
+  .editor-preview pre {
+    @apply my-3 overflow-x-auto rounded-lg bg-black/30 p-3 text-xs;
+  }
+
+  .editor-preview a {
+    @apply text-accent underline;
+  }
+
+  .post-feed-card--published {
+    @apply border-emerald-200/70 bg-emerald-50/75;
+  }
+
+  .post-feed-card--draft {
+    @apply border-amber-200/70 bg-amber-50/80;
+  }
+
+  .post-feed-card--private {
+    @apply border-violet-200/70 bg-violet-50/75;
+  }
+
+  .post-feed-card--trash {
+    @apply border-gray-200/80 bg-gray-100/90;
+  }
+
+  .post-feed-menu-item {
+    @apply block w-full px-4 py-2 text-left text-gray-800 transition hover:bg-gray-50;
+  }
+}

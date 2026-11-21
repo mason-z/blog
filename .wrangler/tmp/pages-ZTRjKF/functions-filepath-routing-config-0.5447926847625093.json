@@ -1,0 +1,21 @@
+{
+  "routes": [
+    {
+      "routePath": "/auth",
+      "mountPath": "/",
+      "method": "GET",
+      "module": [
+        "auth.ts:onRequestGet"
+      ]
+    },
+    {
+      "routePath": "/callback",
+      "mountPath": "/",
+      "method": "GET",
+      "module": [
+        "callback.ts:onRequestGet"
+      ]
+    }
+  ],
+  "baseURL": "/"
+}

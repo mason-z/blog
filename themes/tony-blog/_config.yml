@@ -1,5 +1,5 @@
 # 首页标题、导航、页脚等可在后台「全站与独立页面 → 站点配置」编辑（写入 source/_data/site_cms.yml，构建时优先于此处）
-brand: I'm Mason
+brand: meiso
 landing_title: 你好/Hello/Hola/Bonjour/こんにちは/안녕하세요/Hallo/Здравствуйте
 landing_lead: 欢迎来访。这里的内容是我的随笔与记录。
 menu:
@@ -7,18 +7,13 @@ menu:
     path: /about/
   - label: 博客
     path: /archives/
-  - label: 分类
-    path: /categories/
-  - label: 近况
-    path: /news/
-  - label: 足迹
-    path: /travel/
   - label: 留言
     path: /guestbook/
-footer: © Mason's Blog
-<<<<<<< HEAD
+footer: © meiso
 
 # 关灯模式全站背景图（可选）；后台「站点配置 → 网站外观」上传可覆盖。留空则夜间为默认纯色。
 dark_mode_bg_image: ""
-=======
->>>>>>> 19f9bf0f12cf6187bbb09bcbc5db76d3a8bd8283
+
+# Cloudflare Web Analytics（可选）；后台「站点配置 → 访问统计」可覆盖
+analytics:
+  cf_web_analytics_token: ""

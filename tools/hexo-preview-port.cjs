@@ -9,7 +9,7 @@
  */
 const net = require('net');
 const path = require('path');
-const { spawn } = require('child_process');
+const { spawn, spawnSync } = require('child_process');
 
 const ROOT = path.join(__dirname, '..');
 const PORT_CANDIDATES = [4001, 4010, 4011, 4012, 4020, 4030];
@@ -58,6 +58,16 @@ async function main() {
     );
   } else {
     console.log('[hexo-preview] http://localhost:' + port + '/');
+  }
+
+  console.log('[hexo-preview] 同步正文图片 assets → source/images/web …');
+  const prep = spawnSync(process.execPath, [path.join(ROOT, 'tools', 'prepare-web-images.cjs')], {
+    cwd: ROOT,
+    stdio: 'inherit',
+    windowsHide: true,
+  });
+  if (prep.status !== 0) {
+    console.warn('[hexo-preview] prepare-web-images 未完全成功，预览图可能缺失');
   }
 
   const hexoBin = path.join(ROOT, 'node_modules', 'hexo', 'bin', 'hexo');

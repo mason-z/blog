@@ -1,5 +1,5 @@
-# 本地预览用（与 _config.yml 合并）。线上 CI 若执行 npm run build:prod，则只使用 _config.yml，不合并本文件。
-# 默认预览端口为 4001；若已被占用，`npm run preview` 会自动改用 4010 等（见 tools/hexo-preview-port.cjs），此时可把下面 url 改成对应端口。
-url: http://localhost:4001
+# 仅给 npm run build / server:4001 等「本地地址」命令用；实时预览与 deploy 均跑 build:prod，不合并本文件。
+# 仅覆盖 url/root（如 http://localhost:4010）。
+# 默认预览端口 4010（4001 易被 QQ 等占用）；与 manage/config.json 的 previewUrl 保持一致即可。
+url: http://localhost:4010
 root: /
-

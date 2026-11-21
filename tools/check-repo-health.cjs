@@ -21,8 +21,6 @@ const MARKERS = ['<<<<<<<', '=======', '>>>>>>>'];
 /** 需能 parse 的站点数据（损坏则构建后页面异常） */
 const DATA_YAML_FILES = [
   ['source/_data/site_cms.yml', 'site_cms'],
-  ['source/_data/news_timeline.yml', 'news_timeline'],
-  ['source/_data/travel.yml', 'travel'],
 ];
 
 function walk(dir, out) {
@@ -58,6 +56,35 @@ function tryParseYaml(filePath, label) {
     console.error(`[check-repo-health] YAML 解析失败 (${label}): ${path.relative(ROOT, filePath)}`);
     console.error(String(e.message || e));
     process.exit(1);
+  }
+}
+
+function checkAdminConfigUniqueNames() {
+  const p = path.join(ROOT, 'source', 'admin', 'config.yml');
+  let cfg;
+  try {
+    cfg = yaml.load(fs.readFileSync(p, 'utf8'));
+  } catch (e) {
+    console.error('[check-repo-health] admin config.yml 解析失败:', String(e.message || e));
+    process.exit(1);
+  }
+  const names = (cfg.collections || []).map((c) => c && c.name).filter(Boolean);
+  const dup = names.filter((n, i) => names.indexOf(n) !== i);
+  if (dup.length) {
+    console.error('[check-repo-health] Decap collections 名称重复:', [...new Set(dup)].join(', '));
+    process.exit(1);
+  }
+  for (const col of cfg.collections || []) {
+    if (!col.files) continue;
+    const fn = col.files.map((f) => f && f.name).filter(Boolean);
+    const fd = fn.filter((n, i) => fn.indexOf(n) !== i);
+    if (fd.length) {
+      console.error(
+        `[check-repo-health] Decap 集合「${col.name}」内 files 名称重复:`,
+        [...new Set(fd)].join(', ')
+      );
+      process.exit(1);
+    }
   }
 }
 
@@ -135,6 +162,7 @@ function main() {
     tryParseYaml(p, label);
   }
 
+  checkAdminConfigUniqueNames();
   checkAdminConfigSync();
 
   console.log('[check-repo-health] OK');

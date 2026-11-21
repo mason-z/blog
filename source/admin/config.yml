@@ -6,17 +6,20 @@
 
 backend:
   name: github
-  repo: mason-z/blog
+  repo: meiso/blog
   branch: main
   # 勿用默认 api.netlify.com（Cloudflare 上会 404）。须与浏览器打开后台的域名一致（含自定义域）
-  base_url: https://masonblog.pages.dev
+  base_url: https://meiso-945.pages.dev
   auth_endpoint: auth
 
 # 为 true 时，仅在浏览器访问 localhost / 127.0.0.1 时走本机 decap-server（默认端口 8081），线上仍用 GitHub
 local_backend: true
 
-media_folder: source/images/uploads
-public_folder: /images/uploads
+media_folder: assets
+public_folder: ../../assets
+
+# 原图在 assets/（不进 Git）；构建时压缩到 source/images/web/ → public/images/web/
+# Markdown 使用相对路径 ../../assets/xxx.jpg，Obsidian 与本地预览可直接看图
 
 # 与 Decap 默认媒体库共用：ascii 会去掉非拉丁字符，中文文件名会变成「.mp3」；unicode 保留 UTF-8 文件名
 slug:
@@ -72,69 +75,6 @@ collections:
       - label: 正文（摘要可用 <!-- more --> 分隔）
         name: body
         widget: markdown
-
-  - name: travel_map
-    label: 足迹地图
-    description: 管理地图上的城市标点及与博文的关联；保存后需重新执行 hexo generate（本地预览可 hexo server --watch）
-    files:
-      - label: 城市与博文
-        name: travel_data
-        file: source/_data/travel.yml
-        format: yaml
-        fields:
-          - label: 城市列表
-            name: cities
-            widget: list
-            summary: "{{fields.name}} → {{fields.url}}"
-            fields:
-              - { label: 城市名, name: name, widget: string }
-              - label: 置顶
-                name: pinned
-                widget: boolean
-                default: false
-                required: false
-                hint: "开启后排在侧栏与地图标注列表最前；多条置顶时仍按「足迹时间」字符串降序。"
-              - { label: 纬度, name: lat, widget: number, value_type: float, step: 0.0001, hint: "北纬为正，如 39.90" }
-              - { label: 经度, name: lng, widget: number, value_type: float, step: 0.0001, hint: "东经为正，如 116.40" }
-              - { label: 足迹时间（展示用）, name: date, widget: string, required: false, hint: "如 2024-01，可空" }
-              - { label: 备注, name: note, widget: string, required: false }
-              - label: 关联博文路径
-                name: url
-                widget: string
-                required: false
-                hint: "与站点内文章地址一致，无域名。发布文章后从浏览器复制路径段，如 2026/04/01/hello-hexo/；不填则仅标点、不跳转博文"
-
-  - name: news_timeline
-    label: 近况时间轴
-    description: /news/ 页面时间轴；纯文字动态，支持 Markdown。保存后需重新构建站点。
-    files:
-      - label: 近况记录
-        name: news_data
-        file: source/_data/news_timeline.yml
-        format: yaml
-        fields:
-          - label: 条目（按日期从新到旧展示）
-            name: entries
-            widget: list
-            summary: "{{fields.date}}"
-            fields:
-              - label: 时间
-                name: date
-                widget: datetime
-                date_format: YYYY-MM-DD
-                time_format: HH:mm
-                hint: "本条近况的日期与时间"
-              - label: 置顶
-                name: pinned
-                widget: boolean
-                default: false
-                required: false
-                hint: "开启后排在列表最前；多条置顶时仍按时间从新到旧。"
-              - label: 正文（Markdown）
-                name: note
-                widget: markdown
-                required: false
-                hint: "支持标题、列表等 Markdown。"
 
   - name: site_and_pages
     label: 全站与独立页面
@@ -203,6 +143,16 @@ collections:
                     widget: image
                     required: false
                     hint: "可选。上传 JPG/PNG/WebP 等方形小图；留空则使用仓库根目录 source/favicon.ico。保存后需重新构建站点。"
+              - label: 访问统计（Cloudflare Web Analytics）
+                name: analytics
+                widget: object
+                collapsed: true
+                fields:
+                  - label: Beacon Token（可选）
+                    name: cf_web_analytics_token
+                    widget: string
+                    required: false
+                    hint: "在 Cloudflare 控制台 → Web Analytics → 添加站点 → 复制 JavaScript Beacon 里的 token。留空则不加载统计脚本。保存后需重新构建站点；数据在 Cloudflare 面板查看（含引荐来源、国家、页面等）。"
               - label: 首页列表区
                 name: home
                 widget: object
@@ -216,15 +166,6 @@ collections:
                   - { label: 侧栏「分类」标题, name: aside_categories_title, widget: string }
                   - { label: 侧栏「最新」标题, name: aside_latest_title, widget: string }
                   - { label: 侧栏 aria 说明, name: aside_aria_label, widget: string }
-              - label: 分类汇总页 /categories/
-                name: categories_page
-                widget: object
-                collapsed: true
-                fields:
-                  - { label: 页面大标题, name: page_title, widget: string }
-                  - { label: 副标题说明, name: page_desc, widget: markdown, hint: "支持 Markdown。" }
-                  - { label: 无分类时提示, name: empty_hint, widget: markdown, hint: "支持 Markdown；可写 `code` 或 **加粗**。" }
-                  - { label: 「N 篇」后面后缀, name: articles_count_suffix, widget: string }
               - label: 通用标签（分页、未分类、更新 等）
                 name: labels
                 widget: object
@@ -248,33 +189,38 @@ collections:
                   - { label: 全站归档无障碍标题, name: sr_only_all, widget: string }
                   - { label: 无文章提示, name: empty_posts, widget: markdown, hint: "支持 Markdown。" }
                   - { label: 左侧目录标题, name: toc_title, widget: string }
-              - label: 近况页 /news/
-                name: news_page
-                widget: object
-                collapsed: true
-                fields:
-                  - label: 页头说明（可选）
-                    name: page_desc
-                    widget: markdown
+                  - { label: 「全部」按钮文案, name: filter_all_label, widget: string, default: "全部" }
+                  - { label: 筛选区无障碍说明, name: filter_aria_label, widget: string, default: "按分类筛选" }
+                  - label: 正文正文字号（rem）
+                    name: content_font_size
+                    widget: number
+                    value_type: float
+                    step: 0.02
+                    min: 0.72
+                    max: 1.2
+                    default: 0.88
                     required: false
-                    hint: "显示在标题下方；也可在「近况」页 front-matter 里写 description。"
-                  - label: 左侧时间大纲标题
-                    name: outline_title
-                    widget: string
-                    default: 时间大纲
+                    hint: "目录页文章正文与侧栏链接字号，默认 0.88（约 15px）。"
+                  - label: 文章标题字号（rem）
+                    name: title_font_size
+                    widget: number
+                    value_type: float
+                    step: 0.02
+                    min: 0.9
+                    max: 1.6
+                    default: 1.05
                     required: false
-                    hint: "有记录时左侧可点击跳转到对应条目。"
-                  - label: 「置顶」标签文案
-                    name: pinned_label
-                    widget: string
-                    default: 置顶
+                    hint: "目录页每条文章大标题字号，默认 1.05。"
+                  - label: 文字区背景不透明度（0～1）
+                    name: panel_bg_opacity
+                    widget: number
+                    value_type: float
+                    step: 0.05
+                    min: 0
+                    max: 1
+                    default: 0.85
                     required: false
-                    hint: "时间轴与左侧大纲中置顶条目的角标文字。"
-                  - label: 无条目时的提示
-                    name: empty_hint
-                    widget: markdown
-                    required: false
-                    hint: "当时间轴没有任何条目时展示。"
+                    hint: "筛选条、左侧目录、文章块背后的遮罩深浅；越大越不透明、与背景图分离越明显。夜间壁纸下建议 0.75～0.92。"
               - label: 顶栏无障碍
                 name: header
                 widget: object
@@ -346,33 +292,6 @@ collections:
           - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
           - { label: layout, name: layout, widget: hidden, default: page }
           - { label: 正文, name: body, widget: markdown }
-      - label: 近况（/news/）
-        name: page_news
-        file: source/news/index.md
-        format: frontmatter
-        fields:
-          - { label: 页面标题, name: title, widget: string }
-          - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
-          - { label: layout, name: layout, widget: hidden, default: news }
-          - label: 页头说明（可选，Markdown）
-            name: description
-            widget: markdown
-            required: false
-            hint: "显示在标题下方；也可在「站点配置 → 近况页」写 page_desc。"
-          - label: 页尾补充正文（可选）
-            name: body
-            widget: markdown
-            required: false
-            hint: "显示在时间轴列表下方。"
-      - label: 分类页头（/categories/）
-        name: page_categories
-        file: source/categories/index.md
-        format: frontmatter
-        fields:
-          - { label: 页面标题, name: title, widget: string }
-          - { label: 日期, name: date, widget: datetime, date_format: YYYY-MM-DD, time_format: HH:mm:ss }
-          - { label: layout, name: layout, widget: hidden, default: categories-index }
-          - { label: 预留正文（可选）, name: body, widget: markdown, required: false }
       - label: 留言墙补充正文（/guestbook/，可选）
         name: page_guestbook
         file: source/guestbook/index.md

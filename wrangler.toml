@@ -1,0 +1,8 @@
+# Cloudflare Pages — 本地 build 后 wrangler 上传 public/（方案 3）
+# 部署：npm run deploy
+name = "meiso"
+compatibility_date = "2024-09-01"
+pages_build_output_dir = "public"
+
+# Decap GitHub OAuth（线上 /admin 登录）环境变量见 README：
+#   GITHUB_OAUTH_ID / GITHUB_OAUTH_SECRET / GITHUB_REPO_PRIVATE（私有库时）

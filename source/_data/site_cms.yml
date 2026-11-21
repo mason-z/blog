@@ -1,17 +1,14 @@
 site_name:
-  name: I'm Mason
+  name: meiso
 theme:
-  brand: I'm Mason
+  brand: meiso
   landing_title: 你好/Hello/Hola/Bonjour/こんにちは/안녕하세요/Hallo/Здравствуйте
-  landing_lead: >-
-    🎉欢迎来访。这里的内容是 [**Mason** ](https://masonblog.pages.dev/about/)的随笔与记录。
-
+  landing_lead: |-
+    🎉欢迎来访。这里的内容是 [**meiso** ](https://meiso-945.pages.dev/about/)的随笔与记录。
 
     目前在 **Shenzhen-China** 从事 **FPGA工程师** ，平时喜欢「户外徒步，阅读，弹唱，跑步，散步，写思考日记，晒太阳」。
 
-
-    开这个博客主要是为了[**记录生活/分享思考/也许还有整理技术的嫌疑**](https://masonblog.pages.dev/archives/)，我希望我有一个较快的更新频率。
-
+    开这个博客主要是为了[**记录生活/分享思考/也许还有整理技术的嫌疑**](https://meiso-945.pages.dev/archives/)，我希望我有一个较快的更新频率。
 
     如果你也喜欢同类内容，欢迎常来坐坐。🤞
   menu:
@@ -19,52 +16,24 @@ theme:
       path: /about/
     - label: 博客
       path: /archives/
-    - label: 分类
-      path: /categories/
-    - label: 近况
-      path: /news/
-    - label: 足迹
-      path: /travel/
     - label: 留言
       path: /guestbook/
-  footer: © Mason's Blog
-  dark_mode_bg_image: /images/uploads/【哲风壁纸】夜空-山脉-极光.png
+  footer: © meiso
+  dark_mode_bg_image: ../../assets/【哲风壁纸】夜空-山脉-极光.png
 site_ui:
-  archive:
-    toc_title: 目录
-    empty_posts: 暂无文章。
-    sr_only_all: 博客归档
   meta:
-    site_title: I'm Mason
+    site_title: meiso
     site_description: |-
-      这里是「Mason」的个人博客。
+      这里是「meiso」的个人博客。
 
       目前在「Shenzhen-China」从事「FPGA工程师」，平时喜欢「户外徒步，阅读，弹唱，跑步，写思考日记，晒太阳」。
 
       开这个博客主要是为了**记录生活/分享思考/也许还有整理技术的嫌疑**，我还是希望我有一个较快的更新频率。
 
       如果你也喜欢同类内容，欢迎常来坐坐。
-    favicon: /images/uploads/91334478039dbd472f3e5fc77a3219d0.png
-  header:
-    aria_home: 首页
-    aria_nav: 主导航
-    nav_toggle_label: 菜单
-  categories_page:
-    page_title: 分类
-    page_desc: 按栏目浏览文章
-    empty_hint: "暂无分类，请在文章 front-matter 中设置 categories:"
-    articles_count_suffix: 篇文章
-  weather_chip:
-    enable: true
-    city_label: 深圳
-    latitude: "22.5431"
-    longitude: "114.0579"
-    show_on_guestbook: true
-  news_page:
-    outline_title: 时间大纲
-    pinned_label: 置顶
-    empty_hint: |
-      还没有近况记录。请在后台 **近况时间轴** 里添加条目（日期 + Markdown 正文）。
+    favicon: ../../assets/91334478039dbd472f3e5fc77a3219d0.png
+  analytics:
+    cf_web_analytics_token: b02d4138eeb9482d8cced5c7eefbc1b6
   home:
     sr_only_title: 博客
     stat_total_prefix: 文库共
@@ -75,16 +44,41 @@ site_ui:
     aside_latest_title: 最新
     aside_aria_label: 站点侧栏
   labels:
+    uncategorized: 未分类
+    updated: 更新
     head_fallback_blog: 博客
+    head_tag_prefix: 标签：
     tag_page_title_prefix: 标签：
     category_page_title_prefix: 分类：
-    pinned_label: 置顶
-    pagination_aria: 分页
-    uncategorized: 未分类
-    head_tag_prefix: 标签：
-    pagination_next: 下一页
     pagination_prev: 上一页
-    updated: 更新
+    pagination_next: 下一页
+    pagination_aria: 分页
+    pinned_label: 置顶
+  archive:
+    sr_only_all: 博客归档
+    empty_posts: 暂无文章。
+    toc_title: 目录
+    filter_all_label: 全部
+    filter_aria_label: 按分类筛选
+    content_font_size: 0.95
+    title_font_size: 1.35
+    panel_bg_opacity: 0
+  header:
+    aria_home: 首页
+    aria_nav: 主导航
+    nav_toggle_label: 菜单
+  weather_chip:
+    enable: true
+    city_label: 深圳
+    latitude: '22.5431'
+    longitude: '114.0579'
+    show_on_guestbook: true
+  post_defaults:
+    default_category: 随笔
+    category_presets:
+      - 日记
+      - 工作
+      - 旅行
 guestbook:
   page:
     title: 留言墙

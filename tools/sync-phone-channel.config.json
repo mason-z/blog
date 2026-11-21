@@ -1,0 +1,9 @@
+{
+  "syncRoot": "E:\\手机博客通道sync",
+  "folders": {
+    "posts": "source/_posts",
+    "drafts": "source/_drafts",
+    "assets": "assets"
+  },
+  "movePublishedFromPosts": false
+}

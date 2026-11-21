@@ -1,0 +1,13 @@
+{
+  "blogRoot": "..",
+  "server": {
+    "host": "0.0.0.0",
+    "port": 8770,
+    "apiToken": "5a31471fa2a01a014ccdfc11cfd9d384"
+  },
+  "ui": {
+    "title": "meiso 管理",
+    "previewUrl": "http://127.0.0.1:4010",
+    "decapAdminUrl": "http://127.0.0.1:4010/admin/"
+  }
+}

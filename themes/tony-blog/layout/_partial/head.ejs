@@ -34,7 +34,7 @@ if (_useCustomFavicon) {
 <script>
 (function () {
   try {
-    var stored = localStorage.getItem("tony-theme");
+    var stored = localStorage.getItem("meiso-theme");
     if (stored !== "light") document.documentElement.setAttribute("data-theme", "dark");
   } catch (e) {
     document.documentElement.setAttribute("data-theme", "dark");
@@ -45,8 +45,6 @@ if (_useCustomFavicon) {
 <% if (page.layout === 'post') { %>
 <%- page.title %> | <%- _siteTitle %>
 <% } else if (page.layout === 'page') { %>
-<%- page.title %> | <%- _siteTitle %>
-<% } else if (page.layout === 'travel') { %>
 <%- page.title %> | <%- _siteTitle %>
 <% } else if (page.layout === 'guestbook') { %>
 <%- _gbHeadTitle || page.title || '留言墙' %> | <%- _siteTitle %>
@@ -68,25 +66,28 @@ if (_useCustomFavicon) {
 <% if (_dmBgHref) { %>
 <style id="dark-mode-bg-custom">
   /* 壁纸画在 html 上，避免被 body 纯色盖住；遮罩约半透，否则几乎看不见图 */
-  html[data-theme="dark"].tony-dark-bg-root {
+  html[data-theme="dark"].meiso-dark-bg-root {
     background-color: #12121a;
-    background-image: linear-gradient(rgba(12, 12, 18, 0.5), rgba(12, 12, 22, 0.58)), url(<%- JSON.stringify(_dmBgHref) %>);
+    background-image: linear-gradient(rgba(10, 10, 16, 0.68), rgba(10, 10, 18, 0.78)), url(<%- JSON.stringify(_dmBgHref) %>);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
     background-attachment: fixed;
   }
-  html[data-theme="dark"].tony-dark-bg-root body {
+  html[data-theme="dark"].meiso-dark-bg-root body {
     background: transparent !important;
   }
 </style>
-<% } %>
-<% if (page.layout === 'travel') { %>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
 <% } %>
 <% if (page.layout === 'guestbook') { %>
 <% var _gbWaline = (site.data.guestbook && site.data.guestbook.waline && site.data.guestbook.waline.serverURL && String(site.data.guestbook.waline.serverURL).trim()); %>
 <% if (_gbWaline) { %>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@waline/client@3.4.3/dist/waline.css" crossorigin="" />
 <% } %>
+<% } %>
+<% var _uiAnalytics = (site.data.site_ui && site.data.site_ui.analytics) || {}; %>
+<% var _cfWaToken = (_uiAnalytics.cf_web_analytics_token != null && String(_uiAnalytics.cf_web_analytics_token).trim()) ? String(_uiAnalytics.cf_web_analytics_token).trim() : ''; %>
+<% if (!_cfWaToken && theme.analytics && theme.analytics.cf_web_analytics_token != null && String(theme.analytics.cf_web_analytics_token).trim()) { _cfWaToken = String(theme.analytics.cf_web_analytics_token).trim(); } %>
+<% if (_cfWaToken) { %>
+<script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='<%- JSON.stringify({ token: _cfWaToken }) %>'></script>
 <% } %>

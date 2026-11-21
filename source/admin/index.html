@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
   <title>内容管理</title>
+  <script>window.CMS_MANUAL_INIT = true;</script>
   <style>
     .nc-tag-chips { width: 100%; max-width: 100%; }
     .nc-tag-chips__chip {
@@ -54,11 +55,12 @@
   </style>
 </head>
 <body>
-  <!-- Decap CMS：主 CDN 用 jsDelivr；失败则回退 unpkg。先加载 CMS，再注册自定义标签控件。 -->
   <script
     src="https://cdn.jsdelivr.net/npm/decap-cms@3.4.0/dist/decap-cms.js"
     onerror="this.onerror=null;this.src='https://unpkg.com/decap-cms@3.4.0/dist/decap-cms.js'"
   ></script>
+  <script src="https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js"></script>
   <script src="./tags-widget.js"></script>
+  <script src="./cms-init.js"></script>
 </body>
 </html>

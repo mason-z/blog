@@ -1,20 +1,30 @@
 <%
-  function tagToneClass(str) {
-    var h = 0;
-    var s = String(str || '');
-    for (var i = 0; i < s.length; i++) h = (h + s.charCodeAt(i) * (i + 1)) % 997;
-    return 'tag-tone-' + (h % 3);
-  }
   function archiveItemId(post) {
     return 'full-' + String(post.path).replace(/\//g, '-').replace(/^-|-$/g, '');
   }
-  var archRoot = url_for((config.archive_dir || 'archives').replace(/\/?$/, '/'));
+  function postCategoryKeys(post, uncategorized) {
+    var keys = [];
+    post.categories.each(function (c) { keys.push(c.name); });
+    if (keys.length === 0) keys.push(uncategorized);
+    return keys.join('|');
+  }
+  var _uia = (site.data.site_ui && site.data.site_ui.labels) || {};
+  var _archUi = (site.data.site_ui && site.data.site_ui.archive) || {};
+  var _uncat = _uia.uncategorized || '未分类';
   var isMonthly = page.month != null && page.month !== '';
   var isYearly = page.year != null && page.year !== '' && !isMonthly;
   var isFiltered = isYearly || isMonthly;
   var list = isFiltered ? page.posts : site.posts;
-  var byYear = {};
-  var _archArr = list.toArray();
+  var _includePrivate = config.include_private === true || config.include_private === 'true' || config.include_private === 1;
+  function postVisibleInSite(post) {
+    if (_includePrivate) return true;
+    if (post.published === false) return false;
+    var pv = post.meiso_private != null ? post.meiso_private : post.private;
+    if (pv === true || pv === 'true' || pv === 1 || pv === '1') return false;
+    return true;
+  }
+  var byMonth = {};
+  var _archArr = list.toArray().filter(postVisibleInSite);
   _archArr.sort(function (a, b) {
     var sa = Number(a.sticky) || 0;
     var sb = Number(b.sticky) || 0;
@@ -23,56 +33,87 @@
     var dbb = b.date ? b.date.valueOf() : 0;
     return dbb - da;
   });
+  var hasUncategorized = false;
   _archArr.forEach(function (post) {
-    var y = date(post.date, 'YYYY');
-    if (!byYear[y]) byYear[y] = [];
-    byYear[y].push(post);
+    var ym = date(post.date, 'YYYY.MM');
+    if (!byMonth[ym]) byMonth[ym] = [];
+    byMonth[ym].push(post);
+    var _ck = 0;
+    post.categories.each(function () { _ck++; });
+    if (_ck === 0) hasUncategorized = true;
   });
-  var tocYears = Object.keys(byYear).sort(function (a, b) {
-    return parseInt(b, 10) - parseInt(a, 10);
+  var tocMonths = Object.keys(byMonth).sort(function (a, b) {
+    return b.localeCompare(a);
   });
+  var filterCats = [];
+  site.categories.each(function (cat) { filterCats.push({ name: cat.name, count: cat.length }); });
+  var _archFs = (_archUi.content_font_size != null && String(_archUi.content_font_size).trim() !== '') ? Number(_archUi.content_font_size) : 0.95;
+  if (!isFinite(_archFs) || _archFs <= 0) _archFs = 0.95;
+  var _archTitleFs = (_archUi.title_font_size != null && String(_archUi.title_font_size).trim() !== '') ? Number(_archUi.title_font_size) : 1.35;
+  if (!isFinite(_archTitleFs) || _archTitleFs <= 0) _archTitleFs = 1.35;
+  var _archPanelOp = (_archUi.panel_bg_opacity != null && String(_archUi.panel_bg_opacity).trim() !== '') ? Number(_archUi.panel_bg_opacity) : 0;
+  if (!isFinite(_archPanelOp)) _archPanelOp = 0;
+  _archPanelOp = Math.max(0, Math.min(1, _archPanelOp));
 %>
-<section class="archive-shell archive-shell--full">
+<section class="archive-shell archive-shell--full" style="--archive-font-size: <%= _archFs %>rem; --archive-title-size: <%= _archTitleFs %>rem; --archive-panel-opacity: <%= _archPanelOp %>;">
   <% if (isMonthly) { %>
   <h1 class="sr-only">归档：<%= page.year %> 年 <%= page.month %> 月</h1>
   <% } else if (isYearly) { %>
   <h1 class="sr-only">归档：<%= page.year %> 年</h1>
   <% } else { %>
-  <h1 class="sr-only"><%= ((site.data.site_ui && site.data.site_ui.archive) || {}).sr_only_all || '博客归档' %></h1>
+  <h1 class="sr-only"><%= _archUi.sr_only_all || '博客归档' %></h1>
   <% } %>
 
   <% if (list.length === 0) { %>
-  <div class="page-desc md-block"><%- render_md(((site.data.site_ui && site.data.site_ui.archive) || {}).empty_posts || '暂无文章。') %></div>
+  <div class="page-desc md-block"><%- render_md(_archUi.empty_posts || '暂无文章。') %></div>
   <% } else { %>
-  <div class="archive-with-toc">
-    <aside class="archive-toc" aria-label="按年标题导航">
-      <h2 class="archive-toc__title"><%= ((site.data.site_ui && site.data.site_ui.archive) || {}).toc_title || '目录' %></h2>
-      <% tocYears.forEach(function (y) { %>
-      <div class="archive-toc__block">
-        <h3 class="archive-toc__year"><%= y %></h3>
-        <ul class="archive-toc__list">
-          <% byYear[y].forEach(function (post) { %>
-          <li class="archive-toc__item">
-            <a class="archive-toc__link" href="#<%= archiveItemId(post) %>"><%= post.title %></a>
-          </li>
-          <% }); %>
-        </ul>
-      </div>
+  <% if (!isFiltered && (filterCats.length > 0 || hasUncategorized)) { %>
+  <div class="archive-layout">
+  <div class="archive-filter archive-panel" role="group" aria-label="<%= _archUi.filter_aria_label || '按分类筛选' %>">
+    <div class="archive-filter__buttons">
+      <button type="button" class="archive-filter__btn is-active" data-archive-filter="" aria-pressed="true"><%= _archUi.filter_all_label || '全部' %></button>
+      <% filterCats.forEach(function (cat) { %>
+      <button type="button" class="archive-filter__btn" data-archive-filter="<%= cat.name %>" aria-pressed="false"><%= cat.name %><span class="archive-filter__count"><%= cat.count %></span></button>
       <% }); %>
+      <% if (hasUncategorized) { %>
+      <button type="button" class="archive-filter__btn" data-archive-filter="<%= _uncat %>" aria-pressed="false"><%= _uncat %></button>
+      <% } %>
+    </div>
+  </div>
+  <% } else { %>
+  <div class="archive-layout">
+  <% } %>
+
+  <div class="archive-with-toc">
+    <aside class="archive-toc archive-panel archive-toc--float" aria-label="按月份标题导航">
+      <div class="archive-toc__nav">
+        <h2 class="archive-toc__title"><%= _archUi.toc_title || '目录' %></h2>
+        <% tocMonths.forEach(function (ym) { %>
+        <div class="archive-toc__block">
+          <h3 class="archive-toc__month"><%= ym %></h3>
+          <ul class="archive-toc__list">
+            <% byMonth[ym].forEach(function (post) { %>
+            <li class="archive-toc__item" data-archive-categories="<%= postCategoryKeys(post, _uncat) %>" data-archive-target="<%= archiveItemId(post) %>">
+              <a class="archive-toc__link" href="#<%= archiveItemId(post) %>"><%= post.title %></a>
+            </li>
+            <% }); %>
+          </ul>
+        </div>
+        <% }); %>
+      </div>
     </aside>
 
     <div class="archive-full-list">
-      <% tocYears.forEach(function (y) { %>
-      <% byYear[y].forEach(function (post) { %>
-      <% var _uia = (site.data.site_ui && site.data.site_ui.labels) || {}; %>
-      <% var catName = _uia.uncategorized || '未分类'; var cf = true; post.categories.each(function (c) { if (cf) { catName = c.name; cf = false; } }); %>
-      <article class="archive-full-item" id="<%= archiveItemId(post) %>">
+      <% tocMonths.forEach(function (ym) { %>
+      <% byMonth[ym].forEach(function (post) { %>
+      <% var catName = _uncat; var cf = true; post.categories.each(function (c) { if (cf) { catName = c.name; cf = false; } }); %>
+      <article class="archive-full-item archive-panel" id="<%= archiveItemId(post) %>" data-archive-categories="<%= postCategoryKeys(post, _uncat) %>">
         <header class="archive-full-header">
           <h2 class="archive-full-title"><a href="<%- url_for(post.path) %>"><% if (Number(post.sticky) > 0) { %><span class="archive-full-pinned"><%= _uia.pinned_label || '置顶' %></span> <% } %><%= post.title %></a></h2>
           <p class="archive-full-meta">
-            <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD HH:mm') %></time>
+            <time datetime="<%= date_xml(post.date) %>"><%= date(post.date, 'YYYY-MM-DD') %></time>
             <span class="dot">·</span>
-            <span class="cat <%= tagToneClass(catName) %>"><%= catName %></span>
+            <span class="cat"><%= catName %></span>
           </p>
         </header>
         <div class="article-body archive-full-body">
@@ -83,5 +124,8 @@
       <% }); %>
     </div>
   </div>
+  </div>
   <% } %>
 </section>
+<script src="<%- url_for('/js/archive-filter.js') %>" defer></script>
+<script src="<%- url_for('/js/archive-scroll-spy.js') %>" defer></script>

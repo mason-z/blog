@@ -1,14 +1,14 @@
 # 站点标题/描述：与 source/_data/site_cms.yml 保持语义一致（RSS、部分兜底用）；全站展示以后台「站点配置」为准
-title: I'm Mason
+title: meiso
 subtitle: ''
-description: Mason 的个人博客
+description: meiso 的个人博客
 keywords: blog
-author: Mason
+author: meiso
 language: zh-CN
 timezone: Asia/Shanghai
 
 # 线上站点地址（https://，无末尾斜杠）；与 root 一起影响资源与链接路径；换域名时请与 Decap base_url、OAuth 回调一致
-url: https://masonblog.pages.dev
+url: https://meiso-945.pages.dev
 root: /
 permalink: :year/:month/:day/:title/
 permalink_defaults:
@@ -35,6 +35,9 @@ render_drafts: false
 post_asset_folder: false
 relative_link: false
 future: true
+
+# 私有文章（front matter private: true）是否参与生成；实时预览与 build:prod 均不合并其它覆盖，保持 false
+include_private: false
 
 syntax_highlighter: highlight.js
 highlight:

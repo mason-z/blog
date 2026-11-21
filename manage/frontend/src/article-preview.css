@@ -1,0 +1,323 @@
+/* 编辑器预览正文 — 独立 CSS，避免 Tailwind 构建时丢弃 figure 尺寸规则 */
+
+.editor-preview {
+  color: #e5e7eb;
+  font-size: 15px;
+  line-height: 1.75;
+  word-break: break-word;
+}
+
+.editor-preview .preview-empty {
+  color: #6b7280;
+}
+
+.editor-preview .preview-h {
+  color: #f3f4f6;
+  font-weight: 600;
+  line-height: 1.35;
+  margin: 1.25rem 0 0.5rem;
+}
+
+.editor-preview .preview-h1 {
+  font-size: 1.5rem;
+}
+
+.editor-preview .preview-h2 {
+  font-size: 1.25rem;
+}
+
+.editor-preview .preview-h3 {
+  font-size: 1.125rem;
+}
+
+.editor-preview .preview-h4,
+.editor-preview .preview-h5,
+.editor-preview .preview-h6 {
+  font-size: 1rem;
+}
+
+.editor-preview .preview-p {
+  margin: 0.65rem 0;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 1.75;
+  color: #d1d5db;
+}
+
+.editor-preview .preview-p:first-child,
+.editor-preview .preview-h:first-child {
+  margin-top: 0;
+}
+
+.editor-preview .preview-link {
+  color: #3dd6c8;
+  text-decoration: underline;
+}
+
+.editor-preview .preview-link:hover {
+  color: #6ee7de;
+}
+
+.editor-preview .preview-code {
+  border-radius: 0.25rem;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.1rem 0.35rem;
+  font-family: ui-monospace, Consolas, monospace;
+  font-size: 0.85em;
+  color: #3dd6c8;
+}
+
+.editor-preview .preview-pre {
+  margin: 0.75rem 0;
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  background: rgba(0, 0, 0, 0.35);
+  padding: 0.75rem;
+  font-size: 0.75rem;
+  line-height: 1.5;
+}
+
+.editor-preview .preview-pre code {
+  font-family: ui-monospace, Consolas, monospace;
+  color: #e5e7eb;
+}
+
+.editor-preview .article-inline-img,
+.editor-preview .article-figure img {
+  display: block;
+  margin: 0.75rem auto;
+  max-width: min(100%, 320px);
+  max-height: min(45vh, 360px);
+  width: auto;
+  height: auto;
+  border: 1px solid #30363d;
+  background: rgba(0, 0, 0, 0.2);
+  object-fit: contain;
+  cursor: zoom-in;
+  border-radius: 0;
+}
+
+.editor-preview .article-figure {
+  margin: 0.75rem 0;
+}
+
+.editor-preview figure:not(.photo-grid figure) {
+  margin: 0.75rem 0;
+}
+
+.editor-preview figcaption {
+  margin-top: 0.25rem;
+  font-size: 0.75rem;
+  color: #6b7280;
+}
+
+.editor-preview .photo-grid,
+.photo-grid--preview {
+  --photo-cell: 120px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  margin: 0.75rem 0;
+  width: auto;
+  max-width: 100%;
+}
+
+.editor-preview .photo-grid--size-s,
+.photo-grid--preview.photo-grid--size-s {
+  --photo-cell: 88px;
+}
+
+.editor-preview .photo-grid--size-m,
+.photo-grid--preview.photo-grid--size-m {
+  --photo-cell: 120px;
+}
+
+.editor-preview .photo-grid--size-l,
+.photo-grid--preview.photo-grid--size-l {
+  --photo-cell: 160px;
+}
+
+.editor-preview .photo-grid.photo-grid--5,
+.photo-grid--preview.photo-grid--5 {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.35rem;
+  width: 100%;
+  max-width: 100%;
+}
+
+.editor-preview .photo-grid.photo-grid--5 figure,
+.editor-preview .photo-grid.photo-grid--5 .photo-grid__cell,
+.photo-grid--preview.photo-grid--5 .photo-grid__cell {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  flex: unset;
+}
+
+.editor-preview .photo-grid figure,
+.editor-preview .photo-grid .photo-grid__cell,
+.photo-grid--preview .photo-grid__cell {
+  position: relative;
+  box-sizing: border-box;
+  margin: 0;
+  width: var(--photo-cell);
+  height: var(--photo-cell);
+  flex: 0 0 var(--photo-cell);
+  overflow: hidden;
+  border-radius: 0;
+  border: 1px solid #30363d;
+  background: rgba(0, 0, 0, 0.25);
+}
+
+.editor-preview .photo-grid img,
+.photo-grid--preview .photo-grid__cell img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100% !important;
+  max-height: 100% !important;
+  margin: 0 !important;
+  padding: 0;
+  border: none !important;
+  border-radius: 0;
+  background: transparent;
+  object-fit: cover;
+  object-position: center;
+  cursor: zoom-in;
+}
+
+.photo-grid--preview .photo-grid__cell--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* 与管理后台预览共用的灯箱样式（Teleport 到 body） */
+html.article-lightbox-open {
+  overflow: hidden;
+}
+
+.article-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 12000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s ease, visibility 0.2s ease;
+}
+
+.article-lightbox--visible {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.article-lightbox__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+}
+
+.article-lightbox__panel {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: min(96vw, 1200px);
+  max-height: 92vh;
+}
+
+.article-lightbox__figure {
+  margin: 0;
+  max-width: 100%;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.article-lightbox__img {
+  display: block;
+  max-width: min(96vw, 1200px);
+  max-height: min(82vh, 900px);
+  width: auto;
+  height: auto;
+  object-fit: contain;
+  border-radius: 0.5rem;
+  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.45);
+}
+
+.article-lightbox__caption {
+  max-width: min(96vw, 720px);
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.75);
+  text-align: center;
+}
+
+.article-lightbox__counter {
+  position: absolute;
+  bottom: -2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(255, 255, 255, 0.65);
+  white-space: nowrap;
+}
+
+.article-lightbox__close {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 2;
+  width: 2.5rem;
+  height: 2.5rem;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.6rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.article-lightbox__close:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.article-lightbox__nav {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: none;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  font-size: 1.25rem;
+  cursor: pointer;
+}
+
+.article-lightbox__nav:hover {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.article-lightbox__nav--prev {
+  left: max(0.75rem, env(safe-area-inset-left));
+}
+
+.article-lightbox__nav--next {
+  right: max(0.75rem, env(safe-area-inset-right));
+}

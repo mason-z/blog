@@ -1,6 +1,6 @@
 {
-  "from": "E:/desktop/pycode/mcblog_git/mcblog_git_Private",
-  "to": "E:/desktop/pycode/mcblog_git/mcblog_git_public",
+  "from": "E:/desktop/pycode/meiso/meiso_private",
+  "to": "E:/desktop/pycode/meiso/meiso_public",
   "mirror": true,
   "forbidPathPrefixes": ["source/_posts", "source/_drafts"],
   "skipForbiddenPathCheck": false,
@@ -13,6 +13,7 @@
     "package-lock.json",
     "_config.yml",
     "source/admin",
-    "functions"
+    "functions",
+    "wrangler.toml"
   ]
 }
